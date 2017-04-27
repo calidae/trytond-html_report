@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="TrytonSpain">
+
+    {% block stylesheets %}
+    {% if report.extension == 'html' %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    {% else %}
+    <!-- Local copy of Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{{ 'html_report/report/css/bootstrap/css/bootstrap.min.css'|modulepath }}">
+    <link rel="stylesheet" href="{{ 'html_report/report/css/font-awesome/css/font-awesome.min.css'|modulepath }}">
+    {% endif %}
+    {% endblock stylesheets %}
+
+    {% block custom_style %}
+    <style type="text/css">
+      hr {
+        border-top: 1px solid #000;
+      }
+      .h3 {
+        font-size: 16px;
+      }
+      body {
+        font-family: 'Arial';
+        font-size: 10px;
+      }
+      .page-break {
+        padding-top: 10px;
+        page-break-before: always;
+      }
+      .top20 {
+        padding-top: 20px;
+      }
+      tbody tr {
+        page-break-inside: avoid;
+      }
+      table.no-border td {
+        border: 0px !important;
+      }
+      #footer {
+        position: fixed;
+        bottom: 0;
+      }
+    </style>
+    {% endblock custom_style %}
+  </head>
+  <body>
+    {% block body %}
+
+    {% block main scoped %}
+    <div class="container-fluid {% if not first %}page-break{% endif %}">
+      <div class="row">
+        <div class="col-xs-6">
+          {% block company_header scoped %}
+          {% include header %}
+          {% endblock company_header %}
+        </div>
+        <div class="col-xs-6">
+          {% block report_header scoped %}
+          {% endblock report_header %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        {% block report_body scoped %}
+        {% endblock report_body %}
+        </div>
+      </div>
+      <div id="footer" class="row">
+        <div class="col-xs-12">
+        </div>
+      </div>
+    </div>
+    {% endblock main %}
+
+    {% endblock body %}
+  </body>
+</html>
