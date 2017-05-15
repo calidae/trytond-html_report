@@ -93,6 +93,11 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
+        def rec_name(record):
+            if hasattr(record, 'rec_name'):
+                return record.rec_name
+            return record
+
         # TODO: suport < 4.2
         locale = Transaction().context.get(
             'report_lang', Transaction().language).split('_')[0]
@@ -107,6 +112,7 @@ class HTMLReport(Report):
             'percentformat': partial(numbers.format_percent, locale=locale),
             'scientificformat': partial(numbers.format_scientific, locale=locale),
             'modulepath': module_path,
+            'rec_name': rec_name,
         }
 
     @classmethod
