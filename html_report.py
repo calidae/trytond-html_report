@@ -123,7 +123,8 @@ class HTMLReport(Report):
         Downstream modules can override this method to easily make changes
         to environment
         """
-        extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape', 'jinja2.ext.with_']
+        extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape', 'jinja2.ext.with_',
+            'jinja2.ext.loopcontrols', 'jinja2.ext.do']
         env = Environment(extensions=extensions,
             loader=FunctionLoader(cls.jinja_loader_func))
         env.filters.update(cls.get_jinja_filters())
