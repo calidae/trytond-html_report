@@ -1,5 +1,6 @@
 import os
 from functools import partial
+from decimal import Decimal
 
 from jinja2 import Environment, FunctionLoader
 from babel import dates, numbers, support
@@ -93,10 +94,20 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
-        def rec_name(record):
+        def render_field(record):
+            # TODO: suport < 4.2
+            locale = Transaction().context.get(
+                'report_lang', Transaction().language).split('_')[0]
+
             if hasattr(record, 'rec_name'):
                 return record.rec_name
+            if isinstance(record, (float, Decimal)):
+                return numbers.format_decimal(
+                    record, format='##.00', locale=locale)
             return record
+
+        def type_field(record):
+            return type(record).__name__
 
         # TODO: suport < 4.2
         locale = Transaction().context.get(
@@ -112,7 +123,8 @@ class HTMLReport(Report):
             'percentformat': partial(numbers.format_percent, locale=locale),
             'scientificformat': partial(numbers.format_scientific, locale=locale),
             'modulepath': module_path,
-            'rec_name': rec_name,
+            'render_field': render_field,
+            'type_field': type_field,
         }
 
     @classmethod
