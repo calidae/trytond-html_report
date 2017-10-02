@@ -43,7 +43,7 @@ minor_version = int(minor_version)
 name = 'trytonspain_html_report'
 download_url = 'https://bitbucket.org/trytonspain/trytond-html_report'
 
-requires = ['weasyprint', 'jinja2', 'babel']
+requires = ['cairocffi<0.7', 'weasyprint', 'jinja2', 'babel']
 for dep in info.get('depends', []):
     if not re.match(r'(ir|res)(\W|$)', dep):
         prefix = MODULE2PREFIX.get(dep, 'trytond')
