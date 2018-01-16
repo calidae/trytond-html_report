@@ -60,8 +60,8 @@ class HTMLReport(Report):
 
             <module_name>/path/to/template
 
-        for example, if the account_invoice_html_report module had a base template in
-        its reports folder, then you should be able to use:
+        for example, if the account_invoice_html_report module had a base
+        template in its reports folder, then you should be able to use:
 
             {% extends 'html_report/report/base.html' %}
         """
@@ -121,7 +121,8 @@ class HTMLReport(Report):
             'decimalformat': partial(numbers.format_decimal, locale=locale),
             'currencyformat': partial(numbers.format_currency, locale=locale),
             'percentformat': partial(numbers.format_percent, locale=locale),
-            'scientificformat': partial(numbers.format_scientific, locale=locale),
+            'scientificformat': partial(
+                numbers.format_scientific, locale=locale),
             'modulepath': module_path,
             'render_field': render_field,
             'type_field': type_field,
@@ -135,8 +136,8 @@ class HTMLReport(Report):
         Downstream modules can override this method to easily make changes
         to environment
         """
-        extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape', 'jinja2.ext.with_',
-            'jinja2.ext.loopcontrols', 'jinja2.ext.do']
+        extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape',
+            'jinja2.ext.with_', 'jinja2.ext.loopcontrols', 'jinja2.ext.do']
         env = Environment(extensions=extensions,
             loader=FunctionLoader(cls.jinja_loader_func))
         env.filters.update(cls.get_jinja_filters())
@@ -150,9 +151,9 @@ class HTMLReport(Report):
                     'report_lang', Transaction().language).split('_')[0]
 
                 translations = support.Translations.load(
-                        dirname=report_translations,
-                        locales=[locale],
-                        domain=cls.babel_domain,
+                    dirname=report_translations,
+                    locales=[locale],
+                    domain=cls.babel_domain,
                     )
                 env.install_gettext_translations(translations)
 
