@@ -43,14 +43,14 @@ major_version, minor_version, _ = version.split('.', 2)
 major_version = int(major_version)
 minor_version = int(minor_version)
 
-requires = []
+requires = ['Jinja2', 'Babel', 'WeasyPrint']
 for dep in info.get('depends', []):
     if not re.match(r'(ir|res)(\W|$)', dep):
         prefix = MODULE2PREFIX.get(dep, 'trytond')
         requires.append(get_require_version('%s_%s' % (prefix, dep)))
 requires.append(get_require_version('trytond'))
 
-tests_require = [get_require_version('proteus')]
+tests_require = []
 dependency_links = []
 if minor_version % 2:
     # Add development index for testing with proteus
@@ -117,7 +117,4 @@ setup(name='%s_%s' % (PREFIX, MODULE),
     test_loader='trytond.test_loader:Loader',
     tests_require=tests_require,
     use_2to3=True,
-    convert_2to3_doctests=[
-        'tests/scenario_html_report.rst',
-        ],
     )
