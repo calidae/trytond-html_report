@@ -5,8 +5,7 @@ from trytond.pool import PoolMeta
 __all__ = ['ActionReport']
 
 
-class ActionReport:
-    __metaclass__ = PoolMeta
+class ActionReport(metaclass=PoolMeta):
     __name__ = 'ir.action.report'
 
     @classmethod

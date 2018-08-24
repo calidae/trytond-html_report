@@ -7,8 +7,7 @@ from trytond.model import fields
 __all__ = ['Company']
 
 
-class Company:
+class Company(metaclass=PoolMeta):
     __name__ = 'company.company'
-    __metaclass__ = PoolMeta
     header_html = fields.Text('Header Html')
     footer_html = fields.Text('Footer Html')

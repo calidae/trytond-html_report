@@ -5,8 +5,7 @@ from trytond.pool import PoolMeta
 __all__ = ['ReportTranslationSet']
 
 
-class ReportTranslationSet:
-    __metaclass__ = PoolMeta
+class ReportTranslationSet(metaclass=PoolMeta):
     __name__ = "ir.translation.set"
 
     def extract_report_jinja(self, content):
