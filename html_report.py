@@ -24,10 +24,11 @@ class HTMLReport(Report):
         Company = pool.get('company.company')
 
         # Convert to str as buffer from DB is not supported by StringIO
-        report_content = (str(report.report_content) if report.report_content
+        report_content = (report.report_content if report.report_content
                           else False)
-        if not report_content:
+        if not report.report_content:
             raise Exception('Error', 'Missing report file!')
+        report_content = report.report_content.decode('utf-8')
 
         # Make the report itself available n the report context
         report_context['report'] = report
@@ -172,8 +173,8 @@ class HTMLReport(Report):
             'header': env.from_string(company.header_html or ''),
             'footer': env.from_string(company.footer_html or ''),
         })
-        report_template = env.from_string(template_string.decode('utf-8'))
-        return report_template.render(**localcontext).encode('utf-8')
+        report_template = env.from_string(template_string)
+        return report_template.render(**localcontext)
 
     @classmethod
     def weasyprint(cls, data, options=None):
