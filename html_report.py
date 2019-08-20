@@ -95,9 +95,9 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
-        def render_field(value, lang):
+        def render_field(value, decimal_digits=2, lang=None):
             if isinstance(value, (float, Decimal)):
-                return lang.format('%.*f', (2, value), grouping=True)
+                return lang.format('%.*f', (decimal_digits, value), grouping=True)
             if isinstance(value, int):
                 return lang.format('%d', value, grouping=True)
             if hasattr(value, 'rec_name'):
