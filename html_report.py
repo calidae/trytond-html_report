@@ -34,7 +34,6 @@ class HTMLReport(Report):
         report_context['report'] = report
         company_id = Transaction().context.get('company')
         report_context['company'] = Company(company_id)
-
         return cls.render_template(report_content, report_context)
 
     @classmethod
@@ -89,23 +88,21 @@ class HTMLReport(Report):
         refer to the Babel `Documentation
         <http://babel.edgewall.org/wiki/Documentation>`_.
         """
+        Lang = Pool().get('ir.lang')
 
         def module_path(name):
             module, path = name.split('/', 1)
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
-        def render_field(record):
-            # TODO: suport < 4.2
-            locale = Transaction().context.get(
-                'report_lang', Transaction().language).split('_')[0]
-
-            if hasattr(record, 'rec_name'):
-                return record.rec_name
-            if isinstance(record, (float, Decimal)):
-                return numbers.format_decimal(
-                    record, format='##.00', locale=locale)
-            return record
+        def render_field(value, lang):
+            if isinstance(value, (float, Decimal)):
+                return lang.format('%.*f', (2, value), grouping=True)
+            if isinstance(value, int):
+                return lang.format('%d', value, grouping=True)
+            if hasattr(value, 'rec_name'):
+                return value.rec_name
+            return value
 
         def type_field(record):
             return type(record).__name__
@@ -113,6 +110,9 @@ class HTMLReport(Report):
         # TODO: suport < 4.2
         locale = Transaction().context.get(
             'report_lang', Transaction().language).split('_')[0]
+        lang, = Lang.search([
+                ('code', '=', locale or 'en'),
+                ])
         return {
             'dateformat': partial(dates.format_date, locale=locale),
             'datetimeformat': partial(dates.format_datetime, locale=locale),
@@ -125,7 +125,7 @@ class HTMLReport(Report):
             'scientificformat': partial(
                 numbers.format_scientific, locale=locale),
             'modulepath': module_path,
-            'render_field': render_field,
+            'render_field': partial(render_field, lang=lang),
             'type_field': type_field,
         }
 
