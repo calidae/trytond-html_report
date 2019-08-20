@@ -97,7 +97,8 @@ class HTMLReport(Report):
 
         def render_field(value, decimal_digits=2, lang=None):
             if isinstance(value, (float, Decimal)):
-                return lang.format('%.*f', (decimal_digits, value), grouping=True)
+                return lang.format('%.*f', (decimal_digits, value),
+                    grouping=True)
             if isinstance(value, int):
                 return lang.format('%d', value, grouping=True)
             if hasattr(value, 'rec_name'):
