@@ -19,6 +19,14 @@ class HTMLReport(Report):
     report_translations = None
 
     @classmethod
+    def execute(cls, ids, data):
+        with Transaction().set_context({
+                    'html_report_ids': ids,
+                    'html_report_data': data,
+                    }):
+            return super().execute(ids, data)
+
+    @classmethod
     def render(cls, report, report_context):
         pool = Pool()
         Company = pool.get('company.company')
@@ -34,6 +42,15 @@ class HTMLReport(Report):
         report_context['report'] = report
         company_id = Transaction().context.get('company')
         report_context['company'] = Company(company_id)
+
+        company_id = Transaction().context.get('company')
+
+        ids = Transaction().context.get('html_report_ids')
+        data = Transaction().context.get('html_report_data')
+        if ids and data.get('model'):
+            Model = pool.get(data['model'])
+            report_context['record'] = Model(data['id'])
+            report_context['records'] = Model.browse(ids)
         return cls.render_template(report_content, report_context)
 
     @classmethod
