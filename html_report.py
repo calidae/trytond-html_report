@@ -204,9 +204,10 @@ class HTMLReport(Report):
         # Update header and footer in context
         company = localcontext['company']
         localcontext.update({
-            'header': env.from_string(company.header_html or ''),
-            'footer': env.from_string(company.footer_html or ''),
-        })
+                'header': env.from_string(company.header_html or ''),
+                'footer': env.from_string(company.footer_html or ''),
+                'time': datetime.now(),
+                })
         report_template = env.from_string(template_string)
         return report_template.render(**localcontext)
 
