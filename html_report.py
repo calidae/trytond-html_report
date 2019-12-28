@@ -1,6 +1,8 @@
 import os
+import binascii
 from functools import partial
 from decimal import Decimal
+from datetime import date, datetime
 
 from jinja2 import Environment, FunctionLoader
 from babel import dates, numbers, support
@@ -11,6 +13,7 @@ from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.report import Report
+from trytond.i18n import gettext
 
 
 class HTMLReport(Report):
@@ -116,10 +119,23 @@ class HTMLReport(Report):
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (decimal_digits, value),
                     grouping=True)
+            if isinstance(value, bool):
+                return gettext('html_report.msg_yes') if value else gettext('html_report.msg_no')
             if isinstance(value, int):
                 return lang.format('%d', value, grouping=True)
             if hasattr(value, 'rec_name'):
                 return value.rec_name
+            if isinstance(value, datetime):
+                return lang.strftime(value) + ' ' + value.strftime('%H:%M:%S')
+            if isinstance(value, date):
+                return lang.strftime(value)
+            if isinstance(value, str):
+                return value.replace('\n', '<br/>')
+            if isinstance(value, bytes):
+                value = binascii.b2a_base64(value)
+                value = value.decode('ascii')
+                # TODO: image/png should not be hardcoded
+                return 'data:image/png;base64,%s' % value
             return value
 
         def type_field(record):
