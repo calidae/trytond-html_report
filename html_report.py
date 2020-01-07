@@ -119,6 +119,8 @@ class HTMLReport(Report):
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (decimal_digits, value),
                     grouping=True)
+            if value is None:
+                return ''
             if isinstance(value, bool):
                 return gettext('html_report.msg_yes') if value else gettext('html_report.msg_no')
             if isinstance(value, int):
