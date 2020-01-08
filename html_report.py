@@ -1,5 +1,6 @@
 import os
 import binascii
+import mimetypes
 from functools import partial
 from decimal import Decimal
 from datetime import date, datetime
@@ -115,14 +116,15 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
-        def render_field(value, decimal_digits=2, lang=None):
+        def render_field(value, decimal_digits=2, lang=None, filename=None):
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (decimal_digits, value),
                     grouping=True)
             if value is None:
                 return ''
             if isinstance(value, bool):
-                return gettext('html_report.msg_yes') if value else gettext('html_report.msg_no')
+                return (gettext('html_report.msg_yes') if value else
+                    gettext('html_report.msg_no'))
             if isinstance(value, int):
                 return lang.format('%d', value, grouping=True)
             if hasattr(value, 'rec_name'):
@@ -137,7 +139,10 @@ class HTMLReport(Report):
                 value = binascii.b2a_base64(value)
                 value = value.decode('ascii')
                 # TODO: image/png should not be hardcoded
-                return 'data:image/png;base64,%s' % value
+                mimetype = 'image/png'
+                if filename:
+                    mimetype = mimetypes.guess_type(filename)[0]
+                return ('data:%s;base64,%s' % (mimetype, value)).strip()
             return value
 
         def type_field(record):
