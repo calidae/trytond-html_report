@@ -148,7 +148,6 @@ class HTMLReport(Report):
         def type_field(record):
             return type(record).__name__
 
-        # TODO: suport < 4.2
         locale = Transaction().context.get(
             'report_lang', Transaction().language).split('_')[0]
         lang, = Lang.search([
@@ -188,7 +187,6 @@ class HTMLReport(Report):
         if context.get('report_translations'):
             report_translations = context['report_translations']
             if os.path.isdir(report_translations):
-                # TODO: suport < 4.2
                 locale = context.get(
                     'report_lang', Transaction().language).split('_')[0]
 
