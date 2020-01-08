@@ -6,6 +6,7 @@ from decimal import Decimal
 from datetime import date, datetime
 
 from jinja2 import Environment, FunctionLoader
+from jinja2.ext import Extension, nodes
 from babel import dates, numbers, support
 
 import weasyprint
@@ -15,6 +16,93 @@ from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.report import Report
 from trytond.i18n import gettext
+
+
+class SwitchableTranslations:
+    '''
+    Class that implements ugettext() and ngettext() as expected by
+    jinja2.ext.i18n but also adds the ability to switch the language
+    at any point in a template.
+
+    The class is used by SwitchableLanguageExtension
+    '''
+    def __init__(self, dirname, domain, code=None):
+        self.dirname = dirname
+        self.domain = domain
+        self.cache = {}
+        self.env = None
+        self.set_language(code)
+
+    def set_language(self, code):
+        if not code:
+            self.current = None
+            return
+        if code in self.cache:
+            self.current = self.cache[code]
+            return
+        context = Transaction().context
+        if context.get('report_translations'):
+            report_translations = context['report_translations']
+            if os.path.isdir(report_translations):
+                self.current = support.Translations.load(
+                    dirname=report_translations,
+                    locales=[code],
+                    domain=self.domain,
+                    )
+                self.cache[code] = self.current
+
+    def ugettext(self, message):
+        if not self.current:
+            return message
+        return self.current.ugettext(message)
+
+    def ngettext(self, singular, plural, n):
+        if not self.current:
+            return singular
+        return self.current.ugettext(singular, plural, n)
+
+
+# Based on
+# https://stackoverflow.com/questions/44882075/switch-language-in-jinja-template/45014393#45014393
+
+class SwitchableLanguageExtension(Extension):
+    '''
+    This Jinja2 Extension allows the user to use the folowing tag:
+
+    {% language 'en' %}
+    {% endlanguage %}
+
+    All gettext() calls within the block will return the text in the language
+    defined thanks to the use of SwitchableTranslations class.
+    '''
+    tags = {'language'}
+
+    def __init__(self, env):
+        self.env = env
+        env.extend(
+            install_switchable_translations=self._install,
+            )
+        self.translations = None
+
+    def _install(self, translations):
+        self.env.install_gettext_translations(translations)
+        self.translations = translations
+
+    def parse(self, parser):
+        lineno = next(parser.stream).lineno
+        # Parse the language code argument
+        args = [parser.parse_expression()]
+        # Parse everything between the start and end tag:
+        body = parser.parse_statements(['name:endlanguage'], drop_needle=True)
+        # Call the _switch_language method with the given language code and body
+        return nodes.CallBlock(self.call_method('_switch_language', args), [],
+            [], body).set_lineno(lineno)
+
+    def _switch_language(self, language_code, caller):
+        if self.translations:
+            self.translations.set_language(language_code)
+        output = caller()
+        return output
 
 
 class HTMLReport(Report):
@@ -178,7 +266,8 @@ class HTMLReport(Report):
         to environment
         """
         extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape',
-            'jinja2.ext.with_', 'jinja2.ext.loopcontrols', 'jinja2.ext.do']
+            'jinja2.ext.with_', 'jinja2.ext.loopcontrols', 'jinja2.ext.do',
+            SwitchableLanguageExtension]
         env = Environment(extensions=extensions,
             loader=FunctionLoader(cls.jinja_loader_func))
         env.filters.update(cls.get_jinja_filters())
@@ -190,13 +279,9 @@ class HTMLReport(Report):
                 locale = context.get(
                     'report_lang', Transaction().language).split('_')[0]
 
-                translations = support.Translations.load(
-                    dirname=report_translations,
-                    locales=[locale],
-                    domain=cls.babel_domain,
-                    )
-                env.install_gettext_translations(translations)
-
+                translations = SwitchableTranslations(report_translations,
+                    cls.babel_domain, locale)
+                env.install_switchable_translations(translations)
         return env
 
     @classmethod
