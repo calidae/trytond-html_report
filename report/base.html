@@ -19,6 +19,34 @@
 
     {% block custom_style %}
     <style type="text/css">
+      @page {
+        size: portrait;
+        @top-left {
+          content: "";
+        }
+        @top-right {
+          content: "";
+        }
+        @bottom-right {
+          content: counter(page) " / " counter(pages);
+        }
+      }
+      @media print {
+        * {
+          -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
+          color-adjust: exact !important; /*Firefox*/
+        }
+      }
+      .logo {
+        width: 290px;
+        height: 63px;
+        {% if company.raw.logo is defined %}
+        background-image: url("{{ company.render.logo }}");
+        {% endif %}
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
       hr {
         border-top: 1px solid #000;
       }
@@ -32,6 +60,7 @@
       .page-break {
         padding-top: 10px;
         page-break-before: always;
+        counter: page;
       }
       .top20 {
         padding-top: 20px;

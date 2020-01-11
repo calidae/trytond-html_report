@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 from jinja2 import Environment, FunctionLoader
 from jinja2.ext import Extension, nodes
-from babel import dates, numbers, support
+from babel import support
 
 import weasyprint
 
@@ -16,6 +16,19 @@ from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.report import Report
 from trytond.i18n import gettext
+from trytond.model.modelstorage import _record_eval_pyson
+
+#MEDIA_TYPE = 'print'
+MEDIA_TYPE = 'screen'
+DEFAULT_MIME_TYPE = 'image/png'
+
+
+class DualRecordError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
 
 
 class SwitchableTranslations:
@@ -32,6 +45,8 @@ class SwitchableTranslations:
         self.cache = {}
         self.env = None
         self.set_language(code)
+
+    # TODO: We should implement a context manager
 
     def set_language(self, code):
         if not code:
@@ -104,61 +119,218 @@ class SwitchableLanguageExtension(Extension):
         output = caller()
         return output
 
+class Formatter:
+    def __init__(self):
+        self.__langs = {}
+
+    def format(self, record, field, value):
+        formatter = '_formatted_%s' % field._type
+        method = getattr(self, formatter, self._formatted_raw)
+        return method(record, field, value)
+
+    def _get_lang(self):
+        Lang = Pool().get('ir.lang')
+
+        locale = Transaction().context.get('report_lang',
+            Transaction().language).split('_')[0]
+        lang = self.__langs.get(locale)
+        if lang:
+            return lang
+        lang, = Lang.search([
+                ('code', '=', locale or 'en'),
+                ])
+        self.__langs[locale] = lang
+        return lang
+
+    def _formatted_raw(self, record, field, value):
+        return value
+
+    def _formatted_many2one(self, record, field, value):
+        if not value:
+            return value
+        return FormattedRecord(value, self)
+
+    def _formatted_one2one(self, record, field, value):
+        return self._formatted_many2one(record, field, value)
+
+    def _formatted_reference(self, record, field, value):
+        return self._formatted_many2one(record, field, value)
+
+    def _formatted_one2many(self, record, field, value):
+        if not value:
+            return value
+        return [FormattedRecord(x) for x in value]
+
+    def _formatted_many2many(self, record, field, value):
+        return self._formatted_one2many(record, field, value)
+
+    def _formatted_boolean(self, record, field, value):
+        return (gettext('html_report.msg_yes') if value else
+            gettext('html_report.msg_no'))
+
+    def _formatted_date(self, record, field, value):
+        if value is None:
+            return ''
+        return self._get_lang().strftime(value)
+
+    def _formatted_datetime(self, record, field, value):
+        if value is None:
+            return ''
+        return self._get_lang().strftime(value) + ' ' + value.strftime('%H:%M:%S')
+
+    def _formatted_timestamp(self, record, field, value):
+        return self._formatted_datetime(record, field, value)
+
+    def _formatted_timedelta(self, record, field, value):
+        if value is None:
+            return ''
+        return '%.2f' % value.total_seconds()
+
+    def _formatted_char(self, record, field, value):
+        if value is None:
+            return ''
+        return value.replace('\n', '<br/>')
+
+    def _formatted_text(self, record, field, value):
+        return self._formatted_char(record, field, value)
+
+    def _formatted_integer(self, record, field, value):
+        if value is None:
+            return ''
+        return str(value)
+
+    def _formatted_float(self, record, field, value):
+        if value is None:
+            return ''
+        digits = field.digits
+        if digits is None:
+            digits = 2
+        else:
+            digits = digits[1]
+        if not isinstance(digits, int):
+            digits = _record_eval_pyson(record, digits,
+                encoded=False)
+        return self._get_lang().format('%.*f', (digits, value), grouping=True)
+
+    def _formatted_numeric(self, record, field, value):
+        return self._formatted_float(record, field, value)
+
+    def _formatted_binary(self, record, field, value):
+        value = binascii.b2a_base64(value)
+        value = value.decode('ascii')
+        filename = field.filename
+        mimetype = DEFAULT_MIME_TYPE
+        if filename:
+            mimetype = mimetypes.guess_type(filename)[0]
+        return ('data:%s;base64,%s' % (mimetype, value)).strip()
+
+    # TODO: Implement: dict, selection, multiselection
+
+class FormattedRecord:
+    def __init__(self, record, formatter=None):
+        self._raw_record = record
+        if formatter:
+            self.__formatter = formatter
+        else:
+            self.__formatter = Formatter()
+
+    def __getattr__(self, name):
+        value = getattr(self._raw_record, name)
+        field = self._raw_record._fields.get(name)
+        if not field:
+            return value
+        return self.__formatter.format(self._raw_record, field, value)
+
+
+class DualRecord:
+    def __init__(self, record, formatter=None):
+        self.raw = record
+        if not formatter:
+            formatter = Formatter()
+        self.render = FormattedRecord(record, formatter)
+
+    def __getattr__(self, name):
+        field = self.raw._fields.get(name)
+        if not field:
+            raise DualRecordError('Field "%s" not found in record of model '
+                '"%s".' % (name, self.raw.__name__))
+        if not field._type in {'many2one', 'one2one', 'reference', 'one2many',
+                'many2many'}:
+            raise DualRecordError('You are trying to access field "%s" of type '
+                '"%s" in a DualRecord of model "%s". You must use "raw." or '
+                '"format." before the field name.' % (name, field._type,
+                    self.raw.__name__))
+        value = getattr(self.raw, name)
+        if not value:
+            return value
+        if field._type in {'many2one', 'one2one', 'reference'}:
+            return DualRecord(value)
+        return [DualRecord(x) for x in value]
+
 
 class HTMLReport(Report):
-    render_method = "weasyprint"
     babel_domain = 'messages'
-    report_translations = None
+
+    @classmethod
+    def _get_records(cls, ids, model, data):
+        records = super()._get_records(ids, model, data)
+        return [DualRecord(x) for x in records]
+
+    @classmethod
+    def _execute(cls, records, data, action):
+        if not action.report_content:
+            raise Exception('Error', 'Missing report file!')
+        content = action.report_content.decode('utf-8')
+
+        if not action.single:
+            data = cls.render_template(action, content, records=records)
+            document = cls.weasyprint_render(data)
+        else:
+            # If document requires a page counter for each record we need to
+            # render records individually
+            documents = []
+            for record in records:
+                data = cls.render_template(action, content, record=record,
+                    records=[record])
+                documents.append(cls.weasyprint_render(data))
+            document = documents[0].copy([page for doc in documents for page in
+                    doc.pages])
+        return action.extension, document.write_pdf()
 
     @classmethod
     def execute(cls, ids, data):
-        with Transaction().set_context({
-                    'html_report_ids': ids,
-                    'html_report_data': data,
-                    }):
-            return super().execute(ids, data)
-
-    @classmethod
-    def render(cls, report, report_context):
+        '''
+        Execute the report on record ids.
+        The dictionary with data that will be set in local context of the
+        report.
+        It returns a tuple with:
+            report type,
+            data,
+            a boolean to direct print,
+            the report name
+        '''
         pool = Pool()
-        Company = pool.get('company.company')
+        ActionReport = pool.get('ir.action.report')
+        cls.check_access()
 
-        # Convert to str as buffer from DB is not supported by StringIO
-        report_content = (report.report_content if report.report_content
-                          else False)
-        if not report.report_content:
-            raise Exception('Error', 'Missing report file!')
-        report_content = report.report_content.decode('utf-8')
+        action_id = data.get('action_id')
+        if action_id is None:
+            action_reports = ActionReport.search([
+                    ('report_name', '=', cls.__name__)
+                    ])
+            assert action_reports, '%s not found' % cls
+            action_report = action_reports[0]
+        else:
+            action_report = ActionReport(action_id)
 
-        # Make the report itself available n the report context
-        report_context['report'] = report
-        company_id = Transaction().context.get('company')
-        report_context['company'] = Company(company_id)
-
-        company_id = Transaction().context.get('company')
-
-        ids = Transaction().context.get('html_report_ids')
-        data = Transaction().context.get('html_report_data')
-        if ids and data.get('model'):
-            Model = pool.get(data['model'])
-            report_context['record'] = Model(data['id'])
-            report_context['records'] = Model.browse(ids)
-        return cls.render_template(report_content, report_context)
-
-    @classmethod
-    def convert(cls, report, data):
-        # Convert the report to PDF if the output format is PDF
-        # Do not convert when report is generated in tests, as it takes
-        # time to convert to PDF due to which tests run longer.
-        # Pool.test is True when running tests.
-        output_format = report.extension or report.template_extension
-
-        if Pool.test:
-            return output_format, data
-        elif cls.render_method == "weasyprint" and output_format == "pdf":
-            return output_format, cls.weasyprint(data)
-
-        return output_format, data
+        records = []
+        model = action_report.model or data.get('model')
+        if model:
+            records = cls._get_records(ids, model, data)
+        oext, content = cls._execute(records, data, action_report)
+        if not isinstance(content, str):
+            content = bytearray(content) if bytes == str else bytes(content)
+        return (oext, content, action_report.direct_print, action_report.name)
 
     @classmethod
     def jinja_loader_func(cls, name):
@@ -187,9 +359,7 @@ class HTMLReport(Report):
         Returns filters that are made available in the template context.
         By default, the following filters are available:
 
-        * dateformat: Formats a date using babel
-        * datetimeformat: Formats a datetime using babel
-        * currencyformat: Formats the given number as currency
+        * render: Renders value depending on its type
         * modulepath: Returns the absolute path of a file inside a
             tryton-module (e.g. sale/sale.css)
 
@@ -204,9 +374,9 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
-        def render_field(value, decimal_digits=2, lang=None, filename=None):
+        def render(value, digits=2, lang=None, filename=None):
             if isinstance(value, (float, Decimal)):
-                return lang.format('%.*f', (decimal_digits, value),
+                return lang.format('%.*f', (digits, value),
                     grouping=True)
             if value is None:
                 return ''
@@ -226,36 +396,21 @@ class HTMLReport(Report):
             if isinstance(value, bytes):
                 value = binascii.b2a_base64(value)
                 value = value.decode('ascii')
-                # TODO: image/png should not be hardcoded
-                mimetype = 'image/png'
+                mimetype = DEFAULT_MIME_TYPE
                 if filename:
                     mimetype = mimetypes.guess_type(filename)[0]
                 return ('data:%s;base64,%s' % (mimetype, value)).strip()
             return value
 
-        def type_field(record):
-            return type(record).__name__
-
-        locale = Transaction().context.get(
-            'report_lang', Transaction().language).split('_')[0]
+        locale = Transaction().context.get('report_lang',
+            Transaction().language).split('_')[0]
         lang, = Lang.search([
                 ('code', '=', locale or 'en'),
                 ])
         return {
-            'dateformat': partial(dates.format_date, locale=locale),
-            'datetimeformat': partial(dates.format_datetime, locale=locale),
-            'timeformat': partial(dates.format_time, locale=locale),
-            'timedeltaformat': partial(dates.format_timedelta, locale=locale),
-            'numberformat': partial(numbers.format_number, locale=locale),
-            'decimalformat': partial(numbers.format_decimal, locale=locale),
-            'currencyformat': partial(numbers.format_currency, locale=locale),
-            'percentformat': partial(numbers.format_percent, locale=locale),
-            'scientificformat': partial(
-                numbers.format_scientific, locale=locale),
             'modulepath': module_path,
-            'render_field': partial(render_field, lang=lang),
-            'type_field': type_field,
-        }
+            'render': partial(render, lang=lang),
+            }
 
     @classmethod
     def get_environment(cls):
@@ -285,22 +440,43 @@ class HTMLReport(Report):
         return env
 
     @classmethod
-    def render_template(cls, template_string, localcontext):
+    def render_template(cls, action, template_string, record=None,
+            records=None):
         """
         Render the template using Jinja2
         """
+        pool = Pool()
+        User = pool.get('res.user')
+        try:
+            Company = pool.get('company.company')
+        except:
+            Company = None
+
         env = cls.get_environment()
 
-        # Update header and footer in context
-        company = localcontext['company']
-        localcontext.update({
-                'header': env.from_string(company.header_html or ''),
-                'footer': env.from_string(company.footer_html or ''),
-                'time': datetime.now(),
-                })
+        if records is None:
+            records = []
+
+        context = {
+            'report': action,
+            'record': record,
+            'records': records,
+            'time': datetime.now(),
+            'user': DualRecord(User(Transaction().context.get('user'))),
+            }
+        if Company:
+            context['company'] = DualRecord(Company(
+                    Transaction().context.get('company')))
+        context.update(cls.local_context())
         report_template = env.from_string(template_string)
-        return report_template.render(**localcontext)
+        res = report_template.render(**context)
+        print('TEMPLATE:\n', res)
+        return res
 
     @classmethod
-    def weasyprint(cls, data, options=None):
-        return weasyprint.HTML(string=data).write_pdf()
+    def local_context(cls):
+        return {}
+
+    @classmethod
+    def weasyprint_render(cls, data):
+        return weasyprint.HTML(string=data, media_type=MEDIA_TYPE).render()
