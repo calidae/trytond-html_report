@@ -1,0 +1,16 @@
+<form col="6">
+    <label name="name"/>
+    <field name="name"/>
+    <label name="model"/>
+    <field name="model"/>
+    <label name="template"/>
+    <field name="template"/>
+    <notebook colspan="6">
+        <page name="templates">
+            <field name="templates" colspan="4"/>
+        </page>
+        <page name="content">
+            <field name="content" colspan="4"/>
+        </page>
+    </notebook>
+</form>

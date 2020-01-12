@@ -276,11 +276,15 @@ class HTMLReport(Report):
         records = super()._get_records(ids, model, data)
         return [DualRecord(x) for x in records]
 
-    @classmethod
-    def _execute(cls, records, data, action):
+    def get_template(cls, action):
         if not action.report_content:
             raise Exception('Error', 'Missing report file!')
         content = action.report_content.decode('utf-8')
+        return content
+
+    @classmethod
+    def _execute(cls, records, data, action):
+        content = cls.get_template(action)
 
         if not action.single:
             data = cls.render_template(action, content, records=records)
@@ -298,6 +302,32 @@ class HTMLReport(Report):
         return action.extension, document.write_pdf()
 
     @classmethod
+    def get_action(cls, data):
+        pool = Pool()
+        ActionReport = pool.get('ir.action.report')
+
+        action_id = data.get('action_id')
+        if action_id is None:
+            action_reports = ActionReport.search([
+                    ('report_name', '=', cls.__name__)
+                    ])
+            assert action_reports, '%s not found' % cls
+            action = action_reports[0]
+        else:
+            action = ActionReport(action_id)
+
+
+        return action, action.model or data.get('model')
+
+    @classmethod
+    def get_name(cls, action):
+        return action.name
+
+    @classmethod
+    def get_direct_print(cls, action):
+        return action.direct_print
+
+    @classmethod
     def execute(cls, ids, data):
         '''
         Execute the report on record ids.
@@ -309,28 +339,17 @@ class HTMLReport(Report):
             a boolean to direct print,
             the report name
         '''
-        pool = Pool()
-        ActionReport = pool.get('ir.action.report')
         cls.check_access()
 
-        action_id = data.get('action_id')
-        if action_id is None:
-            action_reports = ActionReport.search([
-                    ('report_name', '=', cls.__name__)
-                    ])
-            assert action_reports, '%s not found' % cls
-            action_report = action_reports[0]
-        else:
-            action_report = ActionReport(action_id)
-
+        action, model = cls.get_action(data)
         records = []
-        model = action_report.model or data.get('model')
         if model:
             records = cls._get_records(ids, model, data)
-        oext, content = cls._execute(records, data, action_report)
+        oext, content = cls._execute(records, data, action)
         if not isinstance(content, str):
             content = bytearray(content) if bytes == str else bytes(content)
-        return (oext, content, action_report.direct_print, action_report.name)
+
+        return oext, content, cls.get_direct_print(action), cls.get_name(action)
 
     @classmethod
     def jinja_loader_func(cls, name):
@@ -346,12 +365,17 @@ class HTMLReport(Report):
 
             {% extends 'html_report/report/base.html' %}
         """
-        module, path = name.split('/', 1)
-        try:
-            with file_open(os.path.join(module, path)) as f:
-                return f.read()
-        except IOError:
-            return None
+        if '/' in name:
+            module, path = name.split('/', 1)
+            try:
+                with file_open(os.path.join(module, path)) as f:
+                    return f.read()
+            except IOError:
+                return None
+        else:
+            Template = Pool().get('html.template')
+            template, = Template.search([('name', '=', name)], limit=1)
+            return template.all_content
 
     @classmethod
     def get_jinja_filters(cls):
