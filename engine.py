@@ -276,6 +276,7 @@ class HTMLReport(Report):
         records = super()._get_records(ids, model, data)
         return [DualRecord(x) for x in records]
 
+    @classmethod
     def get_template(cls, action):
         if not action.report_content:
             raise Exception('Error', 'Missing report file!')
