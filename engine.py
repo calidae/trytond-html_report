@@ -488,6 +488,7 @@ class HTMLReport(Report):
             'records': records,
             'time': datetime.now(),
             'user': DualRecord(User(Transaction().context.get('user'))),
+            'Decimal': Decimal,
             }
         if Company:
             context['company'] = DualRecord(Company(
