@@ -1,0 +1,9 @@
+<form>
+    <label name="report"/>
+    <field name="report"/>
+    <newline/>
+    <label name="signature"/>
+    <field name="signature"/>
+    <label name="template"/>
+    <field name="template"/>
+</form>
