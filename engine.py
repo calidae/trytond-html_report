@@ -15,7 +15,6 @@ from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.i18n import gettext
-from trytond.model.modelstorage import _record_eval_pyson
 from trytond.config import config
 
 #MEDIA_TYPE = 'print'
@@ -205,8 +204,7 @@ class Formatter:
         else:
             digits = digits[1]
         if not isinstance(digits, int):
-            digits = _record_eval_pyson(record, digits,
-                encoded=False)
+            digits = PYSONDecoder(env).decode(pyson_digits)
         return self._get_lang().format('%.*f', (digits, value), grouping=True)
 
     def _formatted_numeric(self, record, field, value):
