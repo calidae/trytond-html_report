@@ -303,21 +303,31 @@ class HTMLReportMixin:
     def _execute_html_report(cls, records, data, action):
         content = cls.get_template_jinja(action)
 
-        if not action.single:
-            content = cls.render_template_jinja(action, content, records=records,
-                data=data)
-            document = cls.weasyprint_render(content)
-        else:
+        if action.single:
             # If document requires a page counter for each record we need to
             # render records individually
             documents = []
             for record in records:
                 content = cls.render_template_jinja(action, content, record=record,
                     records=[record], data=data)
-                documents.append(cls.weasyprint_render(content))
-            document = documents[0].copy([page for doc in documents for page in
-                    doc.pages])
-        return action.extension, document.write_pdf()
+                if action.extension == 'pdf':
+                    documents.append(cls.weasyprint_render(content))
+                else:
+                    documents.append(content)
+            if action.extension == 'pdf':
+                document = documents[0].copy([page for doc in documents
+                    for page in doc.pages])
+                document = document.write_pdf()
+            else:
+                document = ''.join(documents)
+        else:
+            content = cls.render_template_jinja(action, content, records=records,
+                data=data)
+            if action.extension == 'pdf':
+                document = cls.weasyprint_render(content).write_pdf()
+            else:
+                document = content
+        return action.extension, document
 
     @classmethod
     def get_action(cls, data):
