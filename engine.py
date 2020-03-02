@@ -14,13 +14,13 @@ import weasyprint
 from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
-from trytond.report import Report
 from trytond.i18n import gettext
 from trytond.model.modelstorage import _record_eval_pyson
+from trytond.config import config
 
 #MEDIA_TYPE = 'print'
-MEDIA_TYPE = 'screen'
-DEFAULT_MIME_TYPE = 'image/png'
+MEDIA_TYPE = config.get('html_report', 'type', default='screen')
+DEFAULT_MIME_TYPE = config.get('html_report', 'mime_type', default='image/png')
 
 
 class DualRecordError(Exception):
@@ -131,14 +131,11 @@ class Formatter:
     def _get_lang(self):
         Lang = Pool().get('ir.lang')
 
-        locale = Transaction().context.get('report_lang',
-            Transaction().language).split('_')[0]
+        locale = Transaction().context.get('report_lang', Transaction().language)
         lang = self.__langs.get(locale)
         if lang:
             return lang
-        lang, = Lang.search([
-                ('code', '=', locale or 'en'),
-                ])
+        lang, = Lang.search([('code', '=', locale or 'en')], limit=1)
         self.__langs[locale] = lang
         return lang
 
@@ -268,36 +265,58 @@ class DualRecord:
         return [DualRecord(x) for x in value]
 
 
-class HTMLReport(Report):
+class HTMLReportMixin:
     babel_domain = 'messages'
 
     @classmethod
-    def _get_records(cls, ids, model, data):
-        records = super()._get_records(ids, model, data)
+    def _get_dual_records(cls, ids, model, data):
+        records = cls._get_records(ids, model, data)
         return [DualRecord(x) for x in records]
 
     @classmethod
-    def get_template(cls, action):
-        if not action.report_content:
-            raise Exception('Error', 'Missing report file!')
-        content = action.report_content.decode('utf-8')
+    def get_template_jinja(cls, action):
+        if action.report_content:
+            return action.report_content.decode('utf-8')
+        if not action.html_content:
+            raise Exception('Error', 'Missing jinja report file!')
+        content = action.html_content
         return content
 
     @classmethod
-    def _execute(cls, records, data, action):
-        content = cls.get_template(action)
+    def execute(cls, ids, data):
+        cls.check_access()
+        action, model = cls.get_action(data)
+        # in case is not jinja, call super()
+        if action.template_extension != 'jinja':
+            return super().execute(ids, data)
+
+        # use DualRecord when template extension is jinja
+        data['html_dual_record'] = True
+        records = []
+        if model:
+            records = cls._get_dual_records(ids, model, data)
+        oext, content = cls._execute_html_report(records, data, action)
+        if not isinstance(content, str):
+            content = bytearray(content) if bytes == str else bytes(content)
+
+        return oext, content, cls.get_direct_print(action), cls.get_name(action)
+
+    @classmethod
+    def _execute_html_report(cls, records, data, action):
+        content = cls.get_template_jinja(action)
 
         if not action.single:
-            data = cls.render_template(action, content, records=records)
-            document = cls.weasyprint_render(data)
+            content = cls.render_template_jinja(action, content, records=records,
+                data=data)
+            document = cls.weasyprint_render(content)
         else:
             # If document requires a page counter for each record we need to
             # render records individually
             documents = []
             for record in records:
-                data = cls.render_template(action, content, record=record,
-                    records=[record])
-                documents.append(cls.weasyprint_render(data))
+                content = cls.render_template_jinja(action, content, record=record,
+                    records=[record], data=data)
+                documents.append(cls.weasyprint_render(content))
             document = documents[0].copy([page for doc in documents for page in
                     doc.pages])
         return action.extension, document.write_pdf()
@@ -329,33 +348,9 @@ class HTMLReport(Report):
         return action.direct_print
 
     @classmethod
-    def execute(cls, ids, data):
-        '''
-        Execute the report on record ids.
-        The dictionary with data that will be set in local context of the
-        report.
-        It returns a tuple with:
-            report type,
-            data,
-            a boolean to direct print,
-            the report name
-        '''
-        cls.check_access()
-
-        action, model = cls.get_action(data)
-        records = []
-        if model:
-            records = cls._get_records(ids, model, data)
-        oext, content = cls._execute(records, data, action)
-        if not isinstance(content, str):
-            content = bytearray(content) if bytes == str else bytes(content)
-
-        return oext, content, cls.get_direct_print(action), cls.get_name(action)
-
-    @classmethod
     def jinja_loader_func(cls, name):
         """
-        Return the template from the module directories using the logic below:
+        Return the template from the module directories or ID from other template.
 
         The name is expected to be in the format:
 
@@ -366,6 +361,8 @@ class HTMLReport(Report):
 
             {% extends 'html_report/report/base.html' %}
         """
+        Template = Pool().get('html.template')
+
         if '/' in name:
             module, path = name.split('/', 1)
             try:
@@ -374,8 +371,7 @@ class HTMLReport(Report):
             except IOError:
                 return None
         else:
-            Template = Pool().get('html.template')
-            template, = Template.search([('name', '=', name)], limit=1)
+            template, = Template.search([('id', '=', name)], limit=1)
             return template.all_content
 
     @classmethod
@@ -403,7 +399,7 @@ class HTMLReport(Report):
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (digits, value),
                     grouping=True)
-            if value is None:
+            if value is None or value == '':
                 return ''
             if isinstance(value, bool):
                 return (gettext('html_report.msg_yes') if value else
@@ -465,8 +461,8 @@ class HTMLReport(Report):
         return env
 
     @classmethod
-    def render_template(cls, action, template_string, record=None,
-            records=None):
+    def render_template_jinja(cls, action, template_string, record=None,
+            records=None, data=None):
         """
         Render the template using Jinja2
         """
@@ -486,6 +482,7 @@ class HTMLReport(Report):
             'report': action,
             'record': record,
             'records': records,
+            'data': data,
             'time': datetime.now(),
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
@@ -496,7 +493,7 @@ class HTMLReport(Report):
         context.update(cls.local_context())
         report_template = env.from_string(template_string)
         res = report_template.render(**context)
-        print('TEMPLATE:\n', res)
+        # print('TEMPLATE:\n', res)
         return res
 
     @classmethod
@@ -504,5 +501,5 @@ class HTMLReport(Report):
         return {}
 
     @classmethod
-    def weasyprint_render(cls, data):
-        return weasyprint.HTML(string=data, media_type=MEDIA_TYPE).render()
+    def weasyprint_render(cls, content):
+        return weasyprint.HTML(string=content, media_type=MEDIA_TYPE).render()

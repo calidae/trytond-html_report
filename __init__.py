@@ -2,24 +2,23 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.pool import Pool
+from trytond.report import Report
 from . import action
 from . import translation
 from . import html
-
+from . import engine
 
 def register():
+    module = 'html_report'
     Pool.register(
         action.ActionReport,
-        html.ActionKeyword,
         html.Signature,
         html.Template,
         html.TemplateUsage,
-        html.Report,
         html.ReportTemplate,
-        module='html_report', type_='model')
+        module=module, type_='model')
     Pool.register(
         translation.ReportTranslationSet,
-        module='html_report', type_='wizard')
-    Pool.register(
-        html.HTMLReport,
-        module='html_report', type_='report')
+        module=module, type_='wizard')
+    Pool.register_mixin(engine.HTMLReportMixin, Report,
+        module=module)

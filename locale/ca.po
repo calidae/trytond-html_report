@@ -1,0 +1,155 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:html.report.template,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:html.report.template,signature:"
+msgid "Signature"
+msgstr "Signatura"
+
+msgctxt "field:html.report.template,template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:html.template,all_content:"
+msgid "All Content"
+msgstr "Tot el contingut"
+
+msgctxt "field:html.template,content:"
+msgid "Content"
+msgstr "Contingut"
+
+msgctxt "field:html.template,implements:"
+msgid "Signature"
+msgstr "Signatura"
+
+msgctxt "field:html.template,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:html.template,parent:"
+msgid "Parent"
+msgstr "Pare"
+
+msgctxt "field:html.template,type:"
+msgid "Type"
+msgstr "Tipus"
+
+msgctxt "field:html.template,uses:"
+msgid "Uses"
+msgstr "Usos"
+
+msgctxt "field:html.template.signature,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:html.template.usage,signature:"
+msgid "Signature"
+msgstr "Signatura"
+
+msgctxt "field:html.template.usage,template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:ir.action.report,html_content:"
+msgid "Content"
+msgstr "Contingut"
+
+msgctxt "field:ir.action.report,html_template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:ir.action.report,html_templates:"
+msgid "Templates"
+msgstr "Plantilles"
+
+msgctxt "model:html.report.template,name:"
+msgid "HTML Report - Template"
+msgstr "Informe HTML - Plantilla"
+
+msgctxt "model:html.template,name:"
+msgid "HTML Template"
+msgstr "Plantilla HTML"
+
+msgctxt "model:html.template.signature,name:"
+msgid "HTML Template Signature"
+msgstr "Signatura HTML plantilla"
+
+msgctxt "model:html.template.usage,name:"
+msgid "HTML Template Usage"
+msgstr "Ús plantilla HTML"
+
+msgctxt "model:ir.action,name:act_action_report_form"
+msgid "Reports"
+msgstr "Informes"
+
+msgctxt "model:ir.action,name:act_report_template_form"
+msgid "Report - Templates"
+msgstr "Informe - Plantilles"
+
+msgctxt "model:ir.action,name:act_signature_form"
+msgid "Signatures"
+msgstr "Signatures"
+
+msgctxt "model:ir.action,name:act_template_form"
+msgid "Templates"
+msgstr "Plantilles"
+
+msgctxt "model:ir.message,text:missing_signatures"
+msgid "\"%(template)s\" missing signatures: %(missing)s"
+msgstr "\"%(template)s\" falta les signatures: %(missing)s"
+
+msgctxt "model:ir.message,text:msg_no"
+msgid "No"
+msgstr "No"
+
+msgctxt "model:ir.message,text:msg_yes"
+msgid "Yes"
+msgstr "Si"
+
+msgctxt "model:ir.message,text:unused_signatures"
+msgid "\"%(template)s\" unused signatures: %(unused)s"
+msgstr "\"%(template)s\" no s'usen les signatures: %(unused)s"
+
+msgctxt "model:ir.ui.menu,name:menu_action_report_form"
+msgid "Reports"
+msgstr "Informes"
+
+msgctxt "model:ir.ui.menu,name:menu_html"
+msgid "HTML Reports"
+msgstr "Informe HTML"
+
+msgctxt "model:ir.ui.menu,name:menu_report_template_form"
+msgid "Report - Templates"
+msgstr "Informe - Plantilles"
+
+msgctxt "model:ir.ui.menu,name:menu_signature_form"
+msgid "Signatures"
+msgstr "Signatures"
+
+msgctxt "model:ir.ui.menu,name:menu_template_form"
+msgid "Templates"
+msgstr "Plantilles"
+
+msgctxt "selection:html.template,type:"
+msgid "Base"
+msgstr "Base"
+
+msgctxt "selection:html.template,type:"
+msgid "Block"
+msgstr "Bloqueja"
+
+msgctxt "selection:html.template,type:"
+msgid "Extension"
+msgstr "Extensió"
+
+msgctxt "selection:html.template,type:"
+msgid "Macro"
+msgstr "Macro"
+
+msgctxt "view:ir.action.report:"
+msgid "HTML Report"
+msgstr "Informe HTML"
