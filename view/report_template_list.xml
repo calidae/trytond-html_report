@@ -1,0 +1,5 @@
+<tree editable="bottom">
+    <field name="report"/>
+    <field name="signature"/>
+    <field name="template"/>
+</tree>
