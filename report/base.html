@@ -20,15 +20,17 @@
     {% block custom_style %}
     <style type="text/css">
       @page {
-        size: portrait;
         @top-left {
           content: "";
         }
         @top-right {
           content: "";
         }
-        @bottom-right {
+        @right-bottom {
           content: counter(page) " / " counter(pages);
+          text-align: right;
+          margin-bottom: -60%;
+          padding-right: 0.3cm;
         }
       }
       @media print {
@@ -38,13 +40,7 @@
         }
       }
       .logo {
-        width: 290px;
-        height: 63px;
-        {% if company.raw.logo is defined %}
-        background-image: url("{{ company.render.logo }}");
-        {% endif %}
-        background-size: contain;
-        background-repeat: no-repeat;
+        height: 100%;
       }
 
       hr {
@@ -56,6 +52,8 @@
       body {
         font-family: 'Arial';
         font-size: 10px;
+        margin-right: 1.3cm;
+        padding-bottom: 2cm;
       }
       .page-break {
         padding-top: 10px;
@@ -71,16 +69,11 @@
       table.no-border td {
         border: 0px !important;
       }
-      #footer {
-        position: fixed;
-        bottom: 0;
-      }
     </style>
     {% endblock custom_style %}
   </head>
   <body>
     {% block body %}
-
     {% block main scoped %}
     <div class="container-fluid {% if not first %}page-break{% endif %}">
       <div class="row">
@@ -107,7 +100,6 @@
       </div>
     </div>
     {% endblock main %}
-
     {% endblock body %}
   </body>
 </html>

@@ -10,7 +10,7 @@ from jinja2.ext import Extension, nodes
 from babel import support
 
 import weasyprint
-
+from .generator import PdfGenerator
 from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
@@ -118,6 +118,7 @@ class SwitchableLanguageExtension(Extension):
         output = caller()
         return output
 
+
 class Formatter:
     def __init__(self):
         self.__langs = {}
@@ -221,6 +222,7 @@ class Formatter:
 
     # TODO: Implement: dict, selection, multiselection
 
+
 class FormattedRecord:
     def __init__(self, record, formatter=None):
         self._raw_record = record
@@ -249,7 +251,7 @@ class DualRecord:
         if not field:
             raise DualRecordError('Field "%s" not found in record of model '
                 '"%s".' % (name, self.raw.__name__))
-        if not field._type in {'many2one', 'one2one', 'reference', 'one2many',
+        if field._type not in {'many2one', 'one2one', 'reference', 'one2many',
                 'many2many'}:
             raise DualRecordError('You are trying to access field "%s" of type '
                 '"%s" in a DualRecord of model "%s". You must use "raw." or '
@@ -272,13 +274,18 @@ class HTMLReportMixin:
         return [DualRecord(x) for x in records]
 
     @classmethod
-    def get_template_jinja(cls, action):
-        if action.report_content:
-            return action.report_content.decode('utf-8')
-        if not action.html_content:
-            raise Exception('Error', 'Missing jinja report file!')
-        content = action.html_content
-        return content
+    def get_templates_jinja(cls, action):
+        header = (action.html_header_content and
+            action.html_header_content.decode('utf-8'))
+        content = (action.report_content and
+            action.report_content.decode('utf-8'))
+        footer = (action.html_footer_content and
+            action.html_footer_content.decode('utf-8'))
+        if not content:
+            if not action.html_content:
+                raise Exception('Error', 'Missing jinja report file!')
+            content = action.html_content
+        return header, content, footer
 
     @classmethod
     def execute(cls, ids, data):
@@ -301,17 +308,25 @@ class HTMLReportMixin:
 
     @classmethod
     def _execute_html_report(cls, records, data, action):
-        content = cls.get_template_jinja(action)
+        header_template, main_template, footer_template = \
+                cls.get_templates_jinja(action)
 
         if action.single:
             # If document requires a page counter for each record we need to
             # render records individually
             documents = []
             for record in records:
-                content = cls.render_template_jinja(action, content, record=record,
-                    records=[record], data=data)
+                content = cls.render_template_jinja(action, main_template,
+                    record=record, records=[record], data=data)
+                header = header_template and cls.render_template_jinja(action,
+                    header_template, record=record, records=[record],
+                    data=data)
+                footer = footer_template and cls.render_template_jinja(action,
+                    footer_template, record=record, records=[record],
+                    data=data)
                 if action.extension == 'pdf':
-                    documents.append(cls.weasyprint_render(content))
+                    documents.append(PdfGenerator(content, header_html=header,
+                            footer_html=footer).render_html())
                 else:
                     documents.append(content)
             if action.extension == 'pdf':
@@ -321,10 +336,15 @@ class HTMLReportMixin:
             else:
                 document = ''.join(documents)
         else:
-            content = cls.render_template_jinja(action, content, records=records,
-                data=data)
+            content = cls.render_template_jinja(action, main_template,
+                records=records, data=data)
+            header = cls.render_template_jinja(action, header_template,
+                records=records, data=data)
+            footer = cls.render_template_jinja(action, footer_template,
+                records=records, data=data)
             if action.extension == 'pdf':
-                document = cls.weasyprint_render(content).write_pdf()
+                document = PdfGenerator(content, header_html=header,
+                    footer_html=footer).render_html().write_pdf()
             else:
                 document = content
         return action.extension, document
@@ -343,7 +363,6 @@ class HTMLReportMixin:
             action = action_reports[0]
         else:
             action = ActionReport(action_id)
-
 
         return action, action.model or data.get('model')
 
