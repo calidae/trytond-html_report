@@ -5,6 +5,8 @@ from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
+from trytond.tools import file_open
+import os
 
 __all__ = ['ActionReport']
 
@@ -30,6 +32,20 @@ class ActionReport(metaclass=PoolMeta):
         },
         depends=['template_extension']), 'get_content')
 
+    html_header_report = fields.Char('Header')
+    html_footer_report = fields.Char('Footer')
+    html_header_content = fields.Function(fields.Binary('Header Content',
+        states={
+                'invisible': Eval('template_extension') != 'jinja',
+        },
+        depends=['template_extension']), 'get_content')
+
+    html_footer_content = fields.Function(fields.Binary('Footer Content',
+        states={
+                'invisible': Eval('template_extension') != 'jinja',
+        },
+        depends=['template_extension']), 'get_content')
+
     @classmethod
     def __setup__(cls):
         super(ActionReport, cls).__setup__()
@@ -46,13 +62,27 @@ class ActionReport(metaclass=PoolMeta):
                     })]
 
     def get_content(self, name):
-        if not self.html_template:
-            return
-        content = [self.html_template.all_content]
-        for template in self.html_templates:
-            if template.template.all_content:
-                content.append(template.template.all_content)
-        return '\n\n'.join(content)
+        if name == 'html_content':
+            if not self.html_template:
+                return
+            content = [self.html_template.all_content]
+            for template in self.html_templates:
+                if template.template.all_content:
+                    content.append(template.template.all_content)
+            return '\n\n'.join(content)
+        if name in ('html_header_content', 'html_footer_content'):
+            path_field_name = name.replace('content', 'report')
+            path = getattr(self, path_field_name, None)
+            if not path:
+                return
+            path = path.replace('/', os.sep)
+            try:
+                with file_open(path, mode='rb') as fp:
+                    data = fp.read()
+            except FileNotFoundError:
+                data = None
+
+            return data
 
     @classmethod
     def validate(cls, reports):
