@@ -340,10 +340,10 @@ class HTMLReportMixin:
         else:
             content = cls.render_template_jinja(action, main_template,
                 records=records, data=data)
-            header = cls.render_template_jinja(action, header_template,
-                records=records, data=data)
-            footer = cls.render_template_jinja(action, footer_template,
-                records=records, data=data)
+            header = header_template and cls.render_template_jinja(action,
+                header_template, records=records, data=data)
+            footer = footer_template and cls.render_template_jinja(action,
+                footer_template, records=records, data=data)
             if action.extension == 'pdf':
                 document = PdfGenerator(content, header_html=header,
                     footer_html=footer).render_html().write_pdf()
