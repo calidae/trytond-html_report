@@ -140,7 +140,7 @@ msgstr "Base"
 
 msgctxt "selection:html.template,type:"
 msgid "Block"
-msgstr "Bloqueja"
+msgstr "Bloque"
 
 msgctxt "selection:html.template,type:"
 msgid "Extension"
