@@ -205,7 +205,8 @@ class Formatter:
         else:
             digits = digits[1]
         if not isinstance(digits, int):
-            digits = PYSONDecoder(env).decode(pyson_digits)
+            # TODO PYSONDecoder().decode(digits)
+            digits = 2
         return self._get_lang().format('%.*f', (digits, value), grouping=True)
 
     def _formatted_numeric(self, record, field, value):
