@@ -39,43 +39,54 @@ class SwitchableTranslations:
 
     The class is used by SwitchableLanguageExtension
     '''
-    def __init__(self, dirname, domain, code=None):
+    def __init__(self, lang='en', dirname=None, domain=None):
         self.dirname = dirname
         self.domain = domain
         self.cache = {}
         self.env = None
-        self.set_language(code)
+        self.current = None
+        self.language = lang
+        self.report = None
+        self.set_language(lang)
 
     # TODO: We should implement a context manager
 
-    def set_language(self, code):
-        if not code:
-            self.current = None
+    def set_language(self, lang='en'):
+        self.language = lang
+        if lang in self.cache:
+            self.current = self.cache[lang]
             return
-        if code in self.cache:
-            self.current = self.cache[code]
-            return
+
         context = Transaction().context
         if context.get('report_translations'):
             report_translations = context['report_translations']
             if os.path.isdir(report_translations):
                 self.current = support.Translations.load(
                     dirname=report_translations,
-                    locales=[code],
+                    locales=[lang],
                     domain=self.domain,
                     )
-                self.cache[code] = self.current
+                self.cache[lang] = self.current
+        else:
+            self.report = context.get('html_report', -1)
 
     def ugettext(self, message):
-        if not self.current:
-            return message
-        return self.current.ugettext(message)
+        Report = Pool().get('ir.action.report')
+
+        if self.current:
+            return self.current.ugettext(message)
+        elif self.report:
+            return Report.gettext(self.report, message, self.language)
+        return message
 
     def ngettext(self, singular, plural, n):
-        if not self.current:
-            return singular
-        return self.current.ugettext(singular, plural, n)
+        Report = Pool().get('ir.action.report')
 
+        if self.current:
+            return self.current.ugettext(singular, plural, n)
+        elif self.report:
+            return Report.gettext(self.report, singular, self.language)
+        return singular
 
 # Based on
 # https://stackoverflow.com/questions/44882075/switch-language-in-jinja-template/45014393#45014393
@@ -300,11 +311,12 @@ class HTMLReportMixin:
         # use DualRecord when template extension is jinja
         data['html_dual_record'] = True
         records = []
-        if model:
-            records = cls._get_dual_records(ids, model, data)
-        oext, content = cls._execute_html_report(records, data, action)
-        if not isinstance(content, str):
-            content = bytearray(content) if bytes == str else bytes(content)
+        with Transaction().set_context(html_report=action.id):
+            if model:
+                records = cls._get_dual_records(ids, model, data)
+            oext, content = cls._execute_html_report(records, data, action)
+            if not isinstance(content, str):
+                content = bytearray(content) if bytes == str else bytes(content)
 
         return oext, content, cls.get_direct_print(action), cls.get_name(action)
 
@@ -478,15 +490,15 @@ class HTMLReportMixin:
         env.filters.update(cls.get_jinja_filters())
 
         context = Transaction().context
-        if context.get('report_translations'):
-            report_translations = context['report_translations']
-            if os.path.isdir(report_translations):
-                locale = context.get(
-                    'report_lang', Transaction().language).split('_')[0]
-
-                translations = SwitchableTranslations(report_translations,
-                    cls.babel_domain, locale)
-                env.install_switchable_translations(translations)
+        locale = context.get(
+            'report_lang', Transaction().language or 'en').split('_')[0]
+        report_translations = context.get('report_translations')
+        if report_translations and os.path.isdir(report_translations):
+            translations = SwitchableTranslations(
+                locale, report_translations, cls.babel_domain)
+        else:
+            translations = SwitchableTranslations(locale)
+        env.install_switchable_translations(translations)
         return env
 
     @classmethod

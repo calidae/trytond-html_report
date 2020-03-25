@@ -12,6 +12,7 @@ def register():
     module = 'html_report'
     Pool.register(
         action.ActionReport,
+        action.HTMLTemplateTranslation,
         html.Signature,
         html.Template,
         html.TemplateUsage,

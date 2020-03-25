@@ -1,0 +1,20 @@
+{% block title %}{{ _('Models') }}{% endblock %}
+
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">{{ _('Name') }}</th>
+      <th scope="col">{{ _('Model') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for model in records %}<tr>
+      <th scope="row">{{ model.raw.id }}</th>
+      <td>{{ model.render.name }}</td>
+      <td>{{ model.render.model }}</td>
+    </tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

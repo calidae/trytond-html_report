@@ -1,0 +1,6 @@
+<tree editable="top">
+    <field name="report"/>
+    <field name="lang"/>
+    <field name="src"/>
+    <field name="value"/>
+</tree>

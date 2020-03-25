@@ -58,25 +58,6 @@
         </record>
         <menuitem parent="menu_html" sequence="20" action="act_template_form" id="menu_template_form"/>
 
-        <!-- html.report -->
-        <record model="ir.action.act_window" id="act_action_report_form">
-            <field name="name">Reports</field>
-            <field name="type">ir.action.act_window</field>
-            <field name="res_model">ir.action.report</field>
-            <field name="domain" eval="[('template_extension', '=', 'jinja')]" pyson="1"/>
-        </record>
-        <record model="ir.action.act_window.view" id="act_action_report_form_view1">
-            <field name="sequence" eval="1"/>
-            <field name="view" ref="ir.action_report_view_tree"/>
-            <field name="act_window" ref="act_action_report_form"/>
-        </record>
-        <record model="ir.action.act_window.view" id="act_action_report_form_view2">
-            <field name="sequence" eval="2"/>
-            <field name="view" ref="ir.action_report_view_form"/>
-            <field name="act_window" ref="act_action_report_form"/>
-        </record>
-        <menuitem parent="menu_html" action="act_action_report_form" id="menu_action_report_form"/>
-
         <!-- html.report.template -->
         <record model="ir.ui.view" id="report_template_view_form">
             <field name="model">html.report.template</field>
@@ -103,6 +84,6 @@
             <field name="view" ref="report_template_view_form"/>
             <field name="act_window" ref="act_report_template_form"/>
         </record>
-        <menuitem parent="menu_action_report_form" sequence="10" action="act_report_template_form" id="menu_report_template_form"/>
+        <menuitem parent="menu_template_form" sequence="10" action="act_report_template_form" id="menu_report_template_form"/>
     </data>
 </tryton>
