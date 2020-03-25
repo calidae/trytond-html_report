@@ -46,6 +46,22 @@ msgctxt "field:html.template.signature,name:"
 msgid "Name"
 msgstr "Nom"
 
+msgctxt "field:html.template.translation,lang:"
+msgid "Language"
+msgstr "Idioma"
+
+msgctxt "field:html.template.translation,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:html.template.translation,src:"
+msgid "Source"
+msgstr "Origen"
+
+msgctxt "field:html.template.translation,value:"
+msgid "Translation Value"
+msgstr "Valor traduccions"
+
 msgctxt "field:html.template.usage,signature:"
 msgid "Signature"
 msgstr "Signatura"
@@ -58,6 +74,22 @@ msgctxt "field:ir.action.report,html_content:"
 msgid "Content"
 msgstr "Contingut"
 
+msgctxt "field:ir.action.report,html_footer_content:"
+msgid "Footer Content"
+msgstr "Contingut peu"
+
+msgctxt "field:ir.action.report,html_footer_report:"
+msgid "Footer"
+msgstr "Peu de pàgina"
+
+msgctxt "field:ir.action.report,html_header_content:"
+msgid "Header Content"
+msgstr "Contingut encapçalat"
+
+msgctxt "field:ir.action.report,html_header_report:"
+msgid "Header"
+msgstr "Encapçalat"
+
 msgctxt "field:ir.action.report,html_template:"
 msgid "Template"
 msgstr "Plantilla"
@@ -65,6 +97,10 @@ msgstr "Plantilla"
 msgctxt "field:ir.action.report,html_templates:"
 msgid "Templates"
 msgstr "Plantilles"
+
+msgctxt "field:ir.action.report,html_translations:"
+msgid "Translations"
+msgstr "Traduccions"
 
 msgctxt "model:html.report.template,name:"
 msgid "HTML Report - Template"
@@ -78,6 +114,10 @@ msgctxt "model:html.template.signature,name:"
 msgid "HTML Template Signature"
 msgstr "Signatura HTML plantilla"
 
+msgctxt "model:html.template.translation,name:"
+msgid "HTML Template Translation"
+msgstr "Traduccions HTML plantilla"
+
 msgctxt "model:html.template.usage,name:"
 msgid "HTML Template Usage"
 msgstr "Ús plantilla HTML"
@@ -85,6 +125,10 @@ msgstr "Ús plantilla HTML"
 msgctxt "model:ir.action,name:act_action_report_form"
 msgid "Reports"
 msgstr "Informes"
+
+msgctxt "model:ir.action,name:act_report_html_translation_form2"
+msgid "HTML Translations"
+msgstr "HTML traduccions"
 
 msgctxt "model:ir.action,name:act_report_template_form"
 msgid "Report - Templates"
@@ -98,8 +142,12 @@ msgctxt "model:ir.action,name:act_template_form"
 msgid "Templates"
 msgstr "Plantilles"
 
+msgctxt "model:ir.action,name:act_template_translation_form"
+msgid "Template Translation"
+msgstr "Plantilla traduccions"
+
 msgctxt "model:ir.message,text:missing_signatures"
-msgid "\"%(template)s\" missing signatures: %(missing)s"
+msgid "\"\"%(template)s\" missing signatures: %(missing)s"
 msgstr "\"%(template)s\" falta les signatures: %(missing)s"
 
 msgctxt "model:ir.message,text:msg_no"
@@ -111,7 +159,7 @@ msgid "Yes"
 msgstr "Si"
 
 msgctxt "model:ir.message,text:unused_signatures"
-msgid "\"%(template)s\" unused signatures: %(unused)s"
+msgid "\"\"%(template)s\" unused signatures: %(unused)s"
 msgstr "\"%(template)s\" no s'usen les signatures: %(unused)s"
 
 msgctxt "model:ir.ui.menu,name:menu_action_report_form"
@@ -133,6 +181,10 @@ msgstr "Signatures"
 msgctxt "model:ir.ui.menu,name:menu_template_form"
 msgid "Templates"
 msgstr "Plantilles"
+
+msgctxt "model:ir.ui.menu,name:menu_template_translation_form"
+msgid "Template Translation"
+msgstr "Plantilla traduccions"
 
 msgctxt "selection:html.template,type:"
 msgid "Base"

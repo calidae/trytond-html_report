@@ -1,14 +1,15 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
+import os
 from trytond.pool import PoolMeta, Pool
-from trytond.model import fields
+from trytond.model import ModelSQL, ModelView, fields
 from trytond.pyson import Eval
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
 from trytond.tools import file_open
-import os
+from trytond.cache import Cache
 
-__all__ = ['ActionReport']
+__all__ = ['ActionReport', 'HTMLTemplateTranslation']
 
 
 class ActionReport(metaclass=PoolMeta):
@@ -45,6 +46,9 @@ class ActionReport(metaclass=PoolMeta):
                 'invisible': Eval('template_extension') != 'jinja',
         },
         depends=['template_extension']), 'get_content')
+    html_translations = fields.One2Many('html.template.translation', 'report',
+        'Translations')
+    _html_translation_cache = Cache('html.template.translation', size_limit=10240, context=False)
 
     @classmethod
     def __setup__(cls):
@@ -141,3 +145,64 @@ class ActionReport(metaclass=PoolMeta):
             templates.append(record)
 
         self.html_templates = templates
+
+    @classmethod
+    def gettext(cls, *args, **variables):
+        HTMLTemplateTranslation = Pool().get('html.template.translation')
+
+        report, src, lang = args
+        key = (report, src, lang)
+        text = cls._html_translation_cache.get(key)
+        if text is None:
+            translations = HTMLTemplateTranslation.search([
+                ('report', '=', report),
+                ('src', '=', src),
+                ('lang', '=', lang),
+                ], limit=1)
+            if translations:
+                text = translations[0].value
+            else:
+                text = src
+            cls._html_translation_cache.set(key, text)
+        return text if not variables else text % variables
+
+
+class HTMLTemplateTranslation(ModelSQL, ModelView):
+    'HTML Template Translation'
+    __name__ = 'html.template.translation'
+    _order_name = 'src'
+    report = fields.Many2One('ir.action.report', 'Report', required=True)
+    src = fields.Text('Source', required=True)
+    value = fields.Text('Translation Value', required=True)
+    lang = fields.Selection('get_language', string='Language', required=True)
+    _get_language_cache = Cache('html.template.translation.get_language')
+
+    @classmethod
+    def get_language(cls):
+        result = cls._get_language_cache.get(None)
+        if result is not None:
+            return result
+        pool = Pool()
+        Lang = pool.get('ir.lang')
+        langs = Lang.search([])
+        result = [(lang.code, lang.name) for lang in langs]
+        cls._get_language_cache.set(None, result)
+        return result
+
+    @classmethod
+    def create(cls, vlist):
+        Report = Pool().get('ir.action.report')
+        Report._html_translation_cache.clear()
+        return super(HTMLTemplateTranslation, cls).create(vlist)
+
+    @classmethod
+    def write(cls, *args):
+        Report = Pool().get('ir.action.report')
+        Report._html_translation_cache.clear()
+        return super(HTMLTemplateTranslation, cls).write(*args)
+
+    @classmethod
+    def delete(cls, translations):
+        Report = Pool().get('ir.action.report')
+        Report._html_translation_cache.clear()
+        return super(HTMLTemplateTranslation, cls).delete(translations)

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="TrytonSpain">
+
+    {% block stylesheets %}
+    {% if report.extension == 'html' %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    {% else %}
+    <!-- Local copy of Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{{ 'html_report/report/css/bootstrap/css/bootstrap.min.css'|modulepath }}">
+    <link rel="stylesheet" href="{{ 'html_report/report/css/font-awesome/css/font-awesome.min.css'|modulepath }}">
+    {% endif %}
+    {% endblock stylesheets %}
+
+    {% block custom_style %}
+    <style type="text/css">
+      @page {
+        size: portrait;
+        @top-left {
+          content: "";
+        }
+        @top-right {
+          content: "";
+        }
+        @bottom-right {
+          content: counter(page) " / " counter(pages);
+        }
+      }
+      @media print {
+        * {
+          -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
+          color-adjust: exact !important; /*Firefox*/
+        }
+      }
+      .logo {
+        width: 290px;
+        height: 63px;
+      }
+
+      hr {
+        border-top: 1px solid #000;
+      }
+      .h3 {
+        font-size: 16px;
+      }
+      body {
+        font-family: 'Arial';
+        font-size: 10px;
+      }
+      .page-break {
+        padding-top: 10px;
+        page-break-before: always;
+        counter: page;
+      }
+      .top20 {
+        padding-top: 20px;
+      }
+      tbody tr {
+        page-break-inside: avoid;
+      }
+      table.no-border td {
+        border: 0px !important;
+      }
+      #footer {
+        position: fixed;
+        bottom: 0;
+      }
+    </style>
+    {% endblock custom_style %}
+  </head>
+  <body>
+    {% block body %}{% endblock body %}
+  </body>
+</html>

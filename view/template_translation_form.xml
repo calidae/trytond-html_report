@@ -1,0 +1,12 @@
+<form>
+    <label name="report"/>
+    <field name="report"/>
+    <label name="lang"/>
+    <field name="lang"/>
+    <group col="2" colspan="6" yexpand="1" yfill="1" id="src_value">
+        <separator name="src"/>
+        <separator name="value"/>
+        <field name="src"/>
+        <field name="value"/>
+    </group>
+</form>
