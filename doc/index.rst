@@ -43,6 +43,17 @@ In case is single report:
       {{ record.render.name }}
     {% endblock %}
 
+Locales
+-------
+
+Set language in your report or the language is the transaction context (user).
+
+.. code-block:: html
+
+    {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+      {{ _('Party') }}
+    {% endlanguage %}
+
 Create XML report
 -----------------
 
