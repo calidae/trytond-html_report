@@ -69,10 +69,11 @@ class ActionReport(metaclass=PoolMeta):
         if name == 'html_content':
             if not self.html_template:
                 return
-            content = [self.html_template.all_content]
+            content = []
             for template in self.html_templates:
                 if template.template.all_content:
                     content.append(template.template.all_content)
+            content.append(self.html_template.all_content)
             return '\n\n'.join(content)
         if name in ('html_header_content', 'html_footer_content'):
             path_field_name = name.replace('content', 'report')
