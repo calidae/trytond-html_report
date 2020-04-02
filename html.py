@@ -54,7 +54,8 @@ class Template(ModelSQL, ModelView):
 class TemplateUsage(ModelSQL):
     'HTML Template Usage'
     __name__ = 'html.template.usage'
-    template = fields.Many2One('html.template', 'Template', required=True)
+    template = fields.Many2One('html.template', 'Template', required=True,
+        ondelete='CASCADE')
     signature = fields.Many2One('html.template.signature', 'Signature',
         required=True)
 
@@ -63,7 +64,10 @@ class ReportTemplate(ModelSQL, ModelView):
     'HTML Report - Template'
     __name__ = 'html.report.template'
     report = fields.Many2One('ir.action.report', 'Report', required=True,
-        domain=[('template_extension', '=', 'jinja')])
+        domain=[('template_extension', '=', 'jinja')], ondelete='CASCADE')
     signature = fields.Many2One('html.template.signature', 'Signature',
         required=True)
-    template = fields.Many2One('html.template', 'Template', required=True)
+    template = fields.Many2One('html.template', 'Template', required=True,
+        domain=[
+            ('implements', '=', Eval('signature')),
+            ])
