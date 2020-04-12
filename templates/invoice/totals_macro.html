@@ -1,0 +1,20 @@
+{% macro show_totals(invoice) %}
+    <table class="table borderless bottom2px">
+      <tr>
+        <td class="text-right" style="width:100%;">
+          {{ 'Base imponible' }}:
+        </td>
+        <td class="text-right">
+          {{ invoice.render.untaxed_amount }}
+        </td>
+      </tr>
+      <tr class="font-bold">
+        <td class="text-right text12" style="width:100%;">
+          {{ 'Total' }}:
+        </td>
+        <td class="text-right text12">
+          {{ invoice.render.total_amount }}
+        </td>
+      </tr>
+    </table>
+{% endmacro %}

@@ -1,0 +1,21 @@
+{% macro show_invoice_lines_simplified(document) %}
+
+      <table style="width: 100%;">
+      {% for line in document.lines %}
+        <tr>
+            <th class="simplified" colspan="6" >
+                {{ line.product and line.product.render.name or line.render.description }}
+            </th>
+        </tr>
+        <tr>
+          <td class="simplified">{{ line.render.quantity }}</td>
+          <td class="simplified">{{ 'x' }}</td>
+          <td class="simplified">{{ line.render.taxed_gross_unit_price }}</td>
+          <td class="simplified">{{ '-' }}</td>
+          <td class="simplified">{{ ((line.raw.taxed_gross_unit_price or Decimal(0)) - (line.raw.taxed_unit_price or Decimal(0))) | render(line.raw.__class__.taxed_gross_unit_price.digits[1]) }}</td>
+          <td class="simplified">{{ line.render.taxed_amount }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+{% endmacro %}

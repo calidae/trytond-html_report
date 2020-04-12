@@ -1,0 +1,19 @@
+{% macro show_due_dates(invoice) %}
+    <strong><center>{{ 'Vencimientos' }}</center></strong>
+    <table class="table borderless bottom2px">
+      <tbody>
+        {% for line in invoice.move.lines|rejectattr('raw.maturity_date', 'none')|sort(attribute='raw.maturity_date') %}
+          {% if line.raw.maturity_date %}
+          <tr>
+            <td class="maturity_date-date">
+              {{ line.render.maturity_date }}
+            </td>
+            <td class="text-right base-tax-padding">
+              {{ (line.raw.debit - line.raw.credit) | render(digits=line.raw.currency_digits) }}
+            </td>
+          </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+{% endmacro %}

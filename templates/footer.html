@@ -1,0 +1,18 @@
+<style type="text/css">
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0.5cm;
+    text-align: center;
+    font-size: 9px;
+}
+</style>
+<!-- Local copy of Latest compiled and minified CSS -->
+<link rel="stylesheet" href="{{ 'html_report/report/css/bootstrap/css/bootstrap.min.css'|modulepath }}">
+<footer>
+  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    {% if not record.raw.simplified is defined or not record.raw.simplified %}
+    {{ company.render.footer }}
+    {% endif %}
+</footer>

@@ -1,0 +1,27 @@
+<tryton>
+  <data>
+    <record model='html.template' id="header_template">
+        <field name="name">Header</field>
+        <field name="type">header</field>
+        <field name="filename">templates/header.html</field>
+    </record>
+
+    <record model='html.template' id="footer_template">
+        <field name="name">Footer</field>
+        <field name="type">footer</field>
+        <field name="filename">templates/footer.html</field>
+    </record>
+
+    <record model='html.template.signature' id="simplified_hr_macro_signature">
+        <field name="name">simplified_hr()</field>
+    </record>
+
+    <record model='html.template' id="simplified_hr_macro_template">
+      <field name="name">Simplified Hr</field>
+      <field name="type">macro</field>
+      <field name="filename">simplified_hr_macro.html</field>
+      <field name="implements" ref="html_report.simplified_hr_macro_signature"/>
+    </record>
+
+  </data>
+</tryton>

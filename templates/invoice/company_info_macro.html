@@ -1,0 +1,31 @@
+{% macro show_company_info(invoice) %}
+    {% set party = invoice.company.party %}
+    {% set address = invoice.shop.address or party.addresses[0] %}
+    {% set tax_identifier = invoice.tax_identifier or party.tax_identifier %}
+    {{ party.render.rec_name }}
+    <br>
+    {% if tax_identifier %}
+    {{ tax_identifier.render.code }}
+    <br>
+    {% endif %}
+    {% if address %}
+    {{ address.render.street }}
+    <br>
+    {{ address.render.zip }} {{ address.render.city|upper }}
+    {% endif %}
+    <br>
+    {% if invoice.shop and invoice.shop.raw.phone %}
+      {{ 'Teléfono' }}: {{ invoice.shop.render.phone }}
+      <br>
+    {% elif party.raw.phone %}
+      {{ 'Teléfono' }}: {{ party.render.phone }}
+      <br>
+    {% endif %}
+    {% if invoice.shop and invoice.shop.raw.email %}
+      {{ 'E-mail' }}: {{ invoice.shop.render.email }}
+      <br>
+    {% elif party.raw.email %}
+      {{ 'E-mail' }}: {{ party.render.email }}
+      <br>
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,3 @@
+{% macro show_party_info(invoice) %}
+    {{ invoice.invoice_address.render.full_address }}
+{% endmacro %}
