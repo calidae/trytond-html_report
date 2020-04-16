@@ -76,7 +76,7 @@
     {% block body %}
     {% block main scoped %}
     <div class="container-fluid {% if not first %}page-break{% endif %}">
-      <div class="row">
+      <div id="header" class="row">
         <div class="col-xs-6">
           {% block company_header scoped %}
           {% endblock company_header %}

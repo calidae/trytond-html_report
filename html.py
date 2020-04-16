@@ -1,5 +1,7 @@
+import os
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pyson import Eval
+from trytond.tools import file_open
 
 
 class Signature(ModelSQL, ModelView):
@@ -14,6 +16,8 @@ class Template(ModelSQL, ModelView):
     name = fields.Char('Name', required=True)
     type = fields.Selection([
             ('base', 'Base'),
+            ('header', 'Header'),
+            ('footer', 'Footer'),
             ('extension', 'Extension'),
             ('block', 'Block'),
             ('macro', 'Macro'),
@@ -31,6 +35,7 @@ class Template(ModelSQL, ModelView):
             'required': Eval('type') == 'extension',
             'invisible': Eval('type') != 'extension',
             }, depends=['type'])
+    filename = fields.Char('Template path')
     content = fields.Text('Content')
     all_content = fields.Function(fields.Text('All Content'),
         'get_all_content')
@@ -41,14 +46,28 @@ class Template(ModelSQL, ModelView):
             res += ' / ' + self.implements.rec_name
         return res
 
-    def get_all_content(self, name):
-        if self.type == 'base':
+    def get_base_content(self):
+        if not self.filename:
             return self.content
+        value = None
+        path = os.path.join('html_report', self.filename)
+        try:
+            with file_open(path, subdir='modules', mode='r',
+                    encoding='utf-8') as fp:
+                value = fp.read()
+        except IOError:
+            pass
+        return value
+
+    def get_all_content(self, name):
+        if self.type in ('base', 'header', 'footer'):
+            return self.get_base_content()
         elif self.type == 'extension':
-            return '{%% extends "%s" %%} {# %s #}\n\n%s' % (self.parent.id, self.parent.name, self.content)
+            return '{%% extends "%s" %%} {# %s #}\n\n%s' % (self.parent.id,
+                self.parent.name, self.content)
         elif self.type == 'macro':
             return '{%% macro %s %%}\n%s\n{%% endmacro %%}' % (
-                self.implements.name, self.content)
+                self.implements.name, self.get_base_content())
 
 
 class TemplateUsage(ModelSQL):

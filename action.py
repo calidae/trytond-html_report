@@ -22,6 +22,23 @@ class ActionReport(metaclass=PoolMeta):
             'invisible': Eval('template_extension') != 'jinja',
             },
         depends=['template_extension'])
+    html_header_template = fields.Many2One('html.template', 'Header',
+        domain=[
+            ('type', '=', 'header'),
+            ],
+        states={
+            'invisible': Eval('template_extension') != 'jinja',
+            },
+        depends=['template_extension'])
+    html_footer_template = fields.Many2One('html.template', 'Footer',
+        domain=[
+            ('type', '=', 'footer'),
+            ],
+        states={
+            'invisible': Eval('template_extension') != 'jinja',
+            },
+        depends=['template_extension'])
+
     html_templates = fields.One2Many('html.report.template', 'report', 'Templates',
         states={
             'invisible': Eval('template_extension') != 'jinja',
@@ -48,14 +65,15 @@ class ActionReport(metaclass=PoolMeta):
         depends=['template_extension']), 'get_content')
     html_translations = fields.One2Many('html.template.translation', 'report',
         'Translations')
-    _html_translation_cache = Cache('html.template.translation', size_limit=10240, context=False)
+    _html_translation_cache = Cache('html.template.translation',
+        size_limit=10240, context=False)
 
     @classmethod
     def __setup__(cls):
         super(ActionReport, cls).__setup__()
 
         jinja_option = ('jinja', 'Jinja')
-        if not jinja_option in cls.template_extension.selection:
+        if jinja_option not in cls.template_extension.selection:
             cls.template_extension.selection.append(jinja_option)
 
     @classmethod
@@ -66,28 +84,17 @@ class ActionReport(metaclass=PoolMeta):
                     })]
 
     def get_content(self, name):
-        if name == 'html_content':
-            if not self.html_template:
-                return
-            content = []
-            for template in self.html_templates:
-                if template.template.all_content:
-                    content.append(template.template.all_content)
-            content.append(self.html_template.all_content)
-            return '\n\n'.join(content)
-        if name in ('html_header_content', 'html_footer_content'):
-            path_field_name = name.replace('content', 'report')
-            path = getattr(self, path_field_name, None)
-            if not path:
-                return
-            path = path.replace('/', os.sep)
-            try:
-                with file_open(path, mode='rb') as fp:
-                    data = fp.read()
-            except FileNotFoundError:
-                data = None
+        obj_name = name.replace('content', 'template')
+        obj = getattr(self, obj_name)
+        if not obj:
+            return
 
-            return data
+        content = []
+        for template in self.html_templates:
+            if template.template.all_content:
+                content.append(template.template.all_content)
+        content.append(obj.all_content)
+        return '\n\n'.join(content)
 
     @classmethod
     def validate(cls, reports):
@@ -146,6 +153,26 @@ class ActionReport(metaclass=PoolMeta):
             templates.append(record)
 
         self.html_templates = templates
+
+    @fields.depends('html_template', 'html_templates')
+    def on_change_html_header_template(self):
+        pool = Pool()
+        Template = pool.get('html.template')
+        ReportTemplate = pool.get('html.report.template')
+
+        missing, unused = self.get_missing_unused_signatures()
+
+        templates = list(self.html_templates)
+        for signature in missing:
+            record = ReportTemplate()
+            record.signature = signature
+            implementors = Template.search([('implements', '=', signature)])
+            if len(implementors) == 1:
+                record.template, = implementors
+            templates.append(record)
+
+        self.html_templates = templates
+
 
     @classmethod
     def gettext(cls, *args, **variables):

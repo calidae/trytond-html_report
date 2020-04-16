@@ -4,6 +4,10 @@
         <page string="HTML Report" id="html_report">
             <label name="html_template"/>
             <field name="html_template"/>
+            <label name="html_header_template"/>
+            <field name="html_header_template"/>
+            <label name="html_footer_template"/>
+            <field name="html_footer_template"/>
             <separator name="html_templates" colspan="4"/>
             <field name="html_templates" colspan="4"/>
             <separator name="html_content" colspan="4"/>

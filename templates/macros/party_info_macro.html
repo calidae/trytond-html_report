@@ -1,0 +1,4 @@
+{% set tax_identifier = record.party_tax_identifier or record.party.tax_identifier %}
+{{ address.render.full_address }}
+</br>
+{{ tax_identifier.render.code }}

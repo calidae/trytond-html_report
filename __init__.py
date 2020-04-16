@@ -7,6 +7,8 @@ from . import action
 from . import translation
 from . import html
 from . import engine
+from . import invoice
+
 
 def register():
     module = 'html_report'
@@ -18,6 +20,10 @@ def register():
         html.TemplateUsage,
         html.ReportTemplate,
         module=module, type_='model')
+    Pool.register(
+        invoice.Invoice,
+        invoice.InvoiceLine,
+        module=module, type_='model', depends=['account_invoice'])
     Pool.register(
         translation.ReportTranslationSet,
         module=module, type_='wizard')

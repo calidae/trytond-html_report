@@ -289,11 +289,11 @@ class HTMLReportMixin:
     @classmethod
     def get_templates_jinja(cls, action):
         header = (action.html_header_content and
-            action.html_header_content.decode('utf-8'))
+            action.html_header_content) # decode('utf-8'))
         content = (action.report_content and
-            action.report_content.decode('utf-8'))
+            action.html_content) #.decode('utf-8'))
         footer = (action.html_footer_content and
-            action.html_footer_content.decode('utf-8'))
+            action.html_footer_content) #.decode('utf-8'))
         if not content:
             if not action.html_content:
                 raise Exception('Error', 'Missing jinja report file!')
@@ -322,6 +322,7 @@ class HTMLReportMixin:
 
     @classmethod
     def _execute_html_report(cls, records, data, action):
+        print("action:", action)
         header_template, main_template, footer_template = \
                 cls.get_templates_jinja(action)
 

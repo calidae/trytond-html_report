@@ -1,0 +1,15 @@
+{% if record.raw.__name__ == 'account.invoice' %}
+  {% set title = 'Invoice' %}
+  {% set document_date = record.render.invoice_date %}
+{% endif %}
+
+<table class="table no-border">
+  <tr style="border-bottom: 1px solid #ddd">
+  <td class="party_info">
+    {{title}} {{ record.render.number }}
+  </td>
+  <td class="party_info">
+     Date: {{ document_date }}
+  </td>
+</tr>
+</table>

@@ -1,25 +1,23 @@
-{% macro show_taxes(invoice) %}
-   <strong><center>{{ 'Impuestos' }}</center></strong>
-   <table class="table borderless bottom2px">
-     <thead>
-       <th>{{ 'Base' }}</th>
-       <th>{{ 'Impuesto' }}</th>
-       <th class="text-right">{{ 'Importe' }}</th>
-     </thead>
-     <tbody>
-       {% for tax in invoice.taxes %}
-         <tr>
-           <td class="base-tax-padding">
-             {{ tax.render.base }}
-           </td>
-           <td class="base-tax-padding">
-             {{ tax.render.description }}
-           </td>
-           <td class="base-tax-padding text-right">
-             {{ tax.render.amount }}
-           </td>
-         </tr>
-       {% endfor %}
-     </tbody>
-   </table>
-{% endmacro %}
+ <strong><center>{{ 'Impuestos' }}</center></strong>
+ <table class="table borderless bottom2px">
+   <thead>
+     <th>{{ 'Base' }}</th>
+     <th>{{ 'Impuesto' }}</th>
+     <th class="text-right">{{ 'Importe' }}</th>
+   </thead>
+   <tbody>
+     {% for tax in invoice.taxes %}
+       <tr>
+         <td class="base-tax-padding">
+           {{ tax.render.base }}
+         </td>
+         <td class="base-tax-padding">
+           {{ tax.render.description }}
+         </td>
+         <td class="base-tax-padding text-right">
+           {{ tax.render.amount }}
+         </td>
+       </tr>
+     {% endfor %}
+   </tbody>
+ </table>
