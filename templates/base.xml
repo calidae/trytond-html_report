@@ -42,16 +42,5 @@
         <field name="filename">templates/macros/party_info_macro.html</field>
         <field name="implements" ref="html_report.party_macro_signature"/>
     </record>
-
-    <record model='html.template.signature' id="document_info_macro_signature">
-        <field name="name">show_document_info(record)</field>
-    </record>
-    <record model='html.template' id="document_info_macro_id">
-        <field name="name">Document info</field>
-        <field name="type">macro</field>
-        <field name="filename">templates/macros/document_info_macro.html</field>
-        <field name="implements" ref="html_report.document_info_macro_signature"/>
-    </record>
-
   </data>
 </tryton>

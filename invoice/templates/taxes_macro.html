@@ -1,9 +1,9 @@
- <strong><center>{{ 'Impuestos' }}</center></strong>
+ {% if invoice.taxes %}<strong><center>{{ _('Taxes') }}</center></strong>
  <table class="table borderless bottom2px">
    <thead>
-     <th>{{ 'Base' }}</th>
-     <th>{{ 'Impuesto' }}</th>
-     <th class="text-right">{{ 'Importe' }}</th>
+     <th>{{ _('Base') }}</th>
+     <th>{{ _('Tax') }}</th>
+     <th class="text-right">{{ _('Total') }}</th>
    </thead>
    <tbody>
      {% for tax in invoice.taxes %}
@@ -20,4 +20,4 @@
        </tr>
      {% endfor %}
    </tbody>
- </table>
+ </table>{% endif %}

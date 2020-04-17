@@ -1,0 +1,29 @@
+<table class="table borderless bottom2px top2px">
+  <thead>
+    <th nowrap>{{ _('Code') }}</th>
+    <th nowrap>{{ _('Description') }}</th>
+    <th class="text-right" nowrap>{{ _('Qty') }}</th>
+    <th class="text-right" nowrap>{{ _('Unit Price') }}</th>
+    <th class="text-right" nowrap>{{ _('Amount') }}</th>
+  </thead>
+  <tbody>
+    {% for key in document.raw.sorted_keys %}
+      <tr><!-- TODO: -->
+        <td>{{ key }} </td>
+      </tr>
+
+      {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
+        <tr>
+          <td>{{ line.product and line.product.render.code or '' }}</td>
+          <td>{{ line.product and line.product.render.name or '' }}{% if line.raw.description %}<p>{{ line.render.description }}</p>{% endif %}</td>
+          <td class="text-right">{{ line.render.quantity }}</td>
+          <td class="text-right">{{ line.render.unit_price }}</td>
+          <td class="text-right">{{ line.render.amount }}</td>
+        </tr>
+      {% endfor %}
+    {% endfor %}
+    <tr class="b-hide">
+      <td colspan="6"></td>
+    </tr>
+  </tbody>
+</table>

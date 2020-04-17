@@ -1,0 +1,41 @@
+{% extends 'html_report/report/base.html' %}
+{% set invoice = record %}
+
+{% block title %}
+    {{ _('Invoice') }}
+{% endblock %}
+
+{% block main %}
+  {% set invoice = record %}
+  {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+  <div class="container-fluid {% if not first %}page-break{% endif %}">
+    <div class="row">
+      <div class="col-xs-6">
+        <strong>{% if invoice.raw.type == 'in' %}{{ _('Supplier Invoice') }}{% else %}{{ _('Invoice') }}{% endif %}</strong> {{ invoice.render.number or '' }}
+      </div>
+      <div class="col-xs-6">
+        {{ _('Date') }}: {{ invoice.render.invoice_date or '' }}
+      </div>
+    </div>
+
+    {{ show_invoice_lines_simplified(invoice) }}
+
+    <div class="row">
+      <div class="col-xs-6">
+        {{ show_taxes(invoice) }}
+      </div>
+      <div class="col-xs-6">
+         {{ show_totals(invoice) }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        {{ show_payment_info(invoice) }}
+      </div>
+      <div class="col-xs-6">
+        {{ show_due_dates(invoice) }}
+      </div>
+    </div>
+  {% endlanguage %}
+{% endblock %}

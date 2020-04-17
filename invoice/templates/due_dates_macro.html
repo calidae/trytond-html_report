@@ -1,4 +1,4 @@
-<strong><center>{{ 'Vencimientos' }}</center></strong>
+{% if invoice.move.lines %}<strong><center>{{ _('Due Dates') }}</center></strong>
 <table class="table borderless bottom2px">
   <tbody>
     {% for line in invoice.move.lines|rejectattr('raw.maturity_date', 'none')|sort(attribute='raw.maturity_date') %}
@@ -14,4 +14,4 @@
       {% endif %}
     {% endfor %}
   </tbody>
-</table>
+</table>{% endif %}

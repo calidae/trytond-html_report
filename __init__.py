@@ -21,11 +21,9 @@ def register():
         html.ReportTemplate,
         module=module, type_='model')
     Pool.register(
-        invoice.Invoice,
-        invoice.InvoiceLine,
-        module=module, type_='model', depends=['account_invoice'])
-    Pool.register(
         translation.ReportTranslationSet,
         module=module, type_='wizard')
     Pool.register_mixin(engine.HTMLReportMixin, Report,
         module=module)
+
+    invoice.register(module)
