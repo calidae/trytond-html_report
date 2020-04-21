@@ -1,36 +1,25 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<style type="text/css">
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 1.5cm;
-  text-align: left;
-  font-size: 9px;
-  width: 100%;
-}
-body {
-  font-family: 'Arial';
-  font-size: 10px;
-  margin-right: 1.3cm;
-  padding-bottom: 2cm;
-}
-.logo {
-  width: 145px;
-  height: 32px;
-}
-</style>
-
+<link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
 <header>
-    <img class="logo" src="{{ record.company.render.logo }}"/>
+    <table>
+      <tr><td>
+          {% if record.raw.shop and record.shop.raw.logo %}
+          <img class="logo" src={{ record.raw.shop and record.shop.render.logo }}>
+          {% elif company.raw.logo is defined %}
+          <img class="logo" src={{ company.render.logo }}>
+          {% endif %}
+          </td>
+      <td>
+        {{show_document_info(record)}}
+      </td>
 
-    <table class="table no-border">
-      <tr style="border-bottom: 1px solid #ddd">
-        <td>
+      </tr>
+      <tr>
+        <td class="party_info">
             {{ show_company_info(record) }}
           </td>
-          <td>
-            {{ show_party_info(record, record.invoice_address) }}
+          <td class="party_info">
+              <strong>{% if record.raw.type == 'in' %}{{ 'Proveedor' }}{% else %}{{ 'Customer' }}{% endif %}<br></strong>
+              {{ show_party_info(record, record.invoice_address) }}
           </td>
         </tr>
     </table>

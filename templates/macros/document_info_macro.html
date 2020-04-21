@@ -1,0 +1,7 @@
+{% if record.raw.__name__ == 'account.invoice' %}
+  {% set title = 'Invoice' %}
+  {% set document_date = record.render.invoice_date %}
+{% endif %}
+
+<h1 class="document">{{title}} {{ record.render.number }} <h1>
+<h2 class="document">Date: {{ document_date }} </h2>

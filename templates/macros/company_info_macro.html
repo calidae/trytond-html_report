@@ -1,14 +1,29 @@
-{% set company_party = record.company.party %}
-{% for line in company_party.addresses[0].raw.full_address.split('\n') %}
-  {{ line }}<br/>
-{% endfor %}
-{% if company_party.tax_identifier %}{{ company_party.render.tax_identifier.code }}<br/>{% endif %}
-{% if company_party.raw.phone %}
-  <br/>{{ _('Phone') }}: {{ company_party.render.phone }}
+{% set party = record.company.party %}
+{% set address = record.shop and record.shop.address or party.addresses[0] %}
+{% set tax_identifier = record.tax_identifier or party.tax_identifier %}
+{{ party.render.rec_name }}
+<br>
+{% if tax_identifier %}
+{{ tax_identifier.render.code }}
+<br>
 {% endif %}
-{% if company_party.raw.fax %}
-  <br/>{{ _('Fax') }}: {{ company_party.render.fax }}
+{% if address %}
+{{ address.render.street }}
+<br>
+{{ address.render.zip }} {{ address.render.city|upper }}
 {% endif %}
-{% if company_party.raw.email %}
-  <br/>{{ _('Email') }}: {{ company_party.render.email }}
+<br>
+{% if record.shop and record.shop.raw.phone %}
+  {{ 'Phone' }}: {{ record.shop.render.phone }}
+  <br>
+{% elif party.raw.phone %}
+  {{ 'Phone' }}: {{ party.render.phone }}
+  <br>
+{% endif %}
+{% if record.shop and record.shop.raw.email %}
+  {{ 'E-mail' }}: {{ record.shop.render.email }}
+  <br>
+{% elif party.raw.email %}
+  {{ 'E-mail' }}: {{ party.render.email }}
+  <br>
 {% endif %}

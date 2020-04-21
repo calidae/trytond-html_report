@@ -1,26 +1,54 @@
-<table class="table borderless bottom2px top2px">
+<table style="width:100%;" class="table-striped">
   <thead>
-    <th nowrap>{{ _('Code') }}</th>
-    <th nowrap>{{ _('Description') }}</th>
-    <th class="text-right" nowrap>{{ _('Qty') }}</th>
-    <th class="text-right" nowrap>{{ _('Unit Price') }}</th>
-    <th class="text-right" nowrap>{{ _('Amount') }}</th>
+    <th nowrap>{{ 'Código' }}</th>
+    <th nowrap>{{ 'Descripción' }}</th>
+    <th class="text-right" nowrap>{{ 'Cantidad' }}</th>
+    <th class="text-right" nowrap>{{ 'Precio U.' }}</th>
+    {% if document.raw.all_lines_untaxed %}
+    <th class="text-right" nowrap>{{ 'Descuento' }}</th>
+    {% else %}
+    <th></th>
+    {% endif %}
+    <th class="text-right" nowrap>{{ 'Importe' }}</th>
   </thead>
   <tbody>
-    {% for key in document.raw.sorted_keys %}
-      <tr><!-- TODO: -->
-        <td>{{ key }} </td>
-      </tr>
 
-      {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
-        <tr>
-          <td>{{ line.product and line.product.render.code or '' }}</td>
-          <td>{{ line.product and line.product.render.name or '' }}{% if line.raw.description %}<p>{{ line.render.description }}</p>{% endif %}</td>
-          <td class="text-right">{{ line.render.quantity }}</td>
-          <td class="text-right">{{ line.render.unit_price }}</td>
-          <td class="text-right">{{ line.render.amount }}</td>
-        </tr>
-      {% endfor %}
+    {% for key in document.raw.sorted_keys %}
+        <th class="sub_header" colspan="4">
+          {% for item in key %}
+            {% if 'stock.shipment' in item.__name__ %}
+              {{ _('Shipment:') }} {{ item.number }}
+            {% endif %}
+            {% if 'sale.sale' in item.__name__ %}
+              {{ _('Sale:') }} {{ item.number }}
+            {% endif %}
+            {% if 'purchase.purchase' in item.__name__ %}
+              {{ _('Purchase:') }} {{ item.number }}
+            {% endif %}
+          {% endfor %}
+         </th>
+
+        {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
+          <tr>
+            {% if line.raw.description %}
+            <td></td>
+            <td>{{ line.render.description }}</td>
+            {% else %}
+            <td>{{ line.product and line.product.render.code or '-' }}</td>
+            <td>{{ line.product and line.product.render.name or '-' }}</td>
+            {% endif %}
+            <td class="text-right">{{ line.render.quantity }}</td>
+            {% if line.raw.price_with_taxes %}
+            <td class="text-right">{{ line.render.taxed_gross_unit_price}}</td>
+            <td class="text-right">{{ ((line.raw.taxed_gross_unit_price or Decimal(0)) - (line.raw.taxed_unit_price or Decimal(0))) | render(line.raw.__class__.taxed_gross_unit_price.digits[1]) }}</td>
+            <td class="text-right">{{ line.render.taxed_amount }}</td>
+            {% else %}
+            <td class="text-right">{{ line.render.unit_price }}</td>
+            <td class="text-right">{{ line.render.amount }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+
     {% endfor %}
     <tr class="b-hide">
       <td colspan="6"></td>
