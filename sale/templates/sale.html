@@ -9,6 +9,7 @@
 {% block main %}
   {% set sale = record %}
   {% language sale.party.lang and sale.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
   {{ show_sale_lines(sale) }}
 
     <table class="condensed">

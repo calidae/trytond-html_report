@@ -18,8 +18,7 @@
         <td class="party_info">
             {{ show_company_info(record) }}
           </td>
-          <td class="party_info">
-              <strong>{% if record.raw.type == 'in' %}{{ _('Supplier') }}{% else %}{{ _('Customer') }}{% endif %}<br></strong>
+          <td class="party_info">              
               {{ show_party_info(record, record.invoice_address) }}
           </td>
         </tr>
