@@ -11,6 +11,7 @@ from babel import support
 
 import weasyprint
 from .generator import PdfGenerator
+from trytond.model.fields.selection import TranslatedSelection
 from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
@@ -235,7 +236,16 @@ class Formatter:
             mimetype = mimetypes.guess_type(filename)[0]
         return ('data:%s;base64,%s' % (mimetype, value)).strip()
 
-    # TODO: Implement: dict, selection, multiselection
+    def _formatted_selection(self, record, field, value):
+        if value is None:
+            return ''
+
+        Model = Pool().get(record.__name__)
+        record = Model(record.id)
+        t  = TranslatedSelection(field.name)
+        return t.__get__(record, record).replace('\n', '<br/>')
+
+    # TODO: Implement: dict, multiselection
 
 
 class FormattedRecord:
