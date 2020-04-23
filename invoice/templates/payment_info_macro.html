@@ -1,15 +1,22 @@
 {% if invoice.raw.payment_term %}
- <strong>{{ _('Payment term') }}: </strong>{{ invoice.payment_term.render.name }}
+ <strong> {{label('account.invoice', 'payment_term') }}: </strong>{{ invoice.payment_term.render.name }}
  <br/>
 {% endif %}
 {% if invoice.payment_type %}
- <strong>{{ _('Payment Type') }}: </strong>{{ invoice.payment_type.render.name }}
+<strong>{{ label('account.invoice', 'payment_type') }}: </strong>{{ invoice.payment_type.render.name }}
  <br/>
 {% endif %}
 {% if invoice.bank_account %}
- <strong>{{ _('Bank Account') }}: </strong>{{ invoice.bank_account.render.rec_name }}
+ <strong>{{ label('account.invoice', 'bank_account') }}: </strong>{{ invoice.bank_account.render.rec_name }}
  {% if invoice.bank_account.bank.raw.bic %}
    ({{ invoice.bank_account.bank.render.bic }})
  {% endif %}
  <br/>
+{% endif %}
+<strong>{{label('account.invoice', 'currency')}}:</strong> {{invoice.currency.render.name}}
+{% if invoice.raw.different_currencies %}
+<strong>{{label('account.invoice', 'currency')}}:</strong> {{invoice.company.currency.render.name}}
+<strong>{{label('account.invoice', 'company_untaxed_amount')}}:</strong> {{invoice.render.company_untaxed_amount}}
+<strong>{{label('account.invoice', 'company_tax_amount')}}:</strong> {{invoice.render.company_tax_amount}}
+<strong>{{label('account.invoice', 'company_total_amount')}}:</strong> {{invoice.render.company_total_amount}}
 {% endif %}

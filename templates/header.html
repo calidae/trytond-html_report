@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
-<header>
+<header id="header">
     <table>
       <tr><td>
           {% if record.raw.shop and record.shop.raw.logo %}
@@ -18,7 +18,7 @@
             {{ show_company_info(record) }}
           </td>
           <td class="party_info">
-              <strong>{% if record.raw.type == 'in' %}{{ 'Proveedor' }}{% else %}{{ 'Customer' }}{% endif %}<br></strong>
+              <strong>{% if record.raw.type == 'in' %}{{ _('Supplier') }}{% else %}{{ _('Customer') }}{% endif %}<br></strong>
               {{ show_party_info(record, record.invoice_address) }}
           </td>
         </tr>

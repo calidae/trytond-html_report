@@ -9,26 +9,26 @@
 {% block main %}
   {% set invoice = record %}
   {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+  <h2>{{ invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code }}</h2>
+  {{ show_invoice_lines(invoice) }}
 
-  <tr><td colspan="0">{{ show_invoice_lines(invoice) }}</td></tr>
-  <tr><td>
-    <table>
-      <tr>
-        <td> {{ show_payment_info(invoice) }} </td>
-        <td></td>
-        <td> {{ show_totals(invoice) }}</td>
-      </tr>
+    <table class="condensed">
+        <tr>
+          <td> {{ show_payment_info(invoice) }} </td>
+          <td> {{ show_totals(record) }}</td>
+        </tr>
+        <tr>
+          <td>{{ show_taxes(invoice) }}</td>
+          <td>{{ show_due_dates(invoice) }}</td>
+        </tr>
     </table>
-    </td></tr>
-  <tr>
-    <table>
-      <tr>
-        <td> {{ show_taxes(invoice) }} </td>
-        <td></td>
-        <td> {{ show_due_dates(invoice) }} </td>
-      </tr>
-    </table>
-  </tr>
 
-  {% endlanguage %}
+{% if invoice.raw.comment %}
+<strong>{{label('account.invoice', 'comment')}}</strong>
+<br>
+{{invoice.render.comment}}
+{% endif %}
+
+
+{% endlanguage %}
 {% endblock %}

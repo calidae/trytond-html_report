@@ -9,6 +9,7 @@
   @bottom-right {
     content: counter(page) " / " counter(pages);
     text-align: right;
+    font-family: 'Arial'
     bottom:0;
     font-size: 9px;
   }
@@ -26,15 +27,17 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    padding: 1.5cm;
+    padding-top: 1cm;
+    padding-left: 2.0cm;
     text-align: left;
     font-size: 9px;
     width: 100%;
     font-family: 'Arial';
 }
 .logo {
-    width: 145px;
-    height: 32px;
+    width: auto;
+    height: 50px;
+
 }
 
 
@@ -64,6 +67,7 @@ table {
   margin:0;
   margin-bottom: 1rem;
   color: #212529;
+  border-collapse:collapse;
 
 }
 
@@ -71,7 +75,12 @@ table.tr {
 margin-left: 0;
 margin-right: 0;
 padding: 0.75rem;
+
 }
+
+/* tbody tr border {
+  border-bottom: 1px solid #dee2e6;
+} */
 
 table td {
   padding: 0.25rem;
@@ -81,19 +90,17 @@ table td {
 }
 
 table thead th {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-bottom: 1px solid #dee2e6;
+  padding: 0.25rem;
   vertical-align: bottom;
   margin-left: 0;
   margin-right: 0;
 }
 
-table tbody + tbody {
+table tbody.border  {
   border-top: 2px solid #dee2e6;
   margin-left: 0;
   margin-right: 0;
-  padding: 0;
+  padding: 1px;
 }
 
 .text-right {
@@ -104,16 +111,14 @@ th.sub_header{
   padding: 0.25rem;
   vertical-align: top;
   border-bottom: 1px solid #dee2e6;
+  border-collapse:separate;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
  background-color: rgba(0, 0, 0, 0.05);
 }
 
-table.condensed tr{
-  padding: 0;
-}
-table.condensed td,th{
+table.condensed tr,td,th{
   padding: 0;
 }
 
@@ -130,9 +135,9 @@ h2.document{
 
 footer {
   position: fixed;
+  width: 100%;
   bottom: 0;
-  left: 0;
-  padding: 0.5cm;
+  padding: 1.5cm;
   text-align: center;
   font-size: 9px;
 }

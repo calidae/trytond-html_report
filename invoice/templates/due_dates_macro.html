@@ -1,13 +1,13 @@
 {% if invoice.move.lines %}
 <table class="condensed">
   <thead>
-    <th colspan="2"><center>{{ _('Due Dates') }}</center></th>
+    <th colspan="2"><center>{{ label('account.move.line', 'maturity_date') }}</center></th>
   </thead>
-  <tbody>
+  <tbody class="border">
     {% for line in invoice.move.lines|rejectattr('raw.maturity_date', 'none')|sort(attribute='raw.maturity_date') %}
       {% if line.raw.maturity_date %}
       <tr>
-        <td scope="row" class="tex-right">
+        <td class="tex-right">
           {{ line.render.maturity_date }}
         </td>
         <td class="text-right">

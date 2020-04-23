@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="">
-    <meta name="author" content="Nantic">    
+    <meta name="author" content="Nantic">
     <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
   </head>
 
@@ -12,21 +12,15 @@
     {% block body %}
     {% block main scoped %}
 
-    <table>
-      <thead id="header">
-        {% block company_header scoped %}
-        {% endblock company_header %}
-      </thead>
-      <tbody>
-        {% block report_body scoped %}
-        {% endblock report_body %}
-      </tbody>
-      <tfoot id="footer">
-        {% block report_footer scoped %}
-        {% endblock report_footer %}
-      </tfoot>
+    {% block company_header scoped %}
+    {% endblock company_header %}
 
-    </table>
+    {% block report_body scoped %}
+    {% endblock report_body %}
+
+    {% block report_footer scoped %}
+    {% endblock report_footer %}
+
 
     {% endblock main %}
     {% endblock body %}

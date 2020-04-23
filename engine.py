@@ -127,6 +127,7 @@ class SwitchableLanguageExtension(Extension):
     def _switch_language(self, language_code, caller):
         if self.translations:
             self.translations.set_language(language_code)
+        Transaction().set_context(report_lang=language_code)
         output = caller()
         return output
 
@@ -142,7 +143,6 @@ class Formatter:
 
     def _get_lang(self):
         Lang = Pool().get('ir.lang')
-
         locale = Transaction().context.get('report_lang', Transaction().language)
         lang = self.__langs.get(locale)
         if lang:
@@ -502,6 +502,19 @@ class HTMLReportMixin:
         return env
 
     @classmethod
+    def label(cls, model, field=None, lang=None):
+        Translation = Pool().get('ir.translation')
+        if not lang:
+            lang = Transaction().language
+        type_ = 'field'
+        if field == None:
+            type_ = 'model'
+            field = 'name'
+
+        source = "%s,%s" % (model,field)
+        return Translation.get_source(source, type_, lang)
+
+    @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
             records=None, data=None):
         """
@@ -527,13 +540,15 @@ class HTMLReportMixin:
             'time': datetime.now(),
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
+            'label': cls.label,
             }
         if Company:
             context['company'] = DualRecord(Company(
                     Transaction().context.get('company')))
         context.update(cls.local_context())
-        report_template = env.from_string(template_string)
-        res = report_template.render(**context)
+        with Transaction().set_context(**context):
+            report_template = env.from_string(template_string)
+            res = report_template.render(**context)
         # print('TEMPLATE:\n', res)
         return res
 

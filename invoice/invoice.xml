@@ -55,16 +55,6 @@
         <field name="implements" ref="html_report.invoice_taxes_macro_signature"/>
     </record>
 
-    <record model='html.template.signature' id="invoice_totals_macro_signature">
-        <field name="name">show_totals(invoice)</field>ac
-    </record>
-    <record model='html.template' id="invoice_totals_macro_id">
-        <field name="name">Invoice Totals</field>
-        <field name="type">macro</field>
-        <field name="filename">invoice/templates/totals_macro.html</field>
-        <field name="implements" ref="html_report.invoice_totals_macro_signature"/>
-    </record>
-
     <record model='html.template.signature' id="invoice_payment_info_macro_signature">
         <field name="name">show_payment_info(invoice)</field>ac
     </record>
@@ -143,8 +133,8 @@
 
     <record model="html.report.template" id="report_invoice_invoice_totals_id">
       <field name="report" ref="html_report_invoice"/>
-      <field name="signature" ref="invoice_totals_macro_signature"/>
-      <field name="template" ref="invoice_totals_macro_id"/>
+      <field name="signature" ref="document_totals_macro_signature"/>
+      <field name="template" ref="document_totals_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_document_id">

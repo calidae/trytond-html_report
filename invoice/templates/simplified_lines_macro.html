@@ -1,10 +1,10 @@
 <table class="table borderless" width="100%">
   <thead>
-    <th nowrap>{{ _('Code') }}</th>
-    <th nowrap>{{ _('Description') }}</th>
-    <th class="text-right" nowrap>{{ _('Qty') }}</th>
-    <th class="text-right" nowrap>{{ _('Unit Price') }}</th>
-    <th class="text-right" nowrap>{{ _('Amount') }}</th>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('account.invoice.line', 'description') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'quantity') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'unit_price') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'amount') }}</th>
   </thead>
   <tbody>
     {% for line in document.lines %}

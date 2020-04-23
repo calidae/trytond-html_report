@@ -1,51 +1,60 @@
-<table style="width:100%;" class="table-striped">
+<table style="width:100%;">
   <thead>
-    <th nowrap>{{ 'Código' }}</th>
-    <th nowrap>{{ 'Descripción' }}</th>
-    <th class="text-right" nowrap>{{ 'Cantidad' }}</th>
-    <th class="text-right" nowrap>{{ 'Precio U.' }}</th>
-    {% if document.raw.all_lines_untaxed %}
-    <th class="text-right" nowrap>{{ 'Descuento' }}</th>
-    {% else %}
+    <tr>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'quantity') }}</th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'unit_price') }}</th>
     <th></th>
-    {% endif %}
-    <th class="text-right" nowrap>{{ 'Importe' }}</th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'amount')}}</th>
+    </tr>
   </thead>
-  <tbody>
+  <tbody class="border">
 
     {% for key in document.raw.sorted_keys %}
-        <th class="sub_header" colspan="4">
-          {% for item in key %}
-            {% if 'stock.shipment' in item.__name__ %}
-              {{ _('Shipment:') }} {{ item.number }}
-            {% endif %}
-            {% if 'sale.sale' in item.__name__ %}
-              {{ _('Sale:') }} {{ item.number }}
-            {% endif %}
-            {% if 'purchase.purchase' in item.__name__ %}
-              {{ _('Purchase:') }} {{ item.number }}
-            {% endif %}
-          {% endfor %}
-         </th>
+        {% if key %}
+          <th class="sub_header" colspan="6">
+            {% for item in key %}
+              {{ label(item.__name__) }} : {{ item.number }}
+            {% endfor %}
+           </th>
+        {% endif %}
 
         {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
           <tr>
             {% if line.raw.description %}
-            <td></td>
-            <td>{{ line.render.description }}</td>
+              <td colspan="2">{{ line.render.description }}</td>
             {% else %}
-            <td>{{ line.product and line.product.render.code or '-' }}</td>
-            <td>{{ line.product and line.product.render.name or '-' }}</td>
+              <td>{{ line.product and line.product.render.code or '-' }}</td>
+              <td>{{ line.product and line.product.render.name or '-' }}</td>
             {% endif %}
+
             <td class="text-right">{{ line.render.quantity }}</td>
-            {% if line.raw.price_with_taxes %}
-            <td class="text-right">{{ line.render.taxed_gross_unit_price}}</td>
-            <td class="text-right">{{ ((line.raw.taxed_gross_unit_price or Decimal(0)) - (line.raw.taxed_unit_price or Decimal(0))) | render(line.raw.__class__.taxed_gross_unit_price.digits[1]) }}</td>
-            <td class="text-right">{{ line.render.taxed_amount }}</td>
+
+            {% if line.raw.gross_unit_price %}
+              <td class="text-right">{{ line.render.gross_unit_price }}</td>
+              {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
+                <td class="text-right">
+                    {% if line.raw.discount1 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount1*100) }}% <br>
+                    {%endif%}
+                    {% if line.raw.discount2 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br>
+                    {%endif%}
+                    {% if line.raw.discount3 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br>
+                    {%endif%}
+                </td>
+              {%elif line.raw.discount%}
+                <td class="text-right"> {{ line.render.discount}} %</td>
+              {%else%}
+                <td> </td>
+              {%endif%}
             {% else %}
-            <td class="text-right">{{ line.render.unit_price }}</td>
-            <td class="text-right">{{ line.render.amount }}</td>
+              <td class="text-right">{{ line.render.unit_price }}</td>
+              <td></td>
             {% endif %}
+            <td class="text-right">{{ line.render.amount }}</td>
           </tr>
         {% endfor %}
 

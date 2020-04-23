@@ -53,5 +53,15 @@
         <field name="implements" ref="html_report.document_info_macro_signature"/>
     </record>
 
+    <record model='html.template.signature' id="document_totals_macro_signature">
+        <field name="name">show_totals(record)</field>ac
+    </record>
+    <record model='html.template' id="document_totals_macro_id">
+        <field name="name">Document Totals</field>
+        <field name="type">macro</field>
+        <field name="filename">templates/macros/totals_macro.html</field>
+        <field name="implements" ref="html_report.document_totals_macro_signature"/>
+    </record>
+
   </data>
 </tryton>
