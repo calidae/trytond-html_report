@@ -19,6 +19,17 @@
         <field name="implements" ref="html_report.purchase_lines_macro_signature"/>
     </record>
 
+    <record model='html.template.signature' id="purchase_document_info_macro_signature">
+        <field name="name">show_document_info(record)</field>
+    </record>
+    <record model='html.template' id="purchase_document_info_macro_id">
+        <field name="name">Purchase Document info</field>
+        <field name="type">macro</field>
+        <field name="filename">purchase/templates/document_info_macro.html</field>
+        <field name="implements" ref="html_report.purchase_document_info_macro_signature"/>
+    </record>
+
+
     <!-- Invoice Report -->
     <record model="ir.action.report" id="purchase.report_purchase">
         <field name="active" eval="False"/>
@@ -76,8 +87,8 @@
 
     <record model="html.report.template" id="report_purchase_document_id">
       <field name="report" ref="html_report_purchase"/>
-      <field name="signature" ref="document_info_macro_signature"/>
-      <field name="template" ref="document_info_macro_id"/>
+      <field name="signature" ref="purchase_document_info_macro_signature"/>
+      <field name="template" ref="purchase_document_info_macro_id"/>
     </record>
   </data>
 </tryton>
