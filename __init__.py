@@ -8,6 +8,7 @@ from . import translation
 from . import html
 from . import engine
 from . import invoice
+from . import sale
 
 
 def register():
@@ -27,3 +28,4 @@ def register():
         module=module)
 
     invoice.register(module)
+    sale.register(module)

@@ -3,13 +3,12 @@
 
 {% block title %}
     {{ super() }}
-    {{ _('Invoice') }}
+    {{ label('account.invoice') }}
 {% endblock %}
 
 {% block main %}
   {% set invoice = record %}
   {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
-  <h2>{{ invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code }}</h2>
   {{ show_invoice_lines(invoice) }}
 
     <table class="condensed">

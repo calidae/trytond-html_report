@@ -1,4 +1,6 @@
-{% set tax_identifier = record.party_tax_identifier or record.party.tax_identifier %}
+{% set tax_identifier = record.raw.party_tax_identifier and record.party_tax_identifier or record.party.tax_identifier %}
 {{ address.render.full_address }}
 </br>
-{{ tax_identifier.render.code }}
+{% if tax_identifier %}
+  {{tax_identifier.render.code }}
+{%endif%}

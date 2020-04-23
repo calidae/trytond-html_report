@@ -1,8 +1,24 @@
 {% if record.raw.__name__ == 'account.invoice' %}
   {% set title = label(record.raw.__name__) %}
-  {% set document_date = record.render.invoice_date %}
+  {% set document_date = record.raw.invoice_date and record.render.invoice_date %}
   {% set label_date = label(record.raw.__name__, 'invoice_date') %}
 {% endif %}
 
-<h1 class="document">{{title}}:{{ record.render.number }} <h1>
+{% if record.raw.__name__ == 'sale.sale' %}
+  {% set title = label(record.raw.__name__) %}
+  {% set document_date = record.raw.sale_date and record.render.sale_date or ''%}
+  {% set label_date = label(record.raw.__name__, 'sale_date') %}
+{% endif %}
+
+{% if record.raw.__name__ == 'purchase.purchase' %}
+  {% set title = label(record.raw.__name__) %}
+  {% set document_date = record.raw.purchase_date and record.render.purchase_date or ''%}
+  {% set label_date = label(record.raw.__name__, 'purchase_date') %}
+{% endif %}
+
+
+<h1 class="document">{{title}}:{{ record.raw.number and record.render.number }} <h1>
 <h2 class="document">{{label_date}}:{{ document_date }} </h2>
+{% if record.raw.reference %}
+  <h2 class="document">{{ label(record.raw.__name__, 'reference') }}:{{ record.raw.reference and record.render.reference }} </h2>
+{% endif %}

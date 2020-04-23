@@ -1,0 +1,22 @@
+{% if document.raw.payment_term %}
+ <strong> {{label('document.raw.__name__', 'payment_term') }}: </strong>{{ document.payment_term.render.name }}
+ <br/>
+{% endif %}
+{% if document.raw.payment_type %}
+<strong>{{ label(document.raw.__name__, 'payment_type') }}: </strong>{{ document.payment_type.render.name }}
+ <br/>
+{% endif %}
+{% if document.raw.bank_account %}
+ <strong>{{ label(document.raw.__name__, 'bank_account') }}: </strong>{{ document.bank_account.render.rec_name }}
+ {% if document.bank_account.bank.raw.bic %}
+   ({{ document.bank_account.bank.render.bic }})
+ {% endif %}
+ <br/>
+{% endif %}
+<strong>{{label(document.raw.__name__, 'currency')}}:</strong> {{document.currency.render.name}}
+{% if document.raw.different_currencies %}
+<strong>{{label(document.raw.__name__, 'currency')}}:</strong> {{document.company.currency.render.name}}
+<strong>{{label(document.raw.__name__, 'company_untaxed_amount')}}:</strong> {{document.render.company_untaxed_amount}}
+<strong>{{label(document.raw.__name__, 'company_tax_amount')}}:</strong> {{document.render.company_tax_amount}}
+<strong>{{label(document.raw.__name__, 'company_total_amount')}}:</strong> {{document.render.company_total_amount}}
+{% endif %}

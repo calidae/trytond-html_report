@@ -63,5 +63,15 @@
         <field name="implements" ref="html_report.document_totals_macro_signature"/>
     </record>
 
+    <record model='html.template.signature' id="payment_info_macro_signature">
+        <field name="name">show_payment_info(document)</field>ac
+    </record>
+    <record model='html.template' id="payment_info_macro_id">
+        <field name="name">Payment Info</field>
+        <field name="type">macro</field>
+        <field name="filename">templates/macros/payment_info_macro.html</field>
+        <field name="implements" ref="html_report.payment_info_macro_signature"/>
+    </record>
+
   </data>
 </tryton>

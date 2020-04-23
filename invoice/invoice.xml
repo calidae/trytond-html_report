@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 <tryton>
   <data depends="account_invoice,account_payment_type,account_bank">
-    <!-- view -->
-    <record model="ir.ui.view" id="invoice_view_form">
-        <field name="model">account.invoice</field>
-        <field name="inherit" ref="account_invoice.invoice_view_form"/>
-        <field name="name">invoice_form</field>
-    </record>
-
     <!-- html.template and signatures -->
     <record model='html.template' id="invoice_template_id">
         <field name="name">Invoice</field>
@@ -55,16 +48,6 @@
         <field name="implements" ref="html_report.invoice_taxes_macro_signature"/>
     </record>
 
-    <record model='html.template.signature' id="invoice_payment_info_macro_signature">
-        <field name="name">show_payment_info(invoice)</field>ac
-    </record>
-    <record model='html.template' id="invoice_payment_info_macro_id">
-        <field name="name">Payment Info</field>
-        <field name="type">macro</field>
-        <field name="filename">invoice/templates/payment_info_macro.html</field>
-        <field name="implements" ref="html_report.invoice_payment_info_macro_signature"/>
-    </record>
-
     <!-- Invoice Report -->
     <record model="ir.action.report" id="account_invoice.report_invoice">
         <field name="active" eval="False"/>
@@ -103,8 +86,8 @@
 
     <record model="html.report.template" id="report_invoice_invoice_payment_id">
       <field name="report" ref="html_report_invoice"/>
-      <field name="signature" ref="invoice_payment_info_macro_signature"/>
-      <field name="template" ref="invoice_payment_info_macro_id"/>
+      <field name="signature" ref="payment_info_macro_signature"/>
+      <field name="template" ref="payment_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_lines_id">

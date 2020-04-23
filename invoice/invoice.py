@@ -4,7 +4,6 @@ from trytond.pool import PoolMeta
 
 class Invoice(metaclass=PoolMeta):
     __name__ = 'account.invoice'
-    simplified = fields.Boolean('Simplified')
     sorted_lines = fields.Function(fields.One2Many('account.invoice.line',
         'line', 'Sorted Lines'), 'get_sorted_lines')
     sorted_keys = fields.Function(fields.Char('Sorted Key'),
