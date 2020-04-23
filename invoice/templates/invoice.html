@@ -1,14 +1,18 @@
 {% extends 'html_report/templates/base.html' %}
 {% set invoice = record %}
 
+
 {% block title %}
+  {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
     {{ super() }}
     {{ label('account.invoice') }}
+  {% endlanguage %}
 {% endblock %}
 
 {% block main %}
+{% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
   {% set invoice = record %}
-  {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
   {{ show_invoice_lines(invoice) }}
 
     <table class="condensed">
@@ -27,7 +31,6 @@
 <br>
 {{invoice.render.comment}}
 {% endif %}
-
-
 {% endlanguage %}
+
 {% endblock %}

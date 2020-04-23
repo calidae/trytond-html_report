@@ -127,8 +127,8 @@ class SwitchableLanguageExtension(Extension):
     def _switch_language(self, language_code, caller):
         if self.translations:
             self.translations.set_language(language_code)
-        Transaction().set_context(report_lang=language_code)
-        output = caller()
+        with Transaction().set_context(language=language_code):
+            output = caller()
         return output
 
 
@@ -198,6 +198,8 @@ class Formatter:
     def _formatted_char(self, record, field, value):
         if value is None:
             return ''
+        Model = Pool().get(record.__name__)
+        value = getattr(Model(record.id), field.name)
         return value.replace('\n', '<br/>')
 
     def _formatted_text(self, record, field, value):
@@ -503,16 +505,23 @@ class HTMLReportMixin:
 
     @classmethod
     def label(cls, model, field=None, lang=None):
+
         Translation = Pool().get('ir.translation')
         if not lang:
             lang = Transaction().language
         type_ = 'field'
         if field == None:
-            type_ = 'model'
-            field = 'name'
+            Model = Pool().get('ir.model')
+            model, = Model.search([(['model', '=', model])])
+            return model.name
 
-        source = "%s,%s" % (model,field)
-        return Translation.get_source(source, type_, lang)
+        Model = Pool().get(model)
+        field = Model._fields[field]
+        translations = field.definition_translations(Model, language=lang)
+        for f, type_, lang, translation in translations:
+            if type_ == 'field':
+                return translation
+
 
     @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
