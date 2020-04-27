@@ -1,0 +1,46 @@
+<table style="width:100%;">
+  <thead>
+    <tr>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    {% if document.raw.lot %}
+      <th nowrap>{{ label('stock.move', 'lot') }}</th>
+    {% endif %}
+    {% if document.raw.lot %}
+      <th nowrap>{{ label('stock.move', 'lot') }}</th>
+    {% endif %}
+    {% if document.raw.lot and document.lot.raw.expiration_date %}
+      <th nowrap>{{ label('stock.lot', 'expiration_date') }}</th>
+    {% endif %}
+    <th class="text-right" nowrap>{{label('stock.move', 'quantity') }}</th>
+    <th nowrap>{{ label('stock.move', 'uom') }}</th>
+
+    </tr>
+  </thead>
+  <tbody class="border">
+    {% for key in document.raw.sorted_keys %}
+        {% if key %}
+          <th class="sub_header" colspan="6">
+            {% for item in key %}
+              {{ label(item.__name__) }} : {{ item.number }}
+            {% endfor %}
+           </th>
+        {% endif %}
+
+      {% for move in record.sorted_keys %}
+          <tr>
+            <td>{{ move.product and move.product.render.code or '-' }}</td>
+            <td>{{ move.product and move.product.render.name or '-' }}</td>
+            {% if document.raw.lot %}
+              <th nowrap>{{ document.lot.raw.name }}</th>
+            {% endif %}
+            {% if document.raw.lot and document.lot.raw.expiration_date %}
+              <th nowrap>{{ document.lot.render.expiration_date }}</th>
+            {% endif %}
+            <td class="text-right">{{ move.render.quantity }}</td>
+            <td>{{ move.uom.render.name }}</td>
+          </tr>
+        {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>

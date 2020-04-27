@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
-{% language record.party.lang and record.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+{% set party = record.raw.party and record.party or record.raw.customer and record.customer or record.raw.supplier and record.supplier %}
+{% set address = record.raw.invoice_address and record.invoice_address or record.raw.delivery_address and record.delivery_address or party.addresses[0] %}
+{% language party.raw.lang and party.lang.raw.code or company.party.lang and company.party.raw.lang.code or 'en' %}
 <header id="header">
     <table>
       <tr><td>
@@ -18,8 +20,8 @@
         <td class="party_info">
             {{ show_company_info(record) }}
           </td>
-          <td class="party_info">              
-              {{ show_party_info(record, record.invoice_address) }}
+          <td class="party_info">
+              {{ show_party_info(record, address) }}
           </td>
         </tr>
     </table>

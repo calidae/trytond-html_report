@@ -29,7 +29,7 @@
         <field name="implements" ref="html_report.sale_document_info_macro_signature"/>
     </record>
 
-    <!-- Invoice Report -->
+    <!-- Sale Report -->
     <record model="ir.action.report" id="sale.report_sale">
         <field name="active" eval="False"/>
     </record>

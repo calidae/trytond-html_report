@@ -19,8 +19,7 @@ class Invoice(metaclass=PoolMeta):
         for x in self.sorted_lines:
             if x.sort_key in lines:
                 continue
-            lines.append(x.sort_key)
-        print("l:", lines)
+            lines.append(x.sort_key)        
         return lines
 
 

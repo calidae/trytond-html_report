@@ -1,0 +1,14 @@
+{% extends 'html_report/templates/base.html' %}
+
+{% block title %}
+    {{ super() }}
+    {{ label('stock.shipment.out') }}
+{% endblock %}
+
+{% block main %}
+  {% language record.customer.lang and record.customer.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
+  {{ show_stock_moves(record) }}
+
+{% endlanguage %}
+{% endblock %}
