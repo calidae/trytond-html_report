@@ -41,9 +41,9 @@
               <td>{{ move.product and move.product.render.code or '-' }}</td>
               <td>{{ move.product and move.product.render.name or '-' }}</td>
               {% if document.raw.show_lot %}
-                <td>{{ move.lot and move.lot.raw.name  or ''}}</th>
+                <td>{{ move.lot and move.lot.raw.name  or ''}}</td>
                 {% if move.raw.lot and move.lot.raw.expiration_date %}
-                    <td>{{ move.lot.render.expiration_date }}</th>
+                    <td>{{ move.lot.render.expiration_date }}</td>
                 {%else%}
                     <td/>
                 {% endif %}

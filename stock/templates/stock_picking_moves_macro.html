@@ -1,0 +1,53 @@
+<table style="width:100%;">
+  <thead>
+    <tr>
+
+    {% if locations in ('from', 'both') %}
+      <th nowrap>{{ label('stock.move', 'from_location') }}</th>
+    {%endif%}
+    {%if locations in ('to', 'both') %}
+      <th nowrap>{{ label('stock.move', 'to_location') }}</th>
+    {%endif%}
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    {% if document.raw.show_lot %}
+      <th>{{ label('stock.move', 'lot') }}</th>
+      {% if document.raw.show_lot and document.inventory_moves and 'expiration_date' in document.inventory_moves[0]%}
+        <th>{{ label('stock.lot', 'expiration_date') }}</th>
+      {%else%}
+        <th class="hide"/>
+      {% endif %}
+    {%else%}
+      <th class="hide"/>
+    {% endif %}
+    <th class="text-right" nowrap>{{label('stock.move', 'quantity') }}</th>
+    <th nowrap>{{ label('stock.move', 'uom') }}</th>
+    </tr>
+  </thead>
+  <tbody class="border">
+    {% for move in document.sorted_lines %}
+        <tr>
+          {%if locations in ('from', 'both') %}
+            <td>{{move.from_location.render.code}} {{move.from_location.render.name}}</td>
+          {%endif%}
+          {%if locations in ('to', 'both') %}
+            <td>{{move.to_location.render.code}} {{move.to_location.render.name}}</td>
+          {%endif%}
+          <td>{{ move.product and move.product.render.code or '-' }}</td>
+          <td>{{ move.product and move.product.render.name or '-' }}</td>
+          {% if document.raw.show_lot %}
+            <td>{{ move.lot and move.lot.raw.name  or ''}}</td>
+            {% if move.raw.lot and move.lot.raw.expiration_date %}
+                <td>{{ move.lot.render.expiration_date }}</td>
+            {%else%}
+                <td/>
+            {% endif %}
+          {%else%}
+            <td/>
+          {%endif%}
+          <td class="text-right">{{ move.render.quantity }}</td>
+          <td>{{ move.uom.render.name }}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
