@@ -1,5 +1,5 @@
 {% if document.raw.payment_term %}
- <strong> {{label('document.raw.__name__', 'payment_term') }}: </strong>{{ document.payment_term.render.name }}
+ <strong> {{label(document.raw.__name__, 'payment_term') }}: </strong>{{ document.payment_term.render.name }}
  <br/>
 {% endif %}
 {% if document.raw.payment_type %}

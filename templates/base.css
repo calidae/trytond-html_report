@@ -68,7 +68,6 @@ table {
   margin-bottom: 1rem;
   color: #212529;
   border-collapse:collapse;
-
 }
 
 table.tr {
@@ -112,6 +111,7 @@ th.sub_header{
   vertical-align: top;
   border-bottom: 1px solid #dee2e6;
   border-collapse:separate;
+  column-span:all;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -140,4 +140,15 @@ footer {
   padding: 1.5cm;
   text-align: center;
   font-size: 9px;
+}
+
+.right {
+  float:right;
+}
+
+td.hide {
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
 }

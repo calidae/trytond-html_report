@@ -16,9 +16,9 @@
         <tr>
           {% if line.raw.description %}
             <td colspan="2">{{ line.render.description }}</td>
-          {% elif line.raw.product_supplier%}
+          {% elif line.raw.product_supplier and line.product_supplier.raw.name %}
             <td>{{ line.product_supplier.render.code or '-' }}</td>
-            <td>{{ line.product.supplier.render.name or '-' }}</td>
+            <td>{{ line.product_supplier.render.name or '-' }}</td>
           {% elif line.raw.product %}
             <td>{{ line.product and line.product.render.code or '-' }}</td>
             <td>{{ line.product and line.product.render.name or '-' }}</td>

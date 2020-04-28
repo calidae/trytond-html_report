@@ -3,44 +3,66 @@
     <tr>
     <th nowrap>{{ label('product.product', 'code') }}</th>
     <th nowrap>{{ label('product.template', 'name') }}</th>
-    {% if document.raw.lot %}
-      <th nowrap>{{ label('stock.move', 'lot') }}</th>
-    {% endif %}
-    {% if document.raw.lot %}
-      <th nowrap>{{ label('stock.move', 'lot') }}</th>
-    {% endif %}
-    {% if document.raw.lot and document.lot.raw.expiration_date %}
-      <th nowrap>{{ label('stock.lot', 'expiration_date') }}</th>
+    {% if document.raw.show_lot %}
+      <th>{{ label('stock.move', 'lot') }}</th>
+      {% if document.raw.show_lot and document.inventory_moves and 'expiration_date' in document.inventory_moves[0]%}
+        <th>{{ label('stock.lot', 'expiration_date') }}</th>
+      {%else%}
+        <th class="hide"/>
+      {% endif %}
+    {%else%}
+      <th class="hide"/>
     {% endif %}
     <th class="text-right" nowrap>{{label('stock.move', 'quantity') }}</th>
     <th nowrap>{{ label('stock.move', 'uom') }}</th>
-
+    {%if valued == True %}
+      <th class="text-right">{{label('stock.move', 'gross_unit_price') }}</th>
+      <th class="text-right"></th>
+      <th class="text-right">{{ label('stock.move', 'amount') }}</th>
+    {%else%}
+      <th class="hide"/>
+      <th class="hide"/>
+      <th class="hide"/>
+    {%endif%}
     </tr>
   </thead>
   <tbody class="border">
     {% for key in document.raw.sorted_keys %}
         {% if key %}
-          <th class="sub_header" colspan="6">
+          <th class="sub_header" colspan="9">
             {% for item in key %}
-              {{ label(item.__name__) }} : {{ item.number }}
+              {{ label(item.__name__) }} : {{ item.number }} {{ label(item.__name__, 'sale_date') }} : {{item.sale_date}}
             {% endfor %}
            </th>
         {% endif %}
 
-      {% for move in record.sorted_keys %}
-          <tr>
-            <td>{{ move.product and move.product.render.code or '-' }}</td>
-            <td>{{ move.product and move.product.render.name or '-' }}</td>
-            {% if document.raw.lot %}
-              <th nowrap>{{ document.lot.raw.name }}</th>
-            {% endif %}
-            {% if document.raw.lot and document.lot.raw.expiration_date %}
-              <th nowrap>{{ document.lot.render.expiration_date }}</th>
-            {% endif %}
-            <td class="text-right">{{ move.render.quantity }}</td>
-            <td>{{ move.uom.render.name }}</td>
-          </tr>
-        {% endfor %}
+      {% for move in document.sorted_lines %}
+            <tr>
+              <td>{{ move.product and move.product.render.code or '-' }}</td>
+              <td>{{ move.product and move.product.render.name or '-' }}</td>
+              {% if document.raw.show_lot %}
+                <td>{{ move.lot and move.lot.raw.name  or ''}}</th>
+                {% if move.raw.lot and move.lot.raw.expiration_date %}
+                    <td>{{ move.lot.render.expiration_date }}</th>
+                {%else%}
+                    <td/>
+                {% endif %}
+              {%else%}
+                <td/>
+              {%endif%}
+              <td class="text-right">{{ move.render.quantity }}</td>
+              <td>{{ move.uom.render.name }}</td>
+              {%if valued == True %}
+                <td class="text-right" nowrap>{{move.render.gross_unit_price}}</td>
+                <td class="text-right" nowrap>{{move.render.discount}}</td>
+                <td class="text-right" nowrap>{{move.render.amount}}</td>
+              {%else%}
+                <td class="hide"/>
+                <td class="hide"/>
+                <td class="hide"/>
+              {%endif%}
+            </tr>
+      {% endfor %}
     {% endfor %}
   </tbody>
 </table>
