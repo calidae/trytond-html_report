@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block main %}
-  {% language shipment.customer.lang and shipment.customer.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+  {% language company.party.lang and company.party.raw.lang.code or 'en' %}
 
     {% set shipment = record %}
     {% set valued = False %}
-    {{ show_picking_moves(shipment, 'both') }}
+    {{ show_picking_moves(shipment.moves,  shipment.raw.show_lot, 'both') }}
 
   {% endlanguage %}
 {% endblock %}

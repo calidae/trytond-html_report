@@ -29,7 +29,7 @@
   </record>
 
   <record model='html.template.signature' id="stock_picking_moves_macro_signature">
-      <field name="name">show_picking_moves(document, locations)</field>
+      <field name="name">show_picking_moves(moves, show_lot, locations)</field>
   </record>
   <record model='html.template' id="stock_picking_moves_macro_id">
       <field name="name">Picking Moves</field>
@@ -96,7 +96,7 @@
   </record>
 
   <record model='html.template.signature' id="internal_pickin_party_info_macro_signature">
-      <field name="name">show_party(document, address)</field>
+      <field name="name">show_party_info(document, address)</field>
   </record>
   <record model='html.template' id="internal_picking_party_info_macro_id">
       <field name="name">Internal Picking Party Info</field>

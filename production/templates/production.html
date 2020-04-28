@@ -1,0 +1,17 @@
+{% extends 'html_report/templates/base.html' %}
+{% set production = record %}
+
+{% block title %}
+    {{ super() }}
+    {{ label('production.production') }}
+{% endblock %}
+
+{% block main %}
+  {% language company.party.lang and company.party.raw.lang.code or 'en' %}
+
+    {% set production = record %}
+    {{ show_picking_moves(production.inputs,  shipment.raw.show_lot, 'both') }}
+    {{ show_picking_moves(production.outputs,  shipment.raw.show_lot, 'both') }}
+
+  {% endlanguage %}
+{% endblock %}
