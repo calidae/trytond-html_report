@@ -20,6 +20,15 @@
       <field name="implements" ref="html_report.production_document_info_macro_signature"/>
   </record>
 
+  <record model='html.template.signature' id="production_operation_macro_signature">
+      <field name="name">show_operation(operations)</field>
+  </record>
+  <record model='html.template' id="production_operation_macro_id">
+      <field name="name">Production Operation info</field>
+      <field name="type">macro</field>
+      <field name="filename">production/templates/show_operations_macro.html</field>
+      <field name="implements" ref="html_report.production_operation_macro_signature"/>
+  </record>
 
   <record model="ir.action.report" id="html_report_production">
       <field name="name">Production</field>
@@ -40,13 +49,17 @@
       <field name="action" ref="html_report_production"/>
   </record>
 
-
   <record model="html.report.template" id="report_production_company_id">
+    <field name="report" ref="html_report_production"/>
+    <field name="signature" ref="production_operation_macro_signature"/>
+    <field name="template" ref="production_operation_macro_id"/>
+  </record>
+
+  <record model="html.report.template" id="report_production_operation_id">
     <field name="report" ref="html_report_production"/>
     <field name="signature" ref="company_info_macro_signature"/>
     <field name="template" ref="company_info_macro_id"/>
   </record>
-
 
   <record model="html.report.template" id="report_production_stock_moves_id">
     <field name="report" ref="html_report_production"/>
@@ -64,6 +77,22 @@
     <field name="report" ref="html_report_production"/>
     <field name="signature" ref="production_document_info_macro_signature"/>
     <field name="template" ref="production_document_info_macro_id"/>
+  </record>
+
+  <record model='html.template.signature' id="production_party_info_macro_signature">
+      <field name="name">show_party_info(document, address)</field>
+  </record>
+  <record model='html.template' id="production_party_info_macro_id">
+      <field name="name">production Party Info</field>
+      <field name="type">macro</field>
+      <field name="filename">stock/templates/party_info_macro.html</field>
+      <field name="implements" ref="production_party_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_production_party_id">
+    <field name="report" ref="html_report_production"/>
+    <field name="signature" ref="production_party_info_macro_signature"/>
+    <field name="template" ref="production_party_info_macro_id"/>
   </record>
 
 </data>
