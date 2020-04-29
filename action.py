@@ -11,7 +11,6 @@ from trytond.cache import Cache
 
 __all__ = ['ActionReport', 'HTMLTemplateTranslation']
 
-
 class ActionReport(metaclass=PoolMeta):
     __name__ = 'ir.action.report'
     html_template = fields.Many2One('html.template', 'Template',
@@ -54,6 +53,10 @@ class ActionReport(metaclass=PoolMeta):
         'Translations')
     _html_translation_cache = Cache('html.template.translation',
         size_limit=10240, context=False)
+    html_header_content = fields.Function(fields.Binary('Header Content'),
+        'get_content')
+    html_footer_content = fields.Function(fields.Binary('Footer Content'),
+        'get_content')
 
     @classmethod
     def __setup__(cls):
@@ -188,7 +191,7 @@ class HTMLTemplateTranslation(ModelSQL, ModelView):
     _order_name = 'src'
     report = fields.Many2One('ir.action.report', 'Report', required=True)
     src = fields.Text('Source', required=True)
-    value = fields.Text('Translation Value', required=True)
+    value = fields.Text('Translation Value')
     lang = fields.Selection('get_language', string='Language', required=True)
     _get_language_cache = Cache('html.template.translation.get_language')
 

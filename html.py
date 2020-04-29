@@ -69,6 +69,20 @@ class Template(ModelSQL, ModelView):
             return '{%% macro %s %%}\n%s\n{%% endmacro %%}' % (
                 self.implements.name, self.get_base_content())
 
+    @classmethod
+    def copy(cls, templates, default=None):
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        res = []
+        default.setdefault('filename', None)
+        for template in templates:
+            default.setdefault('content', template.all_content)
+            res += super(Template, cls).copy([template], default=default)
+        return res
+
+
 
 class TemplateUsage(ModelSQL):
     'HTML Template Usage'
