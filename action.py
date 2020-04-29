@@ -50,19 +50,6 @@ class ActionReport(metaclass=PoolMeta):
         },
         depends=['template_extension']), 'get_content')
 
-    html_header_report = fields.Char('Header')
-    html_footer_report = fields.Char('Footer')
-    html_header_content = fields.Function(fields.Binary('Header Content',
-        states={
-                'invisible': Eval('template_extension') != 'jinja',
-        },
-        depends=['template_extension']), 'get_content')
-
-    html_footer_content = fields.Function(fields.Binary('Footer Content',
-        states={
-                'invisible': Eval('template_extension') != 'jinja',
-        },
-        depends=['template_extension']), 'get_content')
     html_translations = fields.One2Many('html.template.translation', 'report',
         'Translations')
     _html_translation_cache = Cache('html.template.translation',

@@ -12,14 +12,6 @@
             <field name="html_templates" colspan="4"/>
             <separator name="html_content" colspan="4"/>
             <field name="html_content" colspan="4"/>
-            <label name="html_header_report"/>
-            <field name="html_header_report"/>
-            <label name="html_header_content"/>
-            <field name="html_header_content"/>
-            <label name="html_footer_report"/>
-            <field name="html_footer_report"/>
-            <label name="html_footer_content"/>
-            <field name="html_footer_content"/>
         </page>
     </xpath>
 </data>
