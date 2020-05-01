@@ -70,4 +70,4 @@ class ReportTemplate(ModelSQL, ModelView):
     template = fields.Many2One('html.template', 'Template', required=True,
         domain=[
             ('implements', '=', Eval('signature')),
-            ])
+            ], depends=['signature'])
