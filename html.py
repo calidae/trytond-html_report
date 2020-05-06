@@ -50,9 +50,8 @@ class Template(ModelSQL, ModelView):
         if not self.filename:
             return self.content
         value = None
-        path = os.path.join('html_report', self.filename)
         try:
-            with file_open(path, subdir='modules', mode='r',
+            with file_open(self.filename, subdir='modules', mode='r',
                     encoding='utf-8') as fp:
                 value = fp.read()
         except IOError:

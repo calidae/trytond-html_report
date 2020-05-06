@@ -82,8 +82,8 @@ class ActionReport(metaclass=PoolMeta):
         content = []
         for template in self.html_templates:
             if template.template.all_content:
-                content.append(template.template.all_content)
-        content.append(obj.all_content)
+                content.append(template.template.all_content or '')
+        content.append(obj.all_content or '')
         return '\n\n'.join(content)
 
     @classmethod

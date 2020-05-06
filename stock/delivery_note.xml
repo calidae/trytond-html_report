@@ -6,7 +6,7 @@
   <record model='html.template' id="delivery_note_template_id">
       <field name="name">Delivery Note</field>
       <field name="type">base</field>
-      <field name="filename">stock/templates/delivery_note.html</field>
+      <field name="filename">html_report/stock/templates/delivery_note.html</field>
   </record>
 
   <record model='html.template.signature' id="stock_moves_macro_signature">
@@ -15,7 +15,7 @@
   <record model='html.template' id="stock_moves_macro_id">
       <field name="name">Stock Moves</field>
       <field name="type">macro</field>
-      <field name="filename">stock/templates/stock_moves_macro.html</field>
+      <field name="filename">html_report/stock/templates/stock_moves_macro.html</field>
       <field name="implements" ref="html_report.stock_moves_macro_signature"/>
   </record>
 
@@ -25,7 +25,7 @@
   <record model='html.template' id="delivery_note_document_info_macro_id">
       <field name="name">Delivery Note Document info</field>
       <field name="type">macro</field>
-      <field name="filename">stock/templates/delivery_note_document_info_macro.html</field>
+      <field name="filename">html_report/stock/templates/delivery_note_document_info_macro.html</field>
       <field name="implements" ref="html_report.delivery_note_document_info_macro_signature"/>
   </record>
 
@@ -86,7 +86,7 @@
   <record model='html.template' id="valued_delivery_note_template_id">
       <field name="name">Valued Delivery Note</field>
       <field name="type">base</field>
-      <field name="filename">stock/templates/valued_delivery_note.html</field>
+      <field name="filename">html_report/stock/templates/valued_delivery_note.html</field>
   </record>
 
   <record model="ir.action.report" id="html_report_valued_delivery_note">

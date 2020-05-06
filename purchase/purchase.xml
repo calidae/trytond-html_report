@@ -6,7 +6,7 @@
     <record model='html.template' id="purchase_template_id">
         <field name="name">Purchase</field>
         <field name="type">base</field>
-        <field name="filename">purchase/templates/purchase.html</field>
+        <field name="filename">html_report/purchase/templates/purchase.html</field>
     </record>
 
     <record model='html.template.signature' id="purchase_lines_macro_signature">
@@ -15,7 +15,7 @@
     <record model='html.template' id="purchase_lines_macro_id">
         <field name="name">Purchase Lines</field>
         <field name="type">macro</field>
-        <field name="filename">purchase/templates/lines_macro.html</field>
+        <field name="filename">html_report/purchase/templates/lines_macro.html</field>
         <field name="implements" ref="html_report.purchase_lines_macro_signature"/>
     </record>
 
@@ -25,7 +25,7 @@
     <record model='html.template' id="purchase_document_info_macro_id">
         <field name="name">Purchase Document info</field>
         <field name="type">macro</field>
-        <field name="filename">purchase/templates/document_info_macro.html</field>
+        <field name="filename">html_report/purchase/templates/document_info_macro.html</field>
         <field name="implements" ref="html_report.purchase_document_info_macro_signature"/>
     </record>
 
