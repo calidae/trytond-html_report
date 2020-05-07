@@ -522,16 +522,13 @@ class HTMLReportMixin:
         type_ = 'field'
         if field == None:
             Model = Pool().get('ir.model')
-            model, = Model.search([(['model', '=', model])])
+            model, = Model.search([('model', '=', model)])
             return model.name
-
-        Model = Pool().get(model)
-        field = Model._fields[field]
-        translations = field.definition_translations(Model, language=lang)
-        for f, type_, lang, translation in translations:
-            if type_ == 'field':
-                return translation
-
+        else:
+            translation, = Translation.search([('name', '=', "%s,%s"%(model,field)),
+                ('lang', '=', lang)], limit=1)
+            return translation.value or translation.src
+        
 
     @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
