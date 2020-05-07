@@ -6,6 +6,7 @@
     <record model='html.template' id="purchase_template_id">
         <field name="name">Purchase</field>
         <field name="type">base</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/purchase/templates/purchase.html</field>
     </record>
 
@@ -15,6 +16,7 @@
     <record model='html.template' id="purchase_lines_macro_id">
         <field name="name">Purchase Lines</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/purchase/templates/lines_macro.html</field>
         <field name="implements" ref="html_report.purchase_lines_macro_signature"/>
     </record>
@@ -25,6 +27,7 @@
     <record model='html.template' id="purchase_document_info_macro_id">
         <field name="name">Purchase Document info</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/purchase/templates/document_info_macro.html</field>
         <field name="implements" ref="html_report.purchase_document_info_macro_signature"/>
     </record>
@@ -57,38 +60,32 @@
     <record model="html.report.template" id="report_purchase_company_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="company_info_macro_signature"/>
-      <field name="template" ref="company_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_payment_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="payment_info_macro_signature"/>
-      <field name="template" ref="payment_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_purchase_lines_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="purchase_lines_macro_signature"/>
-      <field name="template" ref="purchase_lines_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_purchase_party_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="party_macro_signature"/>
-      <field name="template" ref="party_macro_id"/>
     </record>
 
 
     <record model="html.report.template" id="report_purchase_invoice_totals_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="document_totals_macro_signature"/>
-      <field name="template" ref="document_totals_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_document_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="purchase_document_info_macro_signature"/>
-      <field name="template" ref="purchase_document_info_macro_id"/>
     </record>
   </data>
 </tryton>

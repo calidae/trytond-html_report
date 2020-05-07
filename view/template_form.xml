@@ -5,6 +5,8 @@
     <field name="type"/>
     <label name="filename"/>
     <field name="filename"/>
+    <label name="sequence"/>
+    <field name="sequence"/>
     <label name="implements"/>
     <field name="implements"/>
     <field name="content" widget="html" colspan="2"/>

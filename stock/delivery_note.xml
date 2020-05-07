@@ -6,6 +6,7 @@
   <record model='html.template' id="delivery_note_template_id">
       <field name="name">Delivery Note</field>
       <field name="type">base</field>
+      <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/delivery_note.html</field>
   </record>
 
@@ -15,6 +16,7 @@
   <record model='html.template' id="stock_moves_macro_id">
       <field name="name">Stock Moves</field>
       <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/stock_moves_macro.html</field>
       <field name="implements" ref="html_report.stock_moves_macro_signature"/>
   </record>
@@ -25,6 +27,7 @@
   <record model='html.template' id="delivery_note_document_info_macro_id">
       <field name="name">Delivery Note Document info</field>
       <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/delivery_note_document_info_macro.html</field>
       <field name="implements" ref="html_report.delivery_note_document_info_macro_signature"/>
   </record>
@@ -56,27 +59,23 @@
   <record model="html.report.template" id="report_delivery_note_company_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
-    <field name="template" ref="company_info_macro_id"/>
   </record>
 
 
   <record model="html.report.template" id="report_delivery_note_stock_moves_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="stock_moves_macro_signature"/>
-    <field name="template" ref="stock_moves_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_delivery_note_delivery_note_party_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="party_macro_signature"/>
-    <field name="template" ref="party_macro_id"/>
   </record>
 
 
   <record model="html.report.template" id="report_delivery_note_document_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="delivery_note_document_info_macro_signature"/>
-    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
 </data>
@@ -86,6 +85,7 @@
   <record model='html.template' id="valued_delivery_note_template_id">
       <field name="name">Valued Delivery Note</field>
       <field name="type">base</field>
+      <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/valued_delivery_note.html</field>
   </record>
 
@@ -112,32 +112,27 @@
   <record model="html.report.template" id="report_valued_delivery_note_company_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
-    <field name="template" ref="company_info_macro_id"/>
   </record>
 
 
   <record model="html.report.template" id="report_valued_delivery_note_stock_moves_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="stock_moves_macro_signature"/>
-    <field name="template" ref="stock_moves_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_valued_delivery_note_delivery_note_party_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="party_macro_signature"/>
-    <field name="template" ref="party_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_valued_delivery_note_document_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="delivery_note_document_info_macro_signature"/>
-    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_valued_delivery_note_totals_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="document_totals_macro_signature"/>
-    <field name="template" ref="document_totals_macro_id"/>
   </record>
 </data>
 </tryton>

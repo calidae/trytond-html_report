@@ -6,6 +6,7 @@
     <record model='html.template' id="sale_template_id">
         <field name="name">Sale</field>
         <field name="type">base</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/sale/templates/sale.html</field>
     </record>
 
@@ -15,6 +16,7 @@
     <record model='html.template' id="sale_lines_macro_id">
         <field name="name">Sale Lines</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/sale/templates/lines_macro.html</field>
         <field name="implements" ref="html_report.sale_lines_macro_signature"/>
     </record>
@@ -25,6 +27,7 @@
     <record model='html.template' id="sale_document_info_macro_id">
         <field name="name">Sale Document info</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/sale/templates/document_info_macro.html</field>
         <field name="implements" ref="html_report.sale_document_info_macro_signature"/>
     </record>
@@ -56,38 +59,32 @@
     <record model="html.report.template" id="report_sale_company_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="company_info_macro_signature"/>
-      <field name="template" ref="company_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_sale_payment_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="payment_info_macro_signature"/>
-      <field name="template" ref="payment_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_sale_sale_lines_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="sale_lines_macro_signature"/>
-      <field name="template" ref="sale_lines_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_sale_sale_party_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="party_macro_signature"/>
-      <field name="template" ref="party_macro_id"/>
     </record>
 
 
     <record model="html.report.template" id="report_sale_invoice_totals_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="document_totals_macro_signature"/>
-      <field name="template" ref="document_totals_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_sale_document_id">
       <field name="report" ref="html_report_sale"/>
       <field name="signature" ref="sale_document_info_macro_signature"/>
-      <field name="template" ref="sale_document_info_macro_id"/>
     </record>
 
 

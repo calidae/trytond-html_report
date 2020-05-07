@@ -1,7 +1,8 @@
 import os
-from trytond.model import ModelSQL, ModelView, fields
+from trytond.model import ModelSQL, ModelView, fields, sequence_ordered
 from trytond.pyson import Eval
 from trytond.tools import file_open
+from trytond.pool import Pool
 
 
 class Signature(ModelSQL, ModelView):
@@ -10,7 +11,7 @@ class Signature(ModelSQL, ModelView):
     name = fields.Char('Name', required=True)
 
 
-class Template(ModelSQL, ModelView):
+class Template(sequence_ordered(), ModelSQL, ModelView):
     'HTML Template'
     __name__ = 'html.template'
     name = fields.Char('Name', required=True)
@@ -99,7 +100,18 @@ class ReportTemplate(ModelSQL, ModelView):
         domain=[('template_extension', '=', 'jinja')], ondelete='CASCADE')
     signature = fields.Many2One('html.template.signature', 'Signature',
         required=True)
-    template = fields.Many2One('html.template', 'Template', required=True,
+    template = fields.Many2One('html.template', 'Template',
         domain=[
             ('implements', '=', Eval('signature')),
             ])
+    template_used = fields.Function(
+        fields.Many2One('html.template', 'Template Used'), 'get_template_used')
+
+
+    def get_template_used(self, name):
+        Template = Pool().get('html.template')
+        if self.template:
+            return self.template.id
+        templates = Template.search([('implements', '=', self.signature)])
+        if templates:
+            return templates[0].id

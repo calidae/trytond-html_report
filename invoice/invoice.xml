@@ -5,6 +5,7 @@
     <record model='html.template' id="invoice_template_id">
         <field name="name">Invoice</field>
         <field name="type">base</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/invoice.html</field>
     </record>
 
@@ -14,6 +15,7 @@
     <record model='html.template' id="invoice_due_dates_macro_id">
         <field name="name">Invoice Due dates</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/due_dates_macro.html</field>
         <field name="implements" ref="html_report.invoice_due_dates_macro_signature"/>
     </record>
@@ -24,6 +26,7 @@
     <record model='html.template' id="invoice_lines_macro_id">
         <field name="name">Invoice Lines</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/lines_macro.html</field>
         <field name="implements" ref="html_report.invoice_lines_macro_signature"/>
     </record>
@@ -34,6 +37,7 @@
     <record model='html.template' id="simplified_invoice_lines_macro_id">
         <field name="name">Invoice Lines Simplified</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/simplified_lines_macro.html</field>
         <field name="implements" ref="html_report.invoice_lines_simplified_macro_signature"/>
     </record>
@@ -44,6 +48,7 @@
     <record model='html.template' id="invoice_taxes_macro_id">
         <field name="name">Invoice Taxes</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/taxes_macro.html</field>
         <field name="implements" ref="html_report.invoice_taxes_macro_signature"/>
     </record>
@@ -54,6 +59,7 @@
     <record model='html.template' id="invoice_document_info_macro_id">
         <field name="name">Invoice Document info</field>
         <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
         <field name="filename">html_report/invoice/templates/document_info_macro.html</field>
         <field name="implements" ref="html_report.invoice_document_info_macro_signature"/>
     </record>
@@ -85,55 +91,46 @@
     <record model="html.report.template" id="report_invoice_invoice_company_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="company_info_macro_signature"/>
-      <field name="template" ref="company_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_due_dates_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_due_dates_macro_signature"/>
-      <field name="template" ref="invoice_due_dates_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_payment_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="payment_info_macro_signature"/>
-      <field name="template" ref="payment_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_lines_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_lines_macro_signature"/>
-      <field name="template" ref="invoice_lines_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_lines_simplified_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_lines_simplified_macro_signature"/>
-      <field name="template" ref="simplified_invoice_lines_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_party_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="party_macro_signature"/>
-      <field name="template" ref="party_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_taxes_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_taxes_macro_signature"/>
-      <field name="template" ref="invoice_taxes_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_invoice_totals_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="document_totals_macro_signature"/>
-      <field name="template" ref="document_totals_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_invoice_document_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_document_info_macro_signature"/>
-      <field name="template" ref="invoice_document_info_macro_id"/>
     </record>
   </data>
 </tryton>
