@@ -65,6 +65,10 @@
     <field name="signature" ref="document_totals_macro_signature"/>
   </record>
 
+  <record model="html.report.template" id="report_picking_note_footer_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="show_footer_signature"/>
+  </record>
 
   <!-- Internal Picking_note -->
   <record model='html.template' id="internal_picking_note_template_id">
@@ -124,5 +128,9 @@
     <field name="signature" ref="delivery_note_document_info_macro_signature"/>
   </record>
 
+  <record model="html.report.template" id="report_internal_picking_note_footer_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="show_footer_signature"/>
+  </record>
 </data>
 </tryton>

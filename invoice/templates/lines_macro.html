@@ -16,6 +16,11 @@
           <th class="sub_header" colspan="6">
             {% for item in key %}
               {{ label(item.__name__) }} : {{ item.number }}
+              {% if item.sale_date %}
+                {{ label(item.__name__, 'sale_date') }} : {{ item.sale_date }}
+              {% elif item.effective_date %}
+                {{ label(item.__name__, 'effective_date') }} : {{ item.effective_date }}
+              {% endif %}
             {% endfor %}
            </th>
         {% endif %}

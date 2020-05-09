@@ -14,6 +14,19 @@
         <field name="filename">html_report/templates/footer.html</field>
     </record>
 
+
+    <record model='html.template.signature' id="show_footer_signature">
+        <field name="name">show_footer(record)</field>
+    </record>
+    <record model='html.template' id="show_footer_macro_id">
+        <field name="name">Show Footer</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/show_footer_macro.html</field>
+        <field name="implements" ref="html_report.show_footer_signature"/>
+    </record>
+
+
     <record model='html.template.signature' id="simplified_hr_macro_signature">
         <field name="name">simplified_hr()</field>
     </record>

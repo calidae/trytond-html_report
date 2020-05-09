@@ -1,7 +1,49 @@
-{% set party = record.raw.party and record.party or record.raw.customer and record.customer or record.raw.supplier and record.raw.supplier %}
-{% set tax_identifier = record.raw.party_tax_identifier and record.party_tax_identifier or party.tax_identifier %}
+{% if record.raw.__name__ == 'account.invoice'%}
+  {% set party = record.raw.party and record.party %}
+  {% set tax_identifier = record.raw.party_tax_identifier and record.party_tax_identifier or party.tax_identifier %}
+  {% set address = record.invoice_address %}
+  {% set delivery_address = record.raw.send_address %}
+  {% set delivery_label = 'send_address' %}
+{%endif%}
+{% if record.raw.__name__ == 'sale.sale'%}
+  {% set party = record.raw.party and record.party %}
+  {% set tax_identifier = party.tax_identifier %}
+  {% set address = record.invoice_address %}
+  {% set delivery_address = record.shipment_address %}
+  {% set delivery_label = 'shipment_address' %}
+{%endif%}
+{% if record.raw.__name__ == 'purchase.purchase'%}
+  {% set party = record.raw.party and record.party %}
+  {% set tax_identifier = party.tax_identifier %}
+  {% set address = record.invoice_address %}
+  {% set delivery_address = record.warehouse.address %}
+  {% set delivery_label = 'warehouse' %}
+{%endif%}
+{% if record.raw.__name__ == 'stock.shipment.out'%}
+  {% set party = record.raw.customer and record.customer %}
+  {% set tax_identifier = party.tax_identifier %}
+  {% set address = party.addresses[0] %}
+  {% set delivery_address = record.delivery_address %}
+  {% set delivery_label = 'delivery_address' %}
+
+{%endif%}
+
 {{ address.render.full_address }}
 </br>
 {% if tax_identifier %}
   {{tax_identifier.render.code }}
+{%endif%}
+
+<br/>
+
+{% if delivery_address %}
+  <strong> {{label(record.raw.__name__, delivery_label ) }}</strong>
+  <br/>
+  {{ delivery_address.render.full_address }}
+{%endif%}
+
+{% if record.raw.carrier %}
+<strong> {{label(record.raw.__name__, 'carrier') }}</strong>
+<br/>
+{{ record.carrier.render.name }}
 {%endif%}

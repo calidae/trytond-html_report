@@ -132,5 +132,11 @@
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_document_info_macro_signature"/>
     </record>
+
+    <record model="html.report.template" id="report_invoice_footer_id">
+      <field name="report" ref="html_report_invoice"/>
+      <field name="signature" ref="show_footer_signature"/>
+    </record>
+
   </data>
 </tryton>

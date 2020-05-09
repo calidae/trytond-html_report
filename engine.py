@@ -525,10 +525,13 @@ class HTMLReportMixin:
             model, = Model.search([('model', '=', model)])
             return model.name
         else:
-            translation, = Translation.search([('name', '=', "%s,%s"%(model,field)),
+            translation = Translation.search([('name', '=', "%s,%s"%(model,field)),
                 ('lang', '=', lang)], limit=1)
-            return translation.value or translation.src
-        
+            if translation:
+                translation, = translation
+                return translation.value or translation.src
+            return field
+
 
     @classmethod
     def render_template_jinja(cls, action, template_string, record=None,

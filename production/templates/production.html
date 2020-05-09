@@ -14,15 +14,18 @@
     <div class="center">
       <h1>{{label('production', 'product')}} : {{production.product.render.name }} </h1>
       <h2> {{label('production', 'quantity')}} : {{production.render.quantity }} {{production.uom.render.name}} </h2>
-      <h2> {{label('production', 'route')}} : {{production.route.render.name }} </h2>
+      {%if record.raw.route %}
+        <h2> {{label('production', 'route')}} : {{production.route.render.name }} </h2>
+      {%endif%}
     </div>
     {% endif %}
 
+    <h2> {{label('production', 'outputs')}} </h2>
+      {{ show_output_moves(production) }}
 
     <h2> {{label('production', 'inputs')}} </h2>
-    {{ show_picking_moves(production.inputs, production.raw.show_lots, 'both') }}
-    <h2> {{label('production', 'outputs')}} </h2>
-    {{ show_picking_moves(production.outputs, production.raw.show_lots, 'both') }}
+      {{ show_input_moves(production) }}
+
 
     {%if record.raw.route %}
       {{show_operation(record.operations)}}

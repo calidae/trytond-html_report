@@ -22,9 +22,11 @@
 {% if sale.raw.comment %}
 <strong>{{label('sale.sale', 'comment')}}</strong>
 <br>
+
 {{sale.render.comment}}
 {% endif %}
 
+{{show_conditions(record)}}
 
 {% endlanguage %}
 {% endblock %}

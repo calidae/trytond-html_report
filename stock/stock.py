@@ -54,5 +54,4 @@ class Move(metaclass=PoolMeta):
                 purchase = self.origin.purchase
                 if purchase in key:
                     key.append(purchase)
-
         return key

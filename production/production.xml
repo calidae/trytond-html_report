@@ -33,6 +33,29 @@
       <field name="implements" ref="html_report.production_operation_macro_signature"/>
   </record>
 
+  <record model='html.template.signature' id="production_input_move_macro_signature">
+      <field name="name">show_input_moves(record)</field>
+  </record>
+  <record model='html.template' id="production_input_move_macro_id">
+      <field name="name">Production Input Moves</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/production/templates/show_input_moves.html</field>
+      <field name="implements" ref="html_report.production_input_move_macro_signature"/>
+  </record>
+
+  <record model='html.template.signature' id="production_output_move_macro_signature">
+      <field name="name">show_output_moves(record)</field>
+  </record>
+  <record model='html.template' id="production_output_move_macro_id">
+      <field name="name">Production Input Moves</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/production/templates/show_output_moves.html</field>
+      <field name="implements" ref="html_report.production_output_move_macro_signature"/>
+  </record>
+
+
   <record model="ir.action.report" id="html_report_production">
       <field name="name">Production</field>
       <field name="model">production</field>
@@ -55,6 +78,16 @@
   <record model="html.report.template" id="report_production_company_id">
     <field name="report" ref="html_report_production"/>
     <field name="signature" ref="production_operation_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_production_input_moves_id">
+    <field name="report" ref="html_report_production"/>
+    <field name="signature" ref="production_input_move_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_production_output_company_id">
+    <field name="report" ref="html_report_production"/>
+    <field name="signature" ref="production_output_move_macro_signature"/>
   </record>
 
   <record model="html.report.template" id="report_production_operation_id">
@@ -91,6 +124,11 @@
   <record model="html.report.template" id="report_production_party_id">
     <field name="report" ref="html_report_production"/>
     <field name="signature" ref="production_party_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_production_footer_id">
+    <field name="report" ref="html_report_production"/>
+    <field name="signature" ref="show_footer_signature"/>
   </record>
 
 </data>
