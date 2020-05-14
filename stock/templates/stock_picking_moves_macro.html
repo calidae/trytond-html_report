@@ -24,7 +24,7 @@
     </tr>
   </thead>
   <tbody class="border">
-    {% for move in moves.raw %}
+    {% for move in record.moves %}
         <tr>
           {%if locations in ('from', 'both') %}
             <td>{{move.from_location.render.code}} {{move.from_location.render.name}}</td>

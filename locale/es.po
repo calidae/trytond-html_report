@@ -2,6 +2,18 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:account.invoice,sorted_keys:"
+msgid "Sorted Key"
+msgstr "Llave Orden"
+
+msgctxt "field:account.invoice,sorted_lines:"
+msgid "Sorted Lines"
+msgstr "Línias ordenadas"
+
+msgctxt "field:account.invoice.line,sort_key:"
+msgid "Sorted Key"
+msgstr "Lave orden"
+
 msgctxt "field:html.report.template,report:"
 msgid "Report"
 msgstr "Informe"
@@ -14,6 +26,10 @@ msgctxt "field:html.report.template,template:"
 msgid "Template"
 msgstr "Plantilla"
 
+msgctxt "field:html.report.template,template_used:"
+msgid "Template Used"
+msgstr "Template usado"
+
 msgctxt "field:html.template,all_content:"
 msgid "All Content"
 msgstr "Todo el contenido"
@@ -21,6 +37,10 @@ msgstr "Todo el contenido"
 msgctxt "field:html.template,content:"
 msgid "Content"
 msgstr "Contenido"
+
+msgctxt "field:html.template,filename:"
+msgid "Template path"
+msgstr "Ruta de la plantilla"
 
 msgctxt "field:html.template,implements:"
 msgid "Signature"
@@ -82,11 +102,19 @@ msgctxt "field:ir.action.report,html_footer_report:"
 msgid "Footer"
 msgstr "Pie de página"
 
+msgctxt "field:ir.action.report,html_footer_template:"
+msgid "Footer"
+msgstr "Pie de página"
+
 msgctxt "field:ir.action.report,html_header_content:"
 msgid "Header Content"
 msgstr "Contenido encabezado"
 
 msgctxt "field:ir.action.report,html_header_report:"
+msgid "Header"
+msgstr "Encabezado"
+
+msgctxt "field:ir.action.report,html_header_template:"
 msgid "Header"
 msgstr "Encabezado"
 
@@ -101,6 +129,22 @@ msgstr "Plantillas"
 msgctxt "field:ir.action.report,html_translations:"
 msgid "Translations"
 msgstr "Traducciones"
+
+msgctxt "field:stock.move,sort_key:"
+msgid "key"
+msgstr "Llave"
+
+msgctxt "field:stock.shipment.out,show_lots:"
+msgid "Show Lots"
+msgstr "Mostrar lotes"
+
+msgctxt "field:stock.shipment.out,sorted_keys:"
+msgid "key"
+msgstr "Llave"
+
+msgctxt "field:stock.shipment.out,sorted_lines:"
+msgid "Sorted Lines"
+msgstr "Línias ordenadas"
 
 msgctxt "model:html.report.template,name:"
 msgid "HTML Report - Template"
@@ -146,8 +190,36 @@ msgctxt "model:ir.action,name:act_template_translation_form"
 msgid "Template Translation"
 msgstr "Traducción plantilla"
 
+msgctxt "model:ir.action,name:html_report_delivery_note"
+msgid "Delivery Note"
+msgstr "Nota de envío"
+
+msgctxt "model:ir.action,name:html_report_internal_picking_note"
+msgid "Internal Picking Note"
+msgstr "Lista de Recogida"
+
+msgctxt "model:ir.action,name:html_report_invoice"
+msgid "Invoice"
+msgstr "Factura"
+
+msgctxt "model:ir.action,name:html_report_picking_note"
+msgid "Picking Note"
+msgstr "Lista de recogida"
+
+msgctxt "model:ir.action,name:html_report_purchase"
+msgid "Purchase"
+msgstr "Compras"
+
+msgctxt "model:ir.action,name:html_report_sale"
+msgid "Sale"
+msgstr "Venta"
+
+msgctxt "model:ir.action,name:html_report_sale_proforma"
+msgid "Proforma"
+msgstr "Proforma"
+
 msgctxt "model:ir.message,text:missing_signatures"
-msgid "\"\"%(template)s\" missing signatures: %(missing)s"
+msgid "\"%(template)s\" missing signatures: %(missing)s"
 msgstr "\"%(template)s\" se requieren las firmas: %(missing)s"
 
 msgctxt "model:ir.message,text:msg_no"
@@ -159,7 +231,7 @@ msgid "Yes"
 msgstr "Si"
 
 msgctxt "model:ir.message,text:unused_signatures"
-msgid "\"\"%(template)s\" unused signatures: %(unused)s"
+msgid "\"%(template)s\" unused signatures: %(unused)s"
 msgstr "\"%(template)s\" no se usan las firmas: %(missing)s"
 
 msgctxt "model:ir.ui.menu,name:menu_action_report_form"
@@ -197,6 +269,14 @@ msgstr "Bloque"
 msgctxt "selection:html.template,type:"
 msgid "Extension"
 msgstr "Extensión"
+
+msgctxt "selection:html.template,type:"
+msgid "Footer"
+msgstr "Pie de página"
+
+msgctxt "selection:html.template,type:"
+msgid "Header"
+msgstr "Encabezado"
 
 msgctxt "selection:html.template,type:"
 msgid "Macro"
