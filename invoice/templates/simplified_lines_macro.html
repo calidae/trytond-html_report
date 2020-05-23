@@ -1,0 +1,23 @@
+<table class="table borderless" width="100%">
+  <thead>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('account.invoice.line', 'description') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'quantity') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'unit_price') }}</th>
+    <th class="text-right" nowrap>{{ label('account.invoice.line', 'amount') }}</th>
+  </thead>
+  <tbody>
+    {% for line in document.lines %}
+    <tr>
+      <td>{{ line.product and line.product.render.code or '' }}</td>
+      <td>{{ line.product and line.product.render.name or '' }}{% if line.raw.description %}<p>{{ line.render.description }}</p>{% endif %}</td>
+      <td class="text-right">{{ line.render.quantity }}</td>
+      <td class="text-right">{{ line.render.unit_price }}</td>
+      <td class="text-right">{{ line.render.amount }}</td>
+    </tr>
+    {% endfor %}
+    <tr class="b-hide">
+      <td colspan="5"></td>
+    </tr>
+  </tbody>
+</table>

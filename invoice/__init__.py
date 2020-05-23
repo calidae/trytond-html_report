@@ -1,0 +1,9 @@
+from trytond.pool import Pool
+from . import invoice
+
+
+def register(module):
+    Pool.register(
+        invoice.Invoice,
+        invoice.InvoiceLine,
+        module=module, type_='model', depends=['account_invoice'])

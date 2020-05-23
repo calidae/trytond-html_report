@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<tryton>
+<data depends="stock">
+
+  <!-- Out Picking_note -->
+  <record model='html.template' id="picking_note_template_id">
+      <field name="name">Out Picking Note</field>
+      <field name="type">base</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/picking_note.html</field>
+  </record>
+
+  <record model="ir.action.report" id="html_report_picking_note">
+      <field name="name">Picking Note</field>
+      <field name="model">stock.shipment.out</field>
+      <field name="report_name">stock.shipment.out.picking_note</field>
+      <field name="extension">pdf</field>
+      <field name="template_extension">jinja</field>
+      <field name="single" eval="True"/>
+      <field name="html_template" ref="picking_note_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
+      <field name="html_footer_template" ref="footer_template"/>
+      <field name="extension">pdf</field>
+  </record>
+
+  <record model="ir.action.keyword" id="report_picking_note_keyword">
+      <field name="keyword">form_print</field>
+      <field name="model">stock.shipment.out,-1</field>
+      <field name="action" ref="html_report_picking_note"/>
+  </record>
+
+  <record model='html.template.signature' id="stock_picking_moves_macro_signature">
+      <field name="name">show_picking_moves(moves, show_lot, locations)</field>
+  </record>
+  <record model='html.template' id="stock_picking_moves_macro_id">
+      <field name="name">Picking Moves</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/stock_picking_moves_macro.html</field>
+      <field name="implements" ref="html_report.stock_picking_moves_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_company_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="company_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_stock_moves_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="stock_picking_moves_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_delivery_note_party_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="party_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_document_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="delivery_note_document_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_totals_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="document_totals_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_footer_id">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="show_footer_signature"/>
+  </record>
+
+  <!-- Internal Picking_note -->
+  <record model='html.template' id="internal_picking_note_template_id">
+      <field name="name">Internal Picking Note</field>
+      <field name="type">base</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/internal_picking_note.html</field>
+  </record>
+
+  <record model="ir.action.report" id="html_report_internal_picking_note">
+      <field name="name">Internal Picking Note</field>
+      <field name="model">stock.shipment.internal</field>
+      <field name="report_name">stock.shipment.internal_picking_note</field>
+      <field name="extension">pdf</field>
+      <field name="template_extension">jinja</field>
+      <field name="single" eval="True"/>
+      <field name="html_template" ref="internal_picking_note_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
+      <field name="html_footer_template" ref="footer_template"/>
+      <field name="extension">pdf</field>
+  </record>
+
+  <record model="ir.action.keyword" id="report_internal_picking_note_keyword">
+      <field name="keyword">form_print</field>
+      <field name="model">stock.shipment.internal,-1</field>
+      <field name="action" ref="html_report_internal_picking_note"/>
+  </record>
+
+  <record model='html.template.signature' id="internal_pickin_party_info_macro_signature">
+      <field name="name">show_party_info(document, address)</field>
+  </record>
+  <record model='html.template' id="internal_picking_party_info_macro_id">
+      <field name="name">Internal Picking Party Info</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/party_info_macro.html</field>
+      <field name="implements" ref="internal_pickin_party_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_internal_picking_note_company_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="company_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_picking_note_internal_note_party_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="internal_pickin_party_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_internal_picking_note_stock_moves_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="stock_picking_moves_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_internal_picking_note_document_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="delivery_note_document_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_internal_picking_note_footer_id">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="show_footer_signature"/>
+  </record>
+</data>
+</tryton>

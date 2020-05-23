@@ -1,0 +1,10 @@
+{% set title = label(record.raw.__name__) %}
+{% set document_date = record.raw.invoice_date and record.render.invoice_date %}
+{% set label_date = label(record.raw.__name__, 'invoice_date') %}
+
+
+<h1 class="document">{{title}}:{{ record.raw.number and record.render.number }} <h1>
+<h2 class="document">{{label_date}}:{{ document_date }} </h2>
+{% if record.raw.reference %}
+  <h2 class="document">{{ label(record.raw.__name__, 'reference') }}:{{ record.raw.reference and record.render.reference }} </h2>
+{% endif %}

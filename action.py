@@ -11,7 +11,6 @@ from trytond.cache import Cache
 
 __all__ = ['ActionReport', 'HTMLTemplateTranslation']
 
-
 class ActionReport(metaclass=PoolMeta):
     __name__ = 'ir.action.report'
     html_template = fields.Many2One('html.template', 'Template',
@@ -22,6 +21,23 @@ class ActionReport(metaclass=PoolMeta):
             'invisible': Eval('template_extension') != 'jinja',
             },
         depends=['template_extension'])
+    html_header_template = fields.Many2One('html.template', 'Header',
+        domain=[
+            ('type', '=', 'header'),
+            ],
+        states={
+            'invisible': Eval('template_extension') != 'jinja',
+            },
+        depends=['template_extension'])
+    html_footer_template = fields.Many2One('html.template', 'Footer',
+        domain=[
+            ('type', '=', 'footer'),
+            ],
+        states={
+            'invisible': Eval('template_extension') != 'jinja',
+            },
+        depends=['template_extension'])
+
     html_templates = fields.One2Many('html.report.template', 'report', 'Templates',
         states={
             'invisible': Eval('template_extension') != 'jinja',
@@ -33,29 +49,21 @@ class ActionReport(metaclass=PoolMeta):
         },
         depends=['template_extension']), 'get_content')
 
-    html_header_report = fields.Char('Header')
-    html_footer_report = fields.Char('Footer')
-    html_header_content = fields.Function(fields.Binary('Header Content',
-        states={
-                'invisible': Eval('template_extension') != 'jinja',
-        },
-        depends=['template_extension']), 'get_content')
-
-    html_footer_content = fields.Function(fields.Binary('Footer Content',
-        states={
-                'invisible': Eval('template_extension') != 'jinja',
-        },
-        depends=['template_extension']), 'get_content')
     html_translations = fields.One2Many('html.template.translation', 'report',
         'Translations')
-    _html_translation_cache = Cache('html.template.translation', size_limit=10240, context=False)
+    _html_translation_cache = Cache('html.template.translation',
+        size_limit=10240, context=False)
+    html_header_content = fields.Function(fields.Binary('Header Content'),
+        'get_content')
+    html_footer_content = fields.Function(fields.Binary('Footer Content'),
+        'get_content')
 
     @classmethod
     def __setup__(cls):
         super(ActionReport, cls).__setup__()
 
         jinja_option = ('jinja', 'Jinja')
-        if not jinja_option in cls.template_extension.selection:
+        if jinja_option not in cls.template_extension.selection:
             cls.template_extension.selection.append(jinja_option)
 
     @classmethod
@@ -66,28 +74,17 @@ class ActionReport(metaclass=PoolMeta):
                     })]
 
     def get_content(self, name):
-        if name == 'html_content':
-            if not self.html_template:
-                return
-            content = []
-            for template in self.html_templates:
-                if template.template.all_content:
-                    content.append(template.template.all_content)
-            content.append(self.html_template.all_content)
-            return '\n\n'.join(content)
-        if name in ('html_header_content', 'html_footer_content'):
-            path_field_name = name.replace('content', 'report')
-            path = getattr(self, path_field_name, None)
-            if not path:
-                return
-            path = path.replace('/', os.sep)
-            try:
-                with file_open(path, mode='rb') as fp:
-                    data = fp.read()
-            except FileNotFoundError:
-                data = None
+        obj_name = name.replace('content', 'template')
+        obj = getattr(self, obj_name)
+        if not obj:
+            return
 
-            return data
+        content = []
+        for template in self.html_templates:
+            if template.template_used.all_content:
+                content.append(template.template_used.all_content or '')
+        content.append(obj.all_content or '')
+        return '\n\n'.join(content)
 
     @classmethod
     def validate(cls, reports):
@@ -147,6 +144,26 @@ class ActionReport(metaclass=PoolMeta):
 
         self.html_templates = templates
 
+    @fields.depends('html_template', 'html_templates')
+    def on_change_html_header_template(self):
+        pool = Pool()
+        Template = pool.get('html.template')
+        ReportTemplate = pool.get('html.report.template')
+
+        missing, unused = self.get_missing_unused_signatures()
+
+        templates = list(self.html_templates)
+        for signature in missing:
+            record = ReportTemplate()
+            record.signature = signature
+            implementors = Template.search([('implements', '=', signature)])
+            if len(implementors) == 1:
+                record.template, = implementors
+            templates.append(record)
+
+        self.html_templates = templates
+
+
     @classmethod
     def gettext(cls, *args, **variables):
         HTMLTemplateTranslation = Pool().get('html.template.translation')
@@ -174,7 +191,7 @@ class HTMLTemplateTranslation(ModelSQL, ModelView):
     _order_name = 'src'
     report = fields.Many2One('ir.action.report', 'Report', required=True)
     src = fields.Text('Source', required=True)
-    value = fields.Text('Translation Value', required=True)
+    value = fields.Text('Translation Value')
     lang = fields.Selection('get_language', string='Language', required=True)
     _get_language_cache = Cache('html.template.translation.get_language')
 
