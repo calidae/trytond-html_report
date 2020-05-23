@@ -1,0 +1,17 @@
+{% extends 'html_report/templates/base.html' %}
+{% set shipment = record %}
+
+{% block title %}
+    {{ super() }}
+    {{ label('stock.shipment.out') }}
+{% endblock %}
+
+{% block main %}
+  {% language company.party.lang and company.party.raw.lang.code or 'en' %}
+
+    {% set shipment = record %}
+    {% set valued = False %}
+    {{ show_picking_moves(shipment.moves,  shipment.raw.show_lot, 'both') }}
+
+  {% endlanguage %}
+{% endblock %}

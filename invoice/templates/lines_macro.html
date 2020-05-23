@@ -1,0 +1,71 @@
+<table style="width:100%;">
+  <thead>
+    <tr>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'quantity') }}</th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'unit_price') }}</th>
+    <th></th>
+    <th class="text-right" nowrap>{{label('account.invoice.line', 'amount')}}</th>
+    </tr>
+  </thead>
+  <tbody class="border">
+
+    {% for key in document.raw.sorted_keys %}
+        {% if key %}
+          <th class="sub_header" colspan="6">
+            {% for item in key %}
+              {{ label(item.__name__) }} : {{ item.number }}
+              {% if item.sale_date %}
+                {{ label(item.__name__, 'sale_date') }} : {{ item.sale_date }}
+              {% elif item.effective_date %}
+                {{ label(item.__name__, 'effective_date') }} : {{ item.effective_date }}
+              {% endif %}
+            {% endfor %}
+           </th>
+        {% endif %}
+
+        {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
+          <tr>
+            {% if line.raw.description %}
+              <td colspan="2">{{ line.render.description }}</td>
+            {% else %}
+              <td>{{ line.product and line.product.render.code or '-' }}</td>
+              <td>{{ line.product and line.product.render.name or '-' }}</td>
+            {% endif %}
+
+            <td class="text-right">{{ line.render.quantity }}</td>
+
+            {% if line.raw.gross_unit_price %}
+              <td class="text-right">{{ line.render.gross_unit_price }}</td>
+              {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
+                <td class="text-right">
+                    {% if line.raw.discount1 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount1*100) }}% <br>
+                    {%endif%}
+                    {% if line.raw.discount2 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br>
+                    {%endif%}
+                    {% if line.raw.discount3 %}
+                      {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br>
+                    {%endif%}
+                </td>
+              {%elif line.raw.discount%}
+                <td class="text-right"> {{ line.render.discount}} %</td>
+              {%else%}
+                <td> </td>
+              {%endif%}
+            {% else %}
+              <td class="text-right">{{ line.render.unit_price }}</td>
+              <td></td>
+            {% endif %}
+            <td class="text-right">{{ line.render.amount }}</td>
+          </tr>
+        {% endfor %}
+
+    {% endfor %}
+    <tr class="b-hide">
+      <td colspan="6"></td>
+    </tr>
+  </tbody>
+</table>

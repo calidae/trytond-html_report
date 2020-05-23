@@ -11,6 +11,7 @@ from babel import support
 
 import weasyprint
 from .generator import PdfGenerator
+from trytond.model.fields.selection import TranslatedSelection
 from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
@@ -127,7 +128,8 @@ class SwitchableLanguageExtension(Extension):
     def _switch_language(self, language_code, caller):
         if self.translations:
             self.translations.set_language(language_code)
-        output = caller()
+        with Transaction().set_context(language=language_code):
+            output = caller()
         return output
 
 
@@ -142,7 +144,6 @@ class Formatter:
 
     def _get_lang(self):
         Lang = Pool().get('ir.lang')
-
         locale = Transaction().context.get('report_lang', Transaction().language)
         lang = self.__langs.get(locale)
         if lang:
@@ -198,6 +199,8 @@ class Formatter:
     def _formatted_char(self, record, field, value):
         if value is None:
             return ''
+        Model = Pool().get(record.__name__)
+        value = getattr(Model(record.id), field.name)
         return value.replace('\n', '<br/>')
 
     def _formatted_text(self, record, field, value):
@@ -233,7 +236,16 @@ class Formatter:
             mimetype = mimetypes.guess_type(filename)[0]
         return ('data:%s;base64,%s' % (mimetype, value)).strip()
 
-    # TODO: Implement: dict, selection, multiselection
+    def _formatted_selection(self, record, field, value):
+        if value is None:
+            return ''
+
+        Model = Pool().get(record.__name__)
+        record = Model(record.id)
+        t  = TranslatedSelection(field.name)
+        return t.__get__(record, record).replace('\n', '<br/>')
+
+    # TODO: Implement: dict, multiselection
 
 
 class FormattedRecord:
@@ -289,11 +301,11 @@ class HTMLReportMixin:
     @classmethod
     def get_templates_jinja(cls, action):
         header = (action.html_header_content and
-            action.html_header_content.decode('utf-8'))
-        content = (action.report_content and
-            action.report_content.decode('utf-8'))
+            action.html_header_content) # decode('utf-8'))
+        content = (action.report_content
+            and action.report_content.decode("utf-8") or action.html_content) #.decode('utf-8'))
         footer = (action.html_footer_content and
-            action.html_footer_content.decode('utf-8'))
+            action.html_footer_content) #.decode('utf-8'))
         if not content:
             if not action.html_content:
                 raise Exception('Error', 'Missing jinja report file!')
@@ -502,6 +514,34 @@ class HTMLReportMixin:
         return env
 
     @classmethod
+    def label(cls, model, field=None, lang=None):
+
+        Translation = Pool().get('ir.translation')
+        if not lang:
+            lang = Transaction().language
+        type_ = 'field'
+        if field == None:
+            Model = Pool().get('ir.model')
+            model, = Model.search([('model', '=', model)])
+            return model.name
+        else:
+            translation = Translation.search([('name', '=', "%s,%s"%(model,field)),
+                ('lang', '=', lang)], limit=1)
+
+            if translation:
+                translation, = translation
+                return translation.value or translation.src
+            else:
+                translation = Translation.search([('name', '=', "%s,%s"%(model,field)),
+                    ('lang', '=', 'en')], limit=1)
+                if translation:
+                    translation, = translation
+                    return translation.value or translation.src
+
+            return field
+
+
+    @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
             records=None, data=None):
         """
@@ -527,13 +567,15 @@ class HTMLReportMixin:
             'time': datetime.now(),
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
+            'label': cls.label,
             }
         if Company:
             context['company'] = DualRecord(Company(
                     Transaction().context.get('company')))
         context.update(cls.local_context())
-        report_template = env.from_string(template_string)
-        res = report_template.render(**context)
+        with Transaction().set_context(**context):
+            report_template = env.from_string(template_string)
+            res = report_template.render(**context)
         # print('TEMPLATE:\n', res)
         return res
 

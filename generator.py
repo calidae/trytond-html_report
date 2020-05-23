@@ -95,11 +95,12 @@ class PdfGenerator:
         footer_body: BlockBox
             A representation for an html element in Weasyprint.
         """
+
         for page in main_doc.pages:
             page_body = PdfGenerator.get_element(page._page_box.all_children(), 'body')
 
             if header_body:
-                page_body.children += header_body.all_children()
+                page_body.children += header_body.all_children() 
             if footer_body:
                 page_body.children += footer_body.all_children()
 
