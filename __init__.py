@@ -7,6 +7,10 @@ from . import action
 from . import translation
 from . import html
 from . import engine
+from . import invoice
+from . import sale
+from . import stock
+from . import production
 
 def register():
     module = 'html_report'
@@ -23,3 +27,8 @@ def register():
         module=module, type_='wizard')
     Pool.register_mixin(engine.HTMLReportMixin, Report,
         module=module)
+
+    invoice.register(module)
+    sale.register(module)
+    stock.register(module)
+    production.register(module)

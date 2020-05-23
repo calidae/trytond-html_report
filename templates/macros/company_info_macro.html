@@ -1,0 +1,29 @@
+{% set party = record.company.party %}
+{% set address = record.raw.shop and record.shop and record.shop.address or party.addresses[0] %}
+{% set tax_identifier = record.raw.tax_identifier and record.tax_identifier or party.tax_identifier %}
+{{ party.render.rec_name }}
+<br>
+{% if tax_identifier %}
+{{ tax_identifier.render.code }}
+<br>
+{% endif %}
+{% if address %}
+{{ address.render.street }}
+<br>
+{{ address.render.zip }} {{ address.render.city|upper }}
+{% endif %}
+<br>
+{% if record.raw.shop and record.shop.raw.phone %}
+  {{ label('sale.shop', 'phone') }}: {{ record.shop.render.phone }}
+  <br>
+{% elif party.raw.phone %}
+  {{ label('party.party', 'phone') }}: {{ party.render.phone }}
+  <br>
+{% endif %}
+{% if record.raw.shop and record.shop.raw.email %}
+  {{ label('sale.shop', 'email') }}: {{ record.shop.render.email }}
+  <br>
+{% elif party.raw.email %}
+  {{ label('party.party', 'email') }}: {{ party.render.email }}
+  <br>
+{% endif %}

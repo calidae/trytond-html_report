@@ -1,0 +1,87 @@
+<tryton>
+  <data>
+    <record model='html.template' id="header_template">
+        <field name="name">Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/header.html</field>
+    </record>
+
+    <record model='html.template' id="footer_template">
+        <field name="name">Footer</field>
+        <field name="type">footer</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/footer.html</field>
+    </record>
+
+
+    <record model='html.template.signature' id="show_footer_signature">
+        <field name="name">show_footer(record)</field>
+    </record>
+    <record model='html.template' id="show_footer_macro_id">
+        <field name="name">Show Footer</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/show_footer_macro.html</field>
+        <field name="implements" ref="html_report.show_footer_signature"/>
+    </record>
+
+
+    <record model='html.template.signature' id="simplified_hr_macro_signature">
+        <field name="name">simplified_hr()</field>
+    </record>
+
+    <record model='html.template' id="simplified_hr_macro_template">
+      <field name="name">Simplified Hr</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/templates/macros/simplified_hr_macro.html</field>
+      <field name="implements" ref="html_report.simplified_hr_macro_signature"/>
+    </record>
+
+    <record model='html.template.signature' id="company_info_macro_signature">
+        <field name="name">show_company_info(record)</field>
+    </record>
+    <record model='html.template' id="company_info_macro_id">
+        <field name="name">Company info</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/company_info_macro.html</field>
+        <field name="implements" ref="html_report.company_info_macro_signature"/>
+    </record>
+
+    <record model='html.template.signature' id="party_macro_signature">
+        <field name="name">show_party_info(record, address)</field>
+    </record>
+    <record model='html.template' id="party_macro_id">
+        <field name="name">Party Info</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/party_info_macro.html</field>
+        <field name="implements" ref="html_report.party_macro_signature"/>
+    </record>
+
+    <record model='html.template.signature' id="document_totals_macro_signature">
+        <field name="name">show_totals(record)</field>ac
+    </record>
+    <record model='html.template' id="document_totals_macro_id">
+        <field name="name">Document Totals</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/totals_macro.html</field>
+        <field name="implements" ref="html_report.document_totals_macro_signature"/>
+    </record>
+
+    <record model='html.template.signature' id="payment_info_macro_signature">
+        <field name="name">show_payment_info(document)</field>ac
+    </record>
+    <record model='html.template' id="payment_info_macro_id">
+        <field name="name">Payment Info</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/payment_info_macro.html</field>
+        <field name="implements" ref="html_report.payment_info_macro_signature"/>
+    </record>
+
+  </data>
+</tryton>

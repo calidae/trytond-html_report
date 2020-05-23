@@ -1,0 +1,74 @@
+<table style="width:100%;">
+  <thead>
+    <tr>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    <th class="text-right" nowrap>{{label('sale.line', 'quantity') }}</th>
+    <th class="text-right" nowrap>{{label('sale.line', 'unit_price') }}</th>
+    <th></th>
+    <th class="text-right" nowrap>{{label('sale.line', 'amount')}}</th>
+    </tr>
+  </thead>
+  <tbody class="border">
+
+    {% for line in document.lines %}
+      {% if line.raw.type == 'line' %}
+        <tr>
+          {% if line.raw.description %}
+            <td colspan="2">{{ line.render.description }}</td>
+          {% else %}
+            <td>{{ line.product and line.product.render.code or '-' }}</td>
+            <td>{{ line.product and line.product.render.name or '-' }}</td>
+          {% endif %}
+
+          <td class="text-right">{{ line.render.quantity }}</td>
+
+          {% if line.raw.gross_unit_price %}
+            <td class="text-right">{{ line.render.gross_unit_price }}</td>
+            {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
+              <td class="text-right">
+                  {% if line.raw.discount1 %}
+                    {{ '-{0:.2F}'.format(line.raw.discount1*100) }}% <br>
+                  {%endif%}
+                  {% if line.raw.discount2 %}
+                    {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br>
+                  {%endif%}
+                  {% if line.raw.discount3 %}
+                    {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br>
+                  {%endif%}
+              </td>
+            {%elif line.raw.discount%}
+              <td class="text-right"> {{ line.render.discount}} %</td>
+            {%else%}
+              <td> </td>
+            {%endif%}
+          {% else %}
+            <td class="text-right">{{ line.render.unit_price }}</td>
+            <td></td>
+          {% endif %}
+          <td class="text-right">{{ line.render.amount }}</td>
+        </tr>
+      {%endif%}
+      {% if line.raw.type == 'comment' %}
+      <tr>
+        <td>{{line.render.type}}</td>
+        <td colspan="5">{{line.render.description}}</td>
+      </tr>
+      {%endif%}
+
+      {% if line.raw.type == 'title' %}
+      <tr>
+        <td colspan="6"><strong>{{line.render.description}}<strong></td>
+      </tr>
+      {%endif%}
+      {% if line.raw.type == 'subtotal' %}
+      <tr>
+        <td colspan="5"><strong>{{line.render.description}}<strong></td>
+        <td><strong>{{line.render.amount}}<strong> </td>
+      </tr>
+      {%endif%}
+
+    {% endfor %}
+
+  </tbody>
+</table>

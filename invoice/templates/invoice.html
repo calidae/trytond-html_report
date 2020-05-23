@@ -1,0 +1,36 @@
+{% extends 'html_report/templates/base.html' %}
+{% set invoice = record %}
+
+
+{% block title %}
+  {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+    {{ super() }}
+    {{ label('account.invoice') }}
+  {% endlanguage %}
+{% endblock %}
+
+{% block main %}
+{% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
+  {% set invoice = record %}
+  {{ show_invoice_lines(invoice) }}
+
+    <table class="condensed">
+        <tr>
+          <td> {{ show_payment_info(invoice) }} </td>
+          <td> {{ show_totals(record) }}</td>
+        </tr>
+        <tr>
+          <td>{{ show_taxes(invoice) }}</td>
+          <td>{{ show_due_dates(invoice) }}</td>
+        </tr>
+    </table>
+
+{% if invoice.raw.comment %}
+<strong>{{label('account.invoice', 'comment')}}</strong>
+<br>
+{{invoice.render.comment}}
+{% endif %}
+{% endlanguage %}
+
+{% endblock %}
