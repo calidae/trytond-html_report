@@ -9,6 +9,14 @@
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/delivery_note.html</field>
   </record>
+  
+    <record model='html.template' id="delivery_note_header_template_id">
+        <field name="name">Delivery Note Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/stock/templates/delivery_note_header.html</field>
+    </record>
+    
 
   <record model='html.template.signature' id="stock_moves_macro_signature">
       <field name="name">show_stock_moves(document, valued)</field>
@@ -44,7 +52,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="delivery_note_template_id"/>
-      <field name="html_header_template" ref="header_template"/>
+      <field name="html_header_template" ref="delivery_note_header_template_id"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -56,6 +64,11 @@
   </record>
 
 
+  <record model="html.report.template" id="report_delivery_note_show_image_id">
+    <field name="report" ref="html_report_delivery_note"/>
+    <field name="signature" ref="show_image_signature"/>
+  </record>
+  
   <record model="html.report.template" id="report_delivery_note_company_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
@@ -102,7 +115,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="valued_delivery_note_template_id"/>
-      <field name="html_header_template" ref="header_template"/>
+      <field name="html_header_template" ref="delivery_note_header_template_id"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -119,6 +132,10 @@
     <field name="signature" ref="company_info_macro_signature"/>
   </record>
 
+  <record model="html.report.template" id="report_valued_delivery_note_show_image_id">
+    <field name="report" ref="html_report_valued_delivery_note"/>
+    <field name="signature" ref="show_image_signature"/>
+  </record>
 
   <record model="html.report.template" id="report_valued_delivery_note_stock_moves_id">
     <field name="report" ref="html_report_valued_delivery_note"/>

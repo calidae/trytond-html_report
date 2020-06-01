@@ -39,8 +39,19 @@
       <field name="implements" ref="html_report.simplified_hr_macro_signature"/>
     </record>
 
+    <record model='html.template.signature' id="show_image_signature">
+        <field name="name">show_image(class, image)</field>
+    </record>
+    <record model='html.template' id="show_image_macro_id">
+        <field name="name">Show Image</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/show_image.html</field>
+        <field name="implements" ref="html_report.show_image_signature"/>
+    </record>
+
     <record model='html.template.signature' id="company_info_macro_signature">
-        <field name="name">show_company_info(record)</field>
+        <field name="name">show_company_info(company)</field>
     </record>
     <record model='html.template' id="company_info_macro_id">
         <field name="name">Company info</field>
@@ -51,7 +62,7 @@
     </record>
 
     <record model='html.template.signature' id="party_macro_signature">
-        <field name="name">show_party_info(record, address)</field>
+        <field name="name">show_party_info(party, tax_identifier, address, second_address_label, second_address)</field>
     </record>
     <record model='html.template' id="party_macro_id">
         <field name="name">Party Info</field>
