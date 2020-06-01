@@ -9,6 +9,17 @@
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/picking_note.html</field>
   </record>
+  <record model='html.template' id="picking_note_header_template_id">
+    <field name="name">Picking Note Header</field>
+    <field name="type">header</field>
+    <field name="sequence" eval="99"/>
+    <field name="filename">html_report/stock/templates/picking_note_header.html</field>
+  </record>
+    
+  <record model="ir.action.report" id="stock.report_shipment_out_picking_list">
+      <field name="active" eval="False"/>
+  </record>
+    
 
   <record model="ir.action.report" id="html_report_picking_note">
       <field name="name">Picking Note</field>
@@ -18,7 +29,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="picking_note_template_id"/>
-      <field name="html_header_template" ref="header_template"/>
+      <field name="html_header_template" ref="picking_note_header_template_id"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -40,6 +51,11 @@
       <field name="implements" ref="html_report.stock_picking_moves_macro_signature"/>
   </record>
 
+  <record model="html.report.template" id="report_picking_note_show_image">
+    <field name="report" ref="html_report_picking_note"/>
+    <field name="signature" ref="show_image_signature"/>
+  </record>
+  
   <record model="html.report.template" id="report_picking_note_company_id">
     <field name="report" ref="html_report_picking_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
@@ -77,7 +93,19 @@
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/internal_picking_note.html</field>
   </record>
-
+  <record model='html.template' id="internal_note_header_template_id">
+    <field name="name">Internal Note Header</field>
+    <field name="type">header</field>
+    <field name="sequence" eval="99"/>
+    <field name="filename">html_report/stock/templates/internal_note_header.html</field>
+  </record>
+  
+    <record model="ir.action.report" id="stock.report_shipment_internal">
+      <field name="active" eval="False"/>
+  </record>
+    
+  
+  
   <record model="ir.action.report" id="html_report_internal_picking_note">
       <field name="name">Internal Picking Note</field>
       <field name="model">stock.shipment.internal</field>
@@ -86,7 +114,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="internal_picking_note_template_id"/>
-      <field name="html_header_template" ref="header_template"/>
+      <field name="html_header_template" ref="internal_note_header_template_id"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -111,6 +139,11 @@
   <record model="html.report.template" id="report_internal_picking_note_company_id">
     <field name="report" ref="html_report_internal_picking_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
+  </record>
+  
+  <record model="html.report.template" id="report_internal_picking_note_show_image">
+    <field name="report" ref="html_report_internal_picking_note"/>
+    <field name="signature" ref="show_image_signature"/>
   </record>
 
   <record model="html.report.template" id="report_picking_note_internal_note_party_id">

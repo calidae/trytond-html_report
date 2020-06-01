@@ -32,8 +32,14 @@
         <field name="implements" ref="html_report.purchase_document_info_macro_signature"/>
     </record>
 
+    <record model='html.template' id="purchase_header_template_id">
+        <field name="name">Purchase Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/purchase/templates/header.html</field>
+    </record>
 
-    <!-- Invoice Report -->
+    <!-- Purchase Report -->
     <record model="ir.action.report" id="purchase.report_purchase">
         <field name="active" eval="False"/>
     </record>
@@ -46,7 +52,7 @@
         <field name="template_extension">jinja</field>
         <field name="single" eval="True"/>
         <field name="html_template" ref="purchase_template_id"/>
-        <field name="html_header_template" ref="header_template"/>
+        <field name="html_header_template" ref="purchase_header_template_id"/>
         <field name="html_footer_template" ref="footer_template"/>
         <field name="extension">pdf</field>
     </record>
@@ -60,6 +66,11 @@
     <record model="html.report.template" id="report_purchase_company_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="company_info_macro_signature"/>
+    </record>
+    
+    <record model="html.report.template" id="report_purchase_show_image_id">
+      <field name="report" ref="html_report_purchase"/>
+      <field name="signature" ref="show_image_signature"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_payment_id">

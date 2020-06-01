@@ -25,7 +25,7 @@
            </th>
         {% endif %}
 
-        {% for line in document.lines|sort(attribute='raw.sort_key') if line.raw.sort_key == key %}
+        {% for line in document.lines  if line.raw.sort_key == key %}
           <tr>
             {% if line.raw.description %}
               <td colspan="2">{{ line.render.description }}</td>

@@ -1,9 +1,3 @@
-{% if record.raw.state in ('quotation', 'draft') %}
-  {% set title = record.render.state %}
-{% else %}
-  {% set title = label(record.raw.__name__) %}
-{%endif%}
-
 {% set document_date = record.raw.sale_date and record.render.sale_date or ''%}
 {% set label_date = label(record.raw.__name__, 'sale_date') %}
 
