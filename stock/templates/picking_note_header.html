@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
+{% set party = record.customer %}
+{% set address = party and party.addresses[0] or None%}
+{% language party and party.raw.lang and party.lang.raw.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
+<header id="header">
+<table>
+  <tr>
+    <td>{{show_image("logo", company.render.logo)}}</td>
+    <td>{{show_document_info(record)}}</td>
+</tr>
+<tr>
+  <td>{{show_company_info(company)}}</td>
+  <td>
+  {{show_party_info(party, party.tax_identifier, address, "delivery_address", record.delivery_address) }}  
+  </td>
+</tr>
+</table>
+{% endlanguage %}

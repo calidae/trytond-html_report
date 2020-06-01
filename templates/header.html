@@ -1,29 +1,26 @@
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
-{% set party = record.raw.party and record.party or record.raw.customer and record.customer or record.raw.supplier and record.supplier or None %}
-{% set address = record.raw.invoice_address and record.invoice_address or record.raw.delivery_address and record.delivery_address or party and party.addresses[0] or None%}
-{% language party and party.raw.lang and party.lang.raw.code or company.party.lang and company.party.raw.lang.code or 'en' %}
 <header id="header">
     <table>
-      <tr><td>
-          {% if record.raw.shop and record.shop.raw.logo %}
-          <img class="logo" src={{ record.raw.shop and record.shop.render.logo }}>
-          {% elif company.raw.logo is defined %}
-          <img class="logo" src={{ company.render.logo }}>
-          {% endif %}
+      <tr>
+          <td>
+          {% block company_logo scoped %}
+          {% endblock company_logo %}
           </td>
       <td>
-        {{show_document_info(record)}}
+          {% block document_info scoped %}
+          {% endblock document_info %}
       </td>
 
       </tr>
       <tr>
         <td class="party_info">
-            {{ show_company_info(record) }}
+            {% block company_info scoped %}
+            {% endblock company_info %}
           </td>
           <td class="party_info">
-              {{ show_party_info(record, None) }}
+              {% block party_info scoped %}
+              {% endblock party_info %}
           </td>
         </tr>
     </table>
 </header>
-{% endlanguage %}
