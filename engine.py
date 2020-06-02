@@ -337,6 +337,7 @@ class HTMLReportMixin:
         header_template, main_template, footer_template = \
                 cls.get_templates_jinja(action)
 
+        extension = data.get('output_format', action.extension or 'pdf')
         if action.single:
             # If document requires a page counter for each record we need to
             # render records individually
@@ -350,12 +351,12 @@ class HTMLReportMixin:
                 footer = footer_template and cls.render_template_jinja(action,
                     footer_template, record=record, records=[record],
                     data=data)
-                if action.extension == 'pdf':
+                if extension == 'pdf':
                     documents.append(PdfGenerator(content, header_html=header,
                             footer_html=footer).render_html())
                 else:
                     documents.append(content)
-            if action.extension == 'pdf':
+            if extension == 'pdf':
                 document = documents[0].copy([page for doc in documents
                     for page in doc.pages])
                 document = document.write_pdf()
@@ -368,12 +369,12 @@ class HTMLReportMixin:
                 header_template, records=records, data=data)
             footer = footer_template and cls.render_template_jinja(action,
                 footer_template, records=records, data=data)
-            if action.extension == 'pdf':
+            if extension == 'pdf':
                 document = PdfGenerator(content, header_html=header,
                     footer_html=footer).render_html().write_pdf()
             else:
                 document = content
-        return action.extension, document
+        return extension, document
 
     @classmethod
     def get_action(cls, data):
@@ -519,7 +520,7 @@ class HTMLReportMixin:
         Translation = Pool().get('ir.translation')
         if not lang:
             lang = Transaction().language
-        type_ = 'field'
+
         if field == None:
             Model = Pool().get('ir.model')
             model, = Model.search([('model', '=', model)])
