@@ -1,14 +1,14 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta
-from collections import OrderedDict
+
 
 class Invoice(metaclass=PoolMeta):
     __name__ = 'account.invoice'
     sorted_keys = fields.Function(fields.Char('Sorted Key'),
         'get_sorted_keys')
-       
+
     def get_sorted_keys(self, name):
-        
+
         lines = []
         for x in self.lines:
             if x.sort_key in lines:
@@ -23,7 +23,7 @@ class InvoiceLine(metaclass=PoolMeta):
     sort_key = fields.Function(fields.Char('Sorted Key'),
         'get_sorted_key')
 
-    
+
     def get_sorted_key(self, name):
         key = []
         for move in self.stock_moves:

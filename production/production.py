@@ -1,6 +1,6 @@
 from trytond.model import fields
-from trytond.pool import PoolMeta, Pool
-from trytond.transaction import Transaction
+from trytond.pool import PoolMeta
+
 
 class Production(metaclass=PoolMeta):
     __name__ = 'production'
@@ -9,7 +9,6 @@ class Production(metaclass=PoolMeta):
         'get_show_lots')
 
     def get_show_lots(self, name):
-        show = False
         for move in self.inputs:
             if getattr(move, 'lot'):
                 return True

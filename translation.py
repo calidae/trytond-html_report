@@ -41,7 +41,7 @@ class ReportTranslationSet(metaclass=PoolMeta):
 
         translations_dict = {}
         for x in translations:
-            if x.id not in translation_dict:
+            if x.id not in translations_dict:
                 translations_dict[x.id]  = []
             translations_dict[x.id].append(x.source)
 
