@@ -1,12 +1,10 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-import os
 from trytond.pool import PoolMeta, Pool
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pyson import Eval
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
-from trytond.tools import file_open
 from trytond.cache import Cache
 
 __all__ = ['ActionReport', 'HTMLTemplateTranslation']

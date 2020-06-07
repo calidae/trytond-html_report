@@ -1,6 +1,6 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
-from trytond.transaction import Transaction
+
 
 class ShipmnentOut(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
@@ -25,7 +25,6 @@ class ShipmnentOut(metaclass=PoolMeta):
         return keys
 
     def get_show_lots(self, name):
-        show = False
         for move in self.inventory_moves:
             if getattr(move, 'lot'):
                 return True

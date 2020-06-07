@@ -1,4 +1,3 @@
-import os
 from trytond.model import ModelSQL, ModelView, fields, sequence_ordered
 from trytond.pyson import Eval
 from trytond.tools import file_open
