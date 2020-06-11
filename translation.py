@@ -14,10 +14,13 @@ class ReportTranslationSet(metaclass=PoolMeta):
 
     def set_report(self):
         super().set_report()
-        self.extract_translations()
+        self.extract_translation_jinja()
 
+    def extract_report_jinja(self, content):
+        # TODO extract .po files
+        return []
 
-    def extract_translations(self):
+    def extract_translation_jinja(self):
         pool = Pool()
         Translation = pool.get('html.template.translation')
         Report = pool.get('ir.action.report')
@@ -26,6 +29,8 @@ class ReportTranslationSet(metaclass=PoolMeta):
         context = Transaction().context
         reports = Report.browse(context.get('active_ids', []))
         reports = [x for x in reports if x.template_extension == 'jinja']
+        if not reports:
+            return
 
         translations = Translation.search([('report', 'in',
             [x.id for x in reports])])
