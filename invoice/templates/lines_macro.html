@@ -34,10 +34,10 @@
               <td>{{ line.product and line.product.render.name or '-' }}</td>
             {% endif %}
 
-            <td class="text-right">{{ line.render.quantity }}</td>
+            <td class="text-right">{{ line.render.quantity }} {{line.unit.render.code}}</td>
 
             {% if line.raw.gross_unit_price %}
-              <td class="text-right">{{ line.render.gross_unit_price }}</td>
+              <td class="text-right">{{ line.render.gross_unit_price }} {{line.invoice.currency.render.symbol}}</td>
               {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
                 <td class="text-right">
                     {% if line.raw.discount1 %}
@@ -56,10 +56,10 @@
                 <td> </td>
               {%endif%}
             {% else %}
-              <td class="text-right">{{ line.render.unit_price }}</td>
+              <td class="text-right">{{ line.render.unit_price }} {{line.invoice.currency.render.symbol}}</td>
               <td></td>
             {% endif %}
-            <td class="text-right">{{ line.render.amount }}</td>
+            <td class="text-right">{{ line.render.amount }} {{line.invoice.currency.render.symbol}}</td>
           </tr>
         {% endfor %}
 

@@ -10,10 +10,18 @@
     <td>{{show_document_info(record)}}</td>
 </tr>
 <tr>
-  <td>{{show_company_info(company)}}</td>
+  <td>{{show_company_info(company)}}
+      {%if record.raw.carrier %}
+        <strong>{{label(record.raw.__name__, record.carrier)}}</strong>
+        {{show_carrier(record.carrier)}}
+      {%endif%}
+  </td>
   <td>
    {{show_party_info(party, party.tax_identifier, address, "delivery_address", record.delivery_address) }}
   </td>
 </tr>
 </table>
-{% endlanguage %}
+
+
+ {% endlanguage %}
+
