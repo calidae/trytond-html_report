@@ -1,14 +1,14 @@
 <table style="width:200px">
   <tr>
     <th scope="row" class="text-right"> {{ label(record.raw.__name__, 'untaxed_amount') }}: </th>
-    <td class="text-right"> {{ record.render.untaxed_amount }} </td>
+    <td class="text-right"> {{ record.render.untaxed_amount }} {{record.currency.render.symbol}} </td>
   </tr>
   <tr>
     <th scope="row" class="text-right">{{ label(record.raw.__name__, 'tax_amount') }}:</th>
-    <td class="text-right"> {{ record.render.tax_amount }} </td>
+    <td class="text-right"> {{ record.render.tax_amount }} {{record.currency.render.symbol}}</td>
   </tr>
   <tr>
     <th scope="row" class="text-right">{{ label(record.raw.__name__, 'total_amount') }}:</th>
-    <td class="text-right"> {{ record.render.total_amount }} </td>
+    <td class="text-right"> {{ record.render.total_amount }} {{record.currency.render.symbol}}</td>
   </tr>
 </table>

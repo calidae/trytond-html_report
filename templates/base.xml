@@ -93,6 +93,19 @@
         <field name="filename">html_report/templates/macros/payment_info_macro.html</field>
         <field name="implements" ref="html_report.payment_info_macro_signature"/>
     </record>
-
   </data>
+
+  <data depends="carrier">
+   <record model='html.template.signature' id="show_carrier_signature">
+       <field name="name">show_carrier(carrier)</field>
+   </record>
+   <record model='html.template' id="show_carrier_macro_id">
+        <field name="name">Show Carrier</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/show_carrier.html</field>
+        <field name="implements" ref="html_report.show_carrier_signature"/>
+    </record>
+  </data>
+
 </tryton>
