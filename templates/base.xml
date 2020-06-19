@@ -73,7 +73,7 @@
     </record>
 
     <record model='html.template.signature' id="document_totals_macro_signature">
-        <field name="name">show_totals(record)</field>ac
+        <field name="name">show_totals(record)</field>
     </record>
     <record model='html.template' id="document_totals_macro_id">
         <field name="name">Document Totals</field>
@@ -84,7 +84,7 @@
     </record>
 
     <record model='html.template.signature' id="payment_info_macro_signature">
-        <field name="name">show_payment_info(document)</field>ac
+        <field name="name">show_payment_info(document)</field>
     </record>
     <record model='html.template' id="payment_info_macro_id">
         <field name="name">Payment Info</field>
