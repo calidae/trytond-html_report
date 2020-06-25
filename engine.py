@@ -228,6 +228,8 @@ class Formatter:
         return self._formatted_float(record, field, value)
 
     def _formatted_binary(self, record, field, value):
+        if not value:
+            return
         value = binascii.b2a_base64(value)
         value = value.decode('ascii')
         filename = field.filename
