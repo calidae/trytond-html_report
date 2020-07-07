@@ -18,7 +18,7 @@
           {{ line.render.maturity_date }}
         </td>
         <td class="text-right">
-          {{ '{0:,.2F}'.format(line.raw.debit - line.raw.credit).replace(',','-').replace('.', ',').replace('-','.')}} {{invoice.currency.render.symbol}}
+          {{ format_number(line.raw.debit - line.raw.credit, line.raw.currency_digits) }} {{invoice.currency.render.symbol}}
         </td>
       </tr>
       {% endif %}
