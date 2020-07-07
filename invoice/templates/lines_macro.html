@@ -28,7 +28,8 @@
         {% for line in document.lines  if line.raw.sort_key == key %}
           <tr>
             {% if line.raw.description %}
-              <td colspan="2">{{ line.render.description }}</td>
+              <td></td>
+              <td>{{ line.render.description }}</td>
             {% else %}
               <td>{{ line.product and line.product.render.code or '-' }}</td>
               <td>{{ line.product and line.product.render.name or '-' }}</td>
@@ -41,13 +42,13 @@
               {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
                 <td class="text-right">
                     {% if line.raw.discount1 %}
-                      {{ '-{0:.2F}'.format(line.raw.discount1*100) }}% <br>
+                      {{ '-{0:.2F}'.format(line.raw.discount1*100).replace('.',',') }}% <br>
                     {%endif%}
                     {% if line.raw.discount2 %}
-                      {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br>
+                      {{ '-{0:.2F}'.format(line.raw.discount2*100).replace('.',',') }}%<br>
                     {%endif%}
                     {% if line.raw.discount3 %}
-                      {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br>
+                      {{ '-{0:.2F}'.format(line.raw.discount3*100).replace('.',',') }}%<br>
                     {%endif%}
                 </td>
               {%elif line.raw.discount%}
