@@ -48,6 +48,10 @@ body {
   padding-bottom: 2cm; */
 }
 
+.right {
+    text-align: right;
+}
+
 h1 {
   margin:0.05em;
   padding:0.0em;
