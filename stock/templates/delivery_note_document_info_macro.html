@@ -2,6 +2,8 @@
 
 {% set document_date = record.raw.effective_date and record.render.effective_date or ''%}
 {% set label_date = label(record.raw.__name__, 'effective_date') %}
+{% set label_package = label(record.raw.__name__, 'number_packages') %}
 
 <h1 class="document">{{title}}:{{ record.raw.number and record.render.number }} <h1>
 <h2 class="document">{{label_date}}:{{ document_date }} </h2>
+<h2 class="document">{{label_package}}:{{ record.render.number_packages }} </h2>
