@@ -15,14 +15,18 @@
   {% set invoice = record %}
   {{ show_invoice_lines(invoice) }}
 
-    <table class="condensed">
+    <table >
         <tr>
-          <td> {{ show_payment_info(invoice) }} </td>
-          <td> {{ show_totals(record) }}</td>
+         <td>{{ show_taxes(invoice) }}</td>
+            <td/>
+         <td class="right"> {{ show_totals(record) }}</td>
         </tr>
         <tr>
-          <td>{{ show_taxes(invoice) }}</td>
-          <td>{{ show_due_dates(invoice) }}</td>
+          <td > {{ show_payment_info(invoice) }}
+            {{ show_due_dates(invoice) }}
+          </td>
+            <td/>
+          <td></td>
         </tr>
     </table>
 
