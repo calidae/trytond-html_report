@@ -13,5 +13,15 @@
     {% set valued = False %}
     {{ show_stock_moves(shipment, valued) }}
 
+    {%if record.raw.carrier %}
+        {{show_carrier(record.carrier)}}
+    {%endif%}
+
+    {%if record.raw.comment %}
+        </br></br>
+        <strong>{{label(record.raw.__name__, 'comment')}}</strong> </br>
+        {{record.render.comment}}
+    {%endif%}
+
   {% endlanguage %}
 {% endblock %}
