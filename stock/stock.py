@@ -1,7 +1,6 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
 
-
 class ShipmnentOut(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 
@@ -40,6 +39,7 @@ class Move(metaclass=PoolMeta):
         pool = Pool()
         ShipmentOut = pool.get('stock.shipment.out')
         ShipmentIn = pool.get('stock.shipment.in')
+        ShipmentRefundIn = pool.get('stock.shipment.in.return')
 
         key = []
         if self.shipment and isinstance(self.shipment, ShipmentOut) :
