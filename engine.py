@@ -543,15 +543,6 @@ class HTMLReportMixin:
 
             return field
 
-    @classmethod
-    def format_number(cls, value, digits):
-        Lang = Pool().get('ir.lang')
-        context = Transaction().context
-        locale = context.get('report_lang', Transaction().language or 'es_ES')
-        lang, = Lang.search([('code', '=', locale or 'en'),])
-        digits=2;
-        return lang.format('%.*f', (digits, value), grouping=True)
-
 
     @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
@@ -565,6 +556,14 @@ class HTMLReportMixin:
             Company = pool.get('company.company')
         except:
             Company = None
+
+        def format_number(value, digits):
+            Lang = Pool().get('ir.lang')
+            context = Transaction().context
+            locale = context.get('report_lang', Transaction().language or 'es_ES')
+            lang, = Lang.search([('code', '=', locale or 'en'), ])
+            digits = 2
+            return lang.format('%.*f', (digits, value), grouping=True)
 
         env = cls.get_environment()
 
@@ -580,7 +579,7 @@ class HTMLReportMixin:
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
             'label': cls.label,
-            'format_number': cls.format_number,
+            'format_number': format_number,
             }
         if Company:
             context['company'] = DualRecord(Company(
