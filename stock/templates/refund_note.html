@@ -1,0 +1,27 @@
+{% extends 'html_report/templates/base.html' %}
+{% set shipment = record %}
+
+{% block title %}
+    {{ super() }}
+    {{ label('stock.shipment.in.return') }}
+{% endblock %}
+
+{% block main %}
+  {% language shipment.supplier.lang and shipment.supplier.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
+    {% set shipment = record %}
+    {% set valued = False %}
+    {{ show_return_stock_moves(shipment, valued) }}
+
+    {%if record.raw.carrier %}
+        {{show_carrier(record.carrier)}}
+    {%endif%}
+
+    {%if record.raw.comment %}
+        </br></br>
+        <strong>{{label(record.raw.__name__, 'comment')}}</strong> </br>
+        {{record.render.comment}}
+    {%endif%}
+
+  {% endlanguage %}
+{% endblock %}
