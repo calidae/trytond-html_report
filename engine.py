@@ -557,14 +557,6 @@ class HTMLReportMixin:
         except:
             Company = None
 
-        def format_number(value, digits):
-            Lang = Pool().get('ir.lang')
-            context = Transaction().context
-            locale = context.get('report_lang', Transaction().language or 'es_ES')
-            lang, = Lang.search([('code', '=', locale or 'en'), ])
-            digits = 2
-            return lang.format('%.*f', (digits, value), grouping=True)
-
         env = cls.get_environment()
 
         if records is None:
@@ -579,7 +571,6 @@ class HTMLReportMixin:
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
             'label': cls.label,
-            'format_number': format_number,
             }
         if Company:
             context['company'] = DualRecord(Company(

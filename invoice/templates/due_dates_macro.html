@@ -1,5 +1,8 @@
 {% if invoice.move.lines %}
+{% set lang = invoice.party.lang and invoice.party.raw.lang or company.party.lang and company.party.raw.lang %}
+<h1> {{lang}} </h1>
 <table widht="200px">
+
   <thead>
     <tr>
     <th colspan="2"><center>{{ label('account.move.line', 'maturity_date') }}</center></th>
@@ -18,7 +21,7 @@
           {{ line.render.maturity_date }}
         </td>
         <td class="text-right">
-          {{ format_number(line.raw.debit - line.raw.credit, line.raw.currency_digits) }} {{invoice.currency.render.symbol}}
+          {{ (line.raw.debit - line.raw.credit) | render(digits=invoice.currency.raw.digits, lang=lang) }} {{invoice.currency.render.symbol}}
         </td>
       </tr>
       {% endif %}
