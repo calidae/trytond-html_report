@@ -210,9 +210,9 @@ msgctxt "model:ir.action,name:html_report_purchase"
 msgid "Purchase"
 msgstr "Compras"
 
-+msgctxt "model:ir.action,name:html_report_refund_note"
-+msgid "Refund Note"
-+msgstr "Albarán devolución"
+msgctxt "model:ir.action,name:html_report_refund_note"
+msgid "Refund Note"
+msgstr "Albarán devolución"
 
 msgctxt "model:ir.action,name:html_report_sale"
 msgid "Sale"
