@@ -212,7 +212,7 @@ msgstr "Compras"
 
 msgctxt "model:ir.action,name:html_report_refund_note"
 msgid "Refund Note"
-msgstr "Albarán devolución"
+msgstr "Albarà devolució"
 
 msgctxt "model:ir.action,name:html_report_sale"
 msgid "Sale"
