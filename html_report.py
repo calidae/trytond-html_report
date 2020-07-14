@@ -204,6 +204,14 @@ class HTMLReport(Report):
             with file_open(os.path.join(module, path)) as f:
                 return 'file://' + f.name
 
+        def base64(name):
+            module, path = name.split('/', 1)
+            with file_open(os.path.join(module, path), 'rb') as f:
+                value = binascii.b2a_base64(f.read())
+                value = value.decode('ascii')
+                mimetype = mimetypes.guess_type(f.name)[0]
+                return ('data:%s;base64,%s' % (mimetype, value)).strip()
+
         def render_field(value, decimal_digits=2, lang=None, filename=None):
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (decimal_digits, value),
@@ -252,6 +260,7 @@ class HTMLReport(Report):
             'percentformat': partial(numbers.format_percent, locale=locale),
             'scientificformat': partial(
                 numbers.format_scientific, locale=locale),
+            'base64': base64,
             'modulepath': module_path,
             'render_field': partial(render_field, lang=lang),
             'type_field': type_field,
