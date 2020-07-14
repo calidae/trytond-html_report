@@ -5,7 +5,11 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="">
     <meta name="author" content="Nantic">
-    <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
+    {% if report.extension == 'html' %}
+    <link href="{{ 'html_report/templates/base.css'|base64 }}" rel="stylesheet" type="text/css">
+    {% else %}
+    <link href="{{ 'html_report/templates/base.css'|modulepath }}" rel="stylesheet" type="text/css">
+    {% endif %}
   </head>
 
   <body>
@@ -20,7 +24,6 @@
 
     {% block report_footer scoped %}
     {% endblock report_footer %}
-
 
     {% endblock main %}
     {% endblock body %}
