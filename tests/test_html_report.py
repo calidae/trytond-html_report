@@ -2,12 +2,27 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 import unittest
+import doctest
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 from trytond.tests.test_tryton import suite as test_suite
 from trytond.pool import Pool
 from trytond.tools import file_open
 from trytond.transaction import Transaction
+from trytond.tests.test_tryton import doctest_setup, doctest_teardown
 
+SCENARIOS = [
+    'stock_dependency_scenario.rst',
+    'account_invoice_dependency_scenario.rst',
+    'sale_dependency_scenario.rst',
+    'sale_discount_dependency_scenario.rst',
+    'stock_valued_dependency_scenario.rst',
+    'production_dependency_scenario.rst',
+    'account_payment_type_dependency_scenario.rst',
+    'account_bank_dependency_scenario.rst',
+    'stock_valued_carrier_dependency_scenario.rst',
+    'stock_carrier_dependency_scenario.rst',
+    'purchase_dependency_scenario.rst',
+]
 
 class HtmlReportTestCase(ModuleTestCase):
     'Test Html Report module'
@@ -77,4 +92,8 @@ def suite():
     suite = test_suite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
             HtmlReportTestCase))
+    for scenario in SCENARIOS:
+        suite.addTests(doctest.DocFileSuite(scenario, setUp=doctest_setup,
+            tearDown=doctest_teardown, encoding='utf-8',
+            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE))
     return suite
