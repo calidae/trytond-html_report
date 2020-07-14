@@ -158,12 +158,14 @@
   </record>
 </data>
 
-<data depends="carrier">
+<data depends="carrier,stock">
   <record model="html.report.template" id="report_delivery_note_show_carrier_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="show_carrier_signature"/>
   </record>
+</data>
 
+<data depends="carrier,stock_valued">
    <record model="html.report.template" id="report_delivery_note_valued_show_carrier_id">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="show_carrier_signature"/>
