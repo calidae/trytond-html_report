@@ -485,6 +485,8 @@ class HTMLReportMixin:
                 return ('data:%s;base64,%s' % (mimetype, value)).strip()
 
         def render(value, digits=2, lang=None, filename=None):
+            if not lang:
+                lang, = Lang.search([('code', '=', 'en')], limit=1)
             if isinstance(value, (float, Decimal)):
                 return lang.format('%.*f', (digits, value),
                     grouping=True)
