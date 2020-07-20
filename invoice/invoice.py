@@ -26,11 +26,12 @@ class InvoiceLine(metaclass=PoolMeta):
 
     def get_sorted_key(self, name):
         key = []
-        for move in self.stock_moves:
-            shipment = move.shipment
-            if shipment in key:
-                continue
-            key.append(shipment)
+        if hasattr(self, 'stock_moves'):
+            for move in self.stock_moves:
+                shipment = move.shipment
+                if shipment in key:
+                    continue
+                key.append(shipment)
         if self.origin and 'sale.line' in str(self.origin):
             sale = self.origin.sale
             if sale not in key:
