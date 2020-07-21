@@ -1,6 +1,33 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
 
+
+class ShipmnentOutReturn(metaclass=PoolMeta):
+    __name__ = 'stock.shipment.out.return'
+
+    show_lots = fields.Function(fields.Boolean('Show Lots'),
+        'get_show_lots')
+
+    def get_show_lots(self, name):
+        for move in self.incoming_moves:
+            if getattr(move, 'lot'):
+                return True
+        return False
+
+
+class ShipmnentInReturn(metaclass=PoolMeta):
+    __name__ = 'stock.shipment.in.return'
+
+    show_lots = fields.Function(fields.Boolean('Show Lots'),
+        'get_show_lots')
+
+    def get_show_lots(self, name):
+        for move in self.moves:
+            if getattr(move, 'lot'):
+                return True
+        return False
+
+
 class ShipmnentOut(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 

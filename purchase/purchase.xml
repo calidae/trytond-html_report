@@ -106,4 +106,10 @@
 
 
   </data>
+
+    <data depends="purchase_discount">
+        <record model="ir.action.report" id="purchase_discount.report_purchase">
+            <field name="active" eval="False"/>
+        </record>
+    </data>
 </tryton>

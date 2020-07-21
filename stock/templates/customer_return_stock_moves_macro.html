@@ -1,11 +1,12 @@
+{% set show_lots = document.raw.show_lots %}
 <table style="width:100%;">
   <thead>
     <tr>
     <th nowrap>{{ label('product.product', 'code') }}</th>
     <th nowrap>{{ label('product.template', 'name') }}</th>
-    {% if document.raw.show_lots %}
+    {% if show_lots %}
       <th>{{ label('stock.move', 'lot') }}</th>
-      {% if document.raw.show_lots and document.moves and 'expiration_date' in document.raw.moves[0]%}
+      {% if show_lots and document.raw.incoming_moves and 'expiration_date' in document.raw.incoming_moves[0]%}
         <th>{{ label('stock.lot', 'expiration_date') }}</th>
       {%else%}
         <th class="hide"/>
@@ -27,12 +28,16 @@
     </tr>
   </thead>
   <tbody class="border">
-      {% for move in document.moves %}
+      {% for move in document.incoming_moves %}
             <tr>
               <td>{{ move.product and move.product.render.code or '-' }}</td>
               <td>{{ move.product and move.product.render.name or '-' }}</td>
-              {% if document.raw.show_lots %}
-                <td>{{ move.lot and move.lot.raw.number  or ''}}</td>
+              {% if show_lots %}
+                {% if move.lot  %}
+                  <td>{{ move.lot.render.number }}</td>
+                {%else%}
+                  <td/>
+                {%endif%}
                 {% if move.raw.lot and move.lot.raw.expiration_date %}
                     <td>{{ move.lot.render.expiration_date }}</td>
                 {%else%}

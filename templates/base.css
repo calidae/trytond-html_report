@@ -12,6 +12,7 @@
     font-family: 'Arial'
     bottom:0;
     font-size: 9px;
+    padding-bottom: 3cm;
   }
 }
 
@@ -139,11 +140,13 @@ h2.document{
 
 footer {
   position: fixed;
-  width: 100%;
+  width: 85%;
   bottom: 0;
   padding: 0.5cm;
   text-align: center;
-  font-size: 9px;
+  font-size: 8px;
+  margin-right: 1cm;
+  margin-left: 1cm;
 }
 
 .right {
