@@ -6,10 +6,11 @@
   {{ tax_identifier.render.code }}
   <br>
 {% endif %}
-
 {{ address.render.full_address }}
 <br>
 {{ label('party.party', 'phone') }}: {{ party.render.phone }}
 <br>
+{% if party.raw.email %}
 {{ label('party.party', 'email') }}: {{ party.render.email }}
 <br>
+{% endif %}

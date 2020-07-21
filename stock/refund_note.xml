@@ -43,7 +43,7 @@
   <record model="ir.action.report" id="html_report_refund_note">
       <field name="name">Refund Note</field>
       <field name="model">stock.shipment.in.return</field>
-      <field name="report_name">stock.shipment.out.refund_note</field>
+      <field name="report_name">stock.shipment.in.refund_note</field>
       <field name="extension">pdf</field>
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
