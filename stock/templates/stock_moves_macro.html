@@ -53,9 +53,13 @@
               <td class="text-right">{{ move.render.quantity }}</td>
               <td>{{ move.uom.render.name }}</td>
               {%if valued == True %}
-                <td class="text-right" nowrap>{{move.render.gross_unit_price}}</td>
-                <td class="text-right" nowrap>{{move.render.discount}}</td>
-                <td class="text-right" nowrap>{{move.render.amount}}</td>
+                <td class="text-right" nowrap>{{move.render.gross_unit_price}} {{document.currency.render.symbol}}</td>
+                {% if move.raw.discount > 0 %}
+                  <td class="text-right" nowrap>{{move.render.discount}}</td>
+                {% else %}
+                  <td/>
+                {% endif %}
+                <td class="text-right" nowrap>{{move.render.amount}} {{document.currency.render.symbol}}</td>
               {%else%}
                 <td class="hide"/>
                 <td class="hide"/>

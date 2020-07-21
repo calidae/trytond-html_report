@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<tryton>
+<data depends="stock">
+
+  <!-- Refund_note -->
+  <record model='html.template' id="customer_refund_note_template_id">
+      <field name="name">Customer Refund Note</field>
+      <field name="type">base</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/customer_refund_note.html</field>
+  </record>
+
+    <record model='html.template' id="customer_refund_note_header_template_id">
+        <field name="name">Customer Refund Note Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/stock/templates/customer_refund_note_header.html</field>
+    </record>
+
+  <record model='html.template.signature' id="customer_refund_note_document_info_macro_signature">
+      <field name="name">show_document_info(record)</field>
+  </record>
+  <record model='html.template' id="customer_refund_note_document_info_macro_id">
+      <field name="name">Customer Refund Note Document info</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/customer_refund_note_document_info_macro.html</field>
+      <field name="implements" ref="html_report.customer_refund_note_document_info_macro_signature"/>
+  </record>
+
+  <record model="ir.action.report" id="stock.report_shipment_out_return_restocking_list">
+      <field name="active" eval="False"/>
+  </record>
+
+  <record model='html.template.signature' id="customer_return_stock_moves_macro_signature">
+      <field name="name">show_customer_return_stock_moves(document, valued)</field>
+  </record>
+
+  <record model='html.template' id="customer_return_stock_moves_macro_id">
+      <field name="name">Customer Return Stock Moves</field>
+      <field name="type">macro</field>
+      <field name="sequence" eval="99"/>
+      <field name="filename">html_report/stock/templates/customer_return_stock_moves_macro.html</field>
+      <field name="implements" ref="html_report.customer_return_stock_moves_macro_signature"/>
+  </record>
+
+
+  <record model="ir.action.report" id="html_report_customer_refund_note">
+      <field name="name">Customer Refund Note</field>
+      <field name="model">stock.shipment.out.return</field>
+      <field name="report_name">stock.shipment.out.refund_note</field>
+      <field name="extension">pdf</field>
+      <field name="template_extension">jinja</field>
+      <field name="single" eval="True"/>
+      <field name="html_template" ref="customer_refund_note_template_id"/>
+      <field name="html_header_template" ref="customer_refund_note_header_template_id"/>
+      <field name="html_footer_template" ref="footer_template"/>
+      <field name="extension">pdf</field>
+  </record>
+
+  <record model="ir.action.keyword" id="report_customer_refund_note_keyword">
+      <field name="keyword">form_print</field>
+      <field name="model">stock.shipment.out.return,-1</field>
+      <field name="action" ref="html_report_customer_refund_note"/>
+  </record>
+
+  <record model="html.report.template" id="report_customer_refund_note_show_image_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+      <field name="signature" ref="show_image_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_customer_refund_note_company_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+    <field name="signature" ref="company_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_customer_refund_note_refund_note_party_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+    <field name="signature" ref="party_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="customer_report_refund_note_document_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+    <field name="signature" ref="customer_refund_note_document_info_macro_signature"/>
+  </record>
+
+  <record model="html.report.template" id="report_customer_refund_note_footer_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+    <field name="signature" ref="show_footer_signature"/>
+  </record>
+
+   <record model="html.report.template" id="report_customer_refund_note_stock_moves_id">
+    <field name="report" ref="html_report_customer_refund_note"/>
+    <field name="signature" ref="customer_return_stock_moves_macro_signature"/>
+  </record>
+
+</data>
+
+</tryton>

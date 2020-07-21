@@ -24,7 +24,7 @@
             <td>{{ line.product and line.product.render.name or '-' }}</td>
           {% endif %}
 
-          <td class="text-right">{{ line.render.quantity }} {{line.unit.render.code}}</td>
+          <td class="text-right">{{ line.render.quantity }} {{line.unit.render.symbol}}</td>
 
           {% if line.raw.gross_unit_price %}
             <td class="text-right">{{ line.render.gross_unit_price }} {{line.purchase.currency.render.symbol}}</td>
@@ -41,7 +41,7 @@
                   {%endif%}
               </td>
             {%elif line.raw.discount%}
-              <td class="text-right"> {{ line.render.discount}} %</td>
+              <td class="text-right"> {{ '-{0:.2F}'.format(line.raw.discount*100) }}%</td>
             {%else%}
               <td> </td>
             {%endif%}

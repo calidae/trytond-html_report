@@ -7,10 +7,10 @@
 {% set document_date = record.raw.sale_date and record.render.sale_date or ''%}
 {% set label_date = label(record.raw.__name__, 'sale_date') %}
 
-<h1 class="document">{{title}}:{{ record.raw.number and record.render.number or '' }} <h1>
-<h2 class="document">{{label_date}}:{{ document_date }} </h2>
+<h1 class="document">{{title}}: {{ record.raw.number and record.render.number or '' }} <h1>
+<h2 class="document">{{label_date}}: {{ document_date }} </h2>
 {% if record.raw.reference %}
-    <h2 class="document">{{ label(record.raw.__name__, 'reference') }}:{{ record.raw.reference and record.render.reference }} </h2>
+    <h2 class="document">{{ label(record.raw.__name__, 'reference') }}: {{ record.raw.reference and record.render.reference }} </h2>
 {% endif %}
 
 {% if record.raw.carrier %}
