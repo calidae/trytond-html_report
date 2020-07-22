@@ -130,9 +130,17 @@ msgctxt "field:ir.action.report,html_translations:"
 msgid "Translations"
 msgstr "Traducciones"
 
+msgctxt "field:production,show_lots:"
+msgid "Production"
+msgstr "Producció"
+
 msgctxt "field:stock.move,sort_key:"
 msgid "key"
 msgstr "Llave"
+
+msgctxt "field:stock.shipment.in.return,show_lots:"
+msgid "Show Lots"
+msgstr "Mostrar lotes"
 
 msgctxt "field:stock.shipment.out,show_lots:"
 msgid "Show Lots"
@@ -145,6 +153,10 @@ msgstr "Llave"
 msgctxt "field:stock.shipment.out,sorted_lines:"
 msgid "Sorted Lines"
 msgstr "Línias ordenadas"
+
+msgctxt "field:stock.shipment.out.return,show_lots:"
+msgid "Show Lots"
+msgstr "Mostrar lotes"
 
 msgctxt "model:html.report.template,name:"
 msgid "HTML Report - Template"
@@ -190,6 +202,10 @@ msgctxt "model:ir.action,name:act_template_translation_form"
 msgid "Template Translation"
 msgstr "Traducción plantilla"
 
+msgctxt "model:ir.action,name:html_report_customer_refund_note"
+msgid "Customer Refund Note"
+msgstr "Albarà devolució"
+
 msgctxt "model:ir.action,name:html_report_delivery_note"
 msgid "Delivery Note"
 msgstr "Nota de envío"
@@ -206,6 +222,10 @@ msgctxt "model:ir.action,name:html_report_picking_note"
 msgid "Picking Note"
 msgstr "Lista de recogida"
 
+msgctxt "model:ir.action,name:html_report_production"
+msgid "Production"
+msgstr "Producció"
+
 msgctxt "model:ir.action,name:html_report_purchase"
 msgid "Purchase"
 msgstr "Compras"
@@ -221,6 +241,10 @@ msgstr "Venta"
 msgctxt "model:ir.action,name:html_report_sale_proforma"
 msgid "Proforma"
 msgstr "Proforma"
+
+msgctxt "model:ir.action,name:html_report_valued_delivery_note"
+msgid "Valued Delivery Note"
+msgstr "Nota d'enviament valorada"
 
 msgctxt "model:ir.message,text:missing_signatures"
 msgid "\"%(template)s\" missing signatures: %(missing)s"
