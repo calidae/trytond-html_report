@@ -1,10 +1,12 @@
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
-{% set party = record.party %}
+{% set party = record.company.party %}
 {% set address = record.raw.invoice_address and record.invoice_address or party and party.addresses[0] or None%}
 {% language party and party.raw.lang and party.lang.raw.code or company.party.lang and company.party.raw.lang.code or 'en' %}
 
 <header id="header">
-<table>
+  Lange: {{language}}
+  a: {{record}}
+  <table>
   <tr>
     <td>{{show_image("logo", company.render.logo)}}</td>
     <td>{{show_document_info(record)}}</td>
