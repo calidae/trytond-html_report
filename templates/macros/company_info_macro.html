@@ -14,7 +14,9 @@
 {{ address.render.street }} <br>
 {{ address.render.zip }} {{ address.render.city}}<br>
 {{ address.render.city}} <br>
-{{ address.country.render.name}} <br>
+{% if address.country %}
+  {{ address.country.render.name}} <br>
+{%endif%}
 
 
 <br>
