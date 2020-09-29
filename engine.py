@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 from jinja2 import Environment, FunctionLoader
 from jinja2.ext import Extension, nodes
-from babel import support
+from babel import dates, numbers, support
 
 import weasyprint
 from .generator import PdfGenerator
@@ -497,6 +497,16 @@ class HTMLReportMixin:
             'modulepath': module_path,
             'base64': base64,
             'render': partial(render, lang=lang),
+            'dateformat': partial(dates.format_date, locale=locale),
+            'datetimeformat': partial(dates.format_datetime, locale=locale),
+            'timeformat': partial(dates.format_time, locale=locale),
+            'timedeltaformat': partial(dates.format_timedelta, locale=locale),
+            'numberformat': partial(numbers.format_number, locale=locale),
+            'decimalformat': partial(numbers.format_decimal, locale=locale),
+            'currencyformat': partial(numbers.format_currency, locale=locale),
+            'percentformat': partial(numbers.format_percent, locale=locale),
+            'scientificformat': partial(
+                numbers.format_scientific, locale=locale),
             }
 
     @classmethod
