@@ -27,9 +27,12 @@ class ReportTranslationSet(metaclass=PoolMeta):
         Lang = Pool().get('ir.lang')
 
         context = Transaction().context
-        reports = Report.browse(context.get('active_ids', []))
-        reports = [x for x in reports if x.template_extension == 'jinja']
-        if not reports:
+        if context.get('active_ids'):
+            reports = Report.browse(context.get('active_ids'))
+            reports = [x for x in reports if x.template_extension == 'jinja']
+            if not reports:
+                return
+        else:
             return
 
         translations = Translation.search([('report', 'in',
