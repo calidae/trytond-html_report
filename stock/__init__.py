@@ -3,8 +3,8 @@ from . import stock
 
 def register(module):
     Pool.register(
-        stock.ShipmnentOut,
-        stock.ShipmnentOutReturn,
-        stock.ShipmnentInReturn,
+        stock.ShipmentOut,
+        stock.ShipmentOutReturn,
+        stock.ShipmentInReturn,
         stock.Move,
         module=module, type_='model', depends=['stock'])

@@ -9,16 +9,7 @@
     {%endif%}
     <th nowrap>{{ label('product.product', 'code') }}</th>
     <th nowrap>{{ label('product.template', 'name') }}</th>
-    {% if show_lot %}
-      <th>{{ label('stock.move', 'lot') }}</th>
-      {% if show_lot and 'expiration_date' in moves[0]%}
-        <th>{{ label('stock.lot', 'expiration_date') }}</th>
-      {%else%}
-        <th class="hide"/>
-      {% endif %}
-    {%else%}
-      <th class="hide"/>
-    {% endif %}
+    {% if show_lots %}<th>{{ label('stock.move', 'lot') }}</th>{% endif %}
     <th class="text-right" nowrap>{{label('stock.move', 'quantity') }}</th>
     <th nowrap>{{ label('stock.move', 'uom') }}</th>
     </tr>
@@ -34,16 +25,7 @@
           {%endif%}
           <td>{{ move.product and move.product.render.code or '-' }}</td>
           <td>{{ move.product and move.product.render.name or '-' }}</td>
-          {% if show_lot %}
-            <td>{{ move.lot and move.lot.raw.name  or ''}}</td>
-            {% if move.raw.lot and move.lot.raw.expiration_date %}
-                <td>{{ move.lot.render.expiration_date }}</td>
-            {%else%}
-                <td/>
-            {% endif %}
-          {%else%}
-            <td/>
-          {%endif%}
+          {% if show_lots %}<td>{{ move.lot and move.lot.render.number or '' }}{% if move.raw.lot and move.lot.raw.expiration_date %} ({{ move.lot.render.expiration_date }}){% endif %}</td>{% endif %}
           <td class="text-right">{{ move.render.quantity }}</td>
           <td>{{ move.uom.render.name }}</td>
         </tr>

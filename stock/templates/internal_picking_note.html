@@ -11,7 +11,7 @@
 
     {% set shipment = record %}
     {% set valued = False %}
-    {{ show_picking_moves(shipment.moves,  shipment.raw.show_lot, 'both') }}
+    {{ show_picking_moves(shipment.moves, shipment.raw.show_lots, 'both') }}
 
   {% endlanguage %}
 {% endblock %}
