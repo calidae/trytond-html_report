@@ -15,11 +15,11 @@
     <field name="sequence" eval="99"/>
     <field name="filename">html_report/stock/templates/picking_note_header.html</field>
   </record>
-    
+
   <record model="ir.action.report" id="stock.report_shipment_out_picking_list">
       <field name="active" eval="False"/>
   </record>
-    
+
 
   <record model="ir.action.report" id="html_report_picking_note">
       <field name="name">Picking Note</field>
@@ -41,7 +41,7 @@
   </record>
 
   <record model='html.template.signature' id="stock_picking_moves_macro_signature">
-      <field name="name">show_picking_moves(moves, show_lot, locations)</field>
+      <field name="name">show_picking_moves(moves, show_lots, locations)</field>
   </record>
   <record model='html.template' id="stock_picking_moves_macro_id">
       <field name="name">Picking Moves</field>
@@ -55,7 +55,7 @@
     <field name="report" ref="html_report_picking_note"/>
     <field name="signature" ref="show_image_signature"/>
   </record>
-  
+
   <record model="html.report.template" id="report_picking_note_company_id">
     <field name="report" ref="html_report_picking_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
@@ -99,13 +99,13 @@
     <field name="sequence" eval="99"/>
     <field name="filename">html_report/stock/templates/internal_note_header.html</field>
   </record>
-  
+
     <record model="ir.action.report" id="stock.report_shipment_internal">
       <field name="active" eval="False"/>
   </record>
-    
-  
-  
+
+
+
   <record model="ir.action.report" id="html_report_internal_picking_note">
       <field name="name">Internal Picking Note</field>
       <field name="model">stock.shipment.internal</field>
@@ -140,7 +140,7 @@
     <field name="report" ref="html_report_internal_picking_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
   </record>
-  
+
   <record model="html.report.template" id="report_internal_picking_note_show_image">
     <field name="report" ref="html_report_internal_picking_note"/>
     <field name="signature" ref="show_image_signature"/>
