@@ -2,7 +2,7 @@ from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
 
 
-class ShipmnentOutReturn(metaclass=PoolMeta):
+class ShipmentOutReturn(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -15,7 +15,7 @@ class ShipmnentOutReturn(metaclass=PoolMeta):
         return False
 
 
-class ShipmnentInReturn(metaclass=PoolMeta):
+class ShipmentInReturn(metaclass=PoolMeta):
     __name__ = 'stock.shipment.in.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -28,7 +28,7 @@ class ShipmnentInReturn(metaclass=PoolMeta):
         return False
 
 
-class ShipmnentOut(metaclass=PoolMeta):
+class ShipmentOut(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 
     sorted_lines = fields.Function(fields.One2Many('stock.move',
@@ -38,7 +38,7 @@ class ShipmnentOut(metaclass=PoolMeta):
         'get_show_lots')
 
     def get_sorted_lines(self, name):
-        lines = [x for x in self.inventory_moves]
+        lines = [x for x in self.inventory_moves or self.outgoing_moves]
         lines.sort(key=lambda k: k.sort_key, reverse=True)
         return [x.id for x in lines]
 
@@ -51,7 +51,7 @@ class ShipmnentOut(metaclass=PoolMeta):
         return keys
 
     def get_show_lots(self, name):
-        for move in self.inventory_moves:
+        for move in self.inventory_moves or self.outgoing_moves:
             if getattr(move, 'lot'):
                 return True
         return False
@@ -66,14 +66,20 @@ class Move(metaclass=PoolMeta):
         pool = Pool()
         ShipmentOut = pool.get('stock.shipment.out')
         ShipmentIn = pool.get('stock.shipment.in')
-        ShipmentRefundIn = pool.get('stock.shipment.in.return')
 
         key = []
-        if self.shipment and isinstance(self.shipment, ShipmentOut) :
-            if self.origin and self.origin.origin:
-                sale = self.origin.origin.sale
-                if sale not in key:
-                    key.append(sale)
+        if self.shipment and isinstance(self.shipment, ShipmentOut):
+            if self.shipment.warehouse_storage == self.shipment.warehouse_output:
+                sale = (self.origin
+                        and ('sale.line' in str(self.origin))
+                        and self.origin.sale or None)
+            else:
+                sale = (self.origin
+                        and self.origin.origin
+                        and ('sale.line' in str(self.origin.origin))
+                        and self.origin.origin.sale or None)
+            if sale and sale not in key:
+                key.append(sale)
 
         elif self.shipment_in and isinstance(self.shipment, ShipmentIn):
             if self.origin and 'purchase.line' in str(self.origin):
