@@ -596,9 +596,8 @@ class HTMLReportMixin:
             context['company'] = DualRecord(Company(
                     Transaction().context.get('company')))
         context.update(cls.local_context())
-        with Transaction().set_context(**context):
-            report_template = env.from_string(template_string)
-            res = report_template.render(**context)
+        report_template = env.from_string(template_string)
+        res = report_template.render(**context)
         # print('TEMPLATE:\n', res)
         return res
 
