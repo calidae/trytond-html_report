@@ -4,15 +4,17 @@
   {{ tax_identifier.render.code }}
   <br>
 {% endif %}
-{% if address.raw.name %}
-  {{ address.render.name}} <br>
+{% if address %}
+  {% if address.raw.name %}
+    {{ address.render.name}} <br>
+  {% endif %}
+  {{ address.render.street }} <br>
+  {{ address.render.zip }} {{ address.render.city}}<br>
+  {{ address.render.city}} <br>
+  {% if address.country %}
+    {{ address.country.render.name}} <br>
+  {%endif%}
 {% endif %}
-{{ address.render.street }} <br>
-{{ address.render.zip }} {{ address.render.city}}<br>
-{{ address.render.city}} <br>
-{% if address.country %}
-  {{ address.country.render.name}} <br>
-{%endif%}
 <br>
 {{ label('party.party', 'phone') }}: {{ party.render.phone }}
 <br>
