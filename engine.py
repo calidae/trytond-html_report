@@ -186,7 +186,8 @@ class Formatter:
     def _formatted_datetime(self, record, field, value):
         if value is None:
             return ''
-        return self._get_lang().strftime(value) + ' ' + value.strftime('%H:%M:%S')
+        return (self._get_lang().strftime(value) + ' '
+            + value.strftime('%H:%M:%S'))
 
     def _formatted_timestamp(self, record, field, value):
         return self._formatted_datetime(record, field, value)
@@ -546,15 +547,19 @@ class HTMLReportMixin:
             model, = Model.search([('model', '=', model)])
             return model.name
         else:
-            translation = Translation.search([('name', '=', "%s,%s"%(model,field)),
-                ('lang', '=', lang)], limit=1)
+            translation = Translation.search([
+                    ('name', '=', "%s,%s" % (model, field)),
+                    ('lang', '=', lang),
+                    ], limit=1)
 
             if translation:
                 translation, = translation
                 return translation.value or translation.src
             else:
-                translation = Translation.search([('name', '=', "%s,%s"%(model,field)),
-                    ('lang', '=', 'en')], limit=1)
+                translation = Translation.search([
+                        ('name', '=', "%s,%s" % (model, field)),
+                        ('lang', '=', 'en'),
+                        ], limit=1)
                 if translation:
                     translation, = translation
                     return translation.value or translation.src
