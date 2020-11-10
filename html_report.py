@@ -1,13 +1,9 @@
 import os
-import binascii
-import mimetypes
-from functools import partial
-from decimal import Decimal
-from datetime import date, datetime
+from datetime import datetime
 
 from jinja2 import Environment, FunctionLoader
 from jinja2.ext import Extension, nodes
-from babel import dates, numbers, support
+from babel import support
 
 import weasyprint
 
@@ -15,7 +11,6 @@ from trytond.tools import file_open
 from trytond.pool import Pool
 from trytond.transaction import Transaction
 from trytond.report import Report
-from trytond.i18n import gettext
 
 
 class SwitchableTranslations:
