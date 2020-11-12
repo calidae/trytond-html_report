@@ -1,0 +1,19 @@
+<style>
+#table-totals {
+   width: 650px !important;
+}
+</style>
+
+<table id="table-totals" border="1">
+  <tr>
+    <th class="text-center upper">{{ label(record.raw.__name__, 'untaxed_amount') }}</th>
+    <th class="text-center upper">{{ label(record.raw.__name__, 'tax_amount') }}</th>
+    <th class="text-center upper">{{ label(record.raw.__name__, 'total_amount') }}</th>
+  </tr>
+  <tr>
+    <td class="text-center">{{ record.render.untaxed_amount }} {{record.currency.render.symbol}}</td>
+    <td class="text-center">{{ record.render.tax_amount }} {{record.currency.render.symbol}}</td>
+    <td class="text-center">{{ record.render.total_amount }} {{record.currency.render.symbol}}</td>
+  </tr>
+  <tr>
+</table>

@@ -51,7 +51,7 @@
     </record>
 
     <record model='html.template.signature' id="company_info_macro_signature">
-        <field name="name">show_company_info(company)</field>
+        <field name="name">show_company_info(company, show_party=True, show_contact_mechanism=True)</field>
     </record>
     <record model='html.template' id="company_info_macro_id">
         <field name="name">Company info</field>
@@ -81,6 +81,17 @@
         <field name="sequence" eval="99"/>
         <field name="filename">html_report/templates/macros/totals_macro.html</field>
         <field name="implements" ref="html_report.document_totals_macro_signature"/>
+    </record>
+
+    <record model='html.template.signature' id="document_totals_horizontal_macro_signature">
+        <field name="name">show_totals_horizontal(record)</field>
+    </record>
+    <record model='html.template' id="document_totals_horizontal_macro_id">
+        <field name="name">Document Totals Horitzontal</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/templates/macros/totals_horizontal_macro.html</field>
+        <field name="implements" ref="html_report.document_totals_horizontal_macro_signature"/>
     </record>
 
     <record model='html.template.signature' id="payment_info_macro_signature">

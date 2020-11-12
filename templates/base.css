@@ -41,16 +41,11 @@ header {
 
 }
 
-
 body {
   font-family: 'Arial';
   font-size: 10px;
   /* margin-right: 1.3cm;
   padding-bottom: 2cm; */
-}
-
-.right {
-    text-align: right;
 }
 
 h1 {
@@ -107,16 +102,19 @@ table tbody.border  {
   padding: 1px;
 }
 
-.text-right {
-  text-align: right;
-}
-
 th.sub_header{
   padding: 0.25rem;
   vertical-align: top;
   border-bottom: 1px solid #dee2e6;
   border-collapse:separate;
   column-span:all;
+}
+
+td.hide {
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -149,13 +147,29 @@ footer {
   margin-left: 1cm;
 }
 
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+
 .right {
   float:right;
 }
 
-td.hide {
-  display:none;
-  margin:0;
-  padding:0;
-  border:0;
+.upper {
+  text-transform: uppercase;
+}
+.m10 {
+  padding-top: 10px;
+}
+.m20 {
+  padding-top: 20px;
+}
+.m30 {
+  padding-top: 30px;
+}
+.m40 {
+  padding-top: 40px;
 }
