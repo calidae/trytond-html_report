@@ -1,24 +1,20 @@
 {% set party = company.party %}
-{% set address = party.addresses[0] %}
+{% set address = party.addresses and party.addresses[0] or None %}
 {% set tax_identifier = party.tax_identifier %}
 
-{{party.render.name}}
-<br>
-{% if tax_identifier %}
-  {{ tax_identifier.render.code }}
-  <br>
+<div id="company-info" class="header-details">
+{% if show_party %}<span class="company-info-name">{{ party.render.name }}</span><br/>{% endif %}
+{% if tax_identifier %}{{ tax_identifier.render.code }}<br/>{% endif %}
+{% if address %}<div class="company-info-address">
+  {% if address.raw.party_name %}{{ address.render.party_name}}<br/>{% endif %}
+  {{ address.render.street }}<br/>
+  {{ address.render.zip }} {{ address.render.city}}<br/>
+  {% if address.subdivision %}
+    ({{ address.subdivision.render.name}})<br/>
+  {%endif%}</div>
 {% endif %}
-{% if address.raw.party_name %}
-  {{ address.render.party_name }} <br>
-{% endif %}
-{{ address.render.street }} <br>
-{{ address.render.zip }} {{ address.render.city }}<br>
-{% if address.country %}
-  {{ address.country.render.name }} <br>
-{%endif%}
-{{ label('party.party', 'phone') }}: {{ party.render.phone }}
-<br>
-{% if party.raw.email %}
-{{ label('party.party', 'email') }}: {{ party.render.email }}
-<br>
-{% endif %}
+{% if show_contact_mechanism %}<div class="company-info-contact-mechanims">
+{% if party.raw.phone %}{{ label('party.party', 'phone') }}: {{ party.render.phone }}<br/>{% endif %}
+{% if party.raw.email %}{{ label('party.party', 'email') }}: {{ party.render.email }}{% endif %}
+</div>{% endif %}
+</div>
