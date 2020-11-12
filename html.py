@@ -49,11 +49,12 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
     def get_base_content(self):
         if not self.filename:
             return self.content
-        value = None
+        value = self.content if self.content else None
         try:
             with file_open(self.filename, subdir='modules', mode='r',
                     encoding='utf-8') as fp:
-                value = fp.read()
+                filename_value = fp.read()
+                value = value+"\n"+filename_value if value else filename_value
         except IOError:
             pass
         return value
