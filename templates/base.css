@@ -147,6 +147,12 @@ footer {
   margin-left: 1cm;
 }
 
+#totals {
+  /* set element at bootom page */
+  bottom: 0;
+  position: absolute;
+}
+
 .text-right {
   text-align: right;
 }

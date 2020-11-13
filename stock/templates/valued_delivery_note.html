@@ -13,21 +13,18 @@
     {% set valued = True %}
     {{ show_stock_moves(shipment, valued) }}
 
-    <div class="right">
-    {{show_totals(shipment)}}
-    </div>
+    {%if record.raw.carrier %}<p>{{ show_carrier(record.carrier) }}</p>{%endif%}
 
-    {%if record.raw.carrier %}
+    {% if record.raw.comment %}
+      <h4>{{ label(record.raw.__name__, 'comment') }}</h4>
+      <p>{{ record.render.comment }}</p>
+    {% endif %}
 
-        {{show_carrier(record.carrier)}}
-    {%endif%}
-
-    {%if record.raw.comment %}
-        </br></br>
-        <strong>{{label(record.raw.__name__, 'comment')}}</strong> </br>
-        {{record.render.comment}}
-    {%endif%}
-
-
+    <table id="totals" class="condensed">
+      <tr>
+        <td></td>
+        <td>{{ show_totals(shipment) }}</td>
+      </tr>
+    </table>
   {% endlanguage %}
 {% endblock %}

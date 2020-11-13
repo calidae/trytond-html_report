@@ -1,7 +1,6 @@
 {% extends 'html_report/templates/base.html' %}
 {% set invoice = record %}
 
-
 {% block title %}
   {% language invoice.party.lang and invoice.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
     {{ super() }}
@@ -15,26 +14,24 @@
   {% set invoice = record %}
   {{ show_invoice_lines(invoice) }}
 
-    <table>
-        <tr>
-         <td>{{ show_taxes(invoice) }}</td>
-            <td/>
-         <td class="right"> {{ show_totals(record) }}</td>
-        </tr>
-        <tr>
-          <td > {{ show_payment_info(invoice) }}
-            {{ show_due_dates(invoice) }}
-          </td>
-            <td/>
-          <td></td>
-        </tr>
-    </table>
+  {% if invoice.raw.comment %}
+    <h4>{{ label('account.invoice', 'comment') }}</h4>
+    <p>{{ invoice.render.comment }}</p>
+  {% endif %}
 
-{% if invoice.raw.comment %}
-<strong>{{label('account.invoice', 'comment')}}</strong>
-<br>
-{{invoice.render.comment}}
-{% endif %}
+  <table id="totals" class="condensed">
+    <tr>
+     <td>{{ show_taxes(invoice) }}</td>
+     <td class="right">{{ show_totals(record) }}</td>
+    </tr>
+    <tr>
+      <td>
+        {{ show_payment_info(invoice) }}
+      </td>
+      <td>
+        {{ show_due_dates(invoice) }}
+      </td>
+    </tr>
+  </table>
 {% endlanguage %}
-
 {% endblock %}
