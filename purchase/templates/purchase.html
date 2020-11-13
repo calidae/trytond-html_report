@@ -9,22 +9,19 @@
 {% block main %}
   {% set purchase = record %}
   {% language purchase.party.lang and purchase.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
-  
+
   {{ show_purchase_lines(purchase) }}
 
-    <table class="condensed">
-        <tr>
-          <td> {{ show_payment_info(purchase) }} </td>
-          <td> {{ show_totals(record) }}</td>
-        </tr>
-    </table>
+  {% if purchase.raw.comment %}
+    <h4>{{ label('purchase.purchase', 'comment') }}</h4>
+    <p>{{ purchase.render.comment }}</p>
+  {% endif %}
 
-{% if purchase.raw.comment %}
-    <strong>{{label('purchase.purchase', 'comment')}}</strong>
-    <br>
-    {{purchase.render.comment}}
-{% endif %}
-
-
+  <table id="totals" class="condensed">
+    <tr>
+      <td> {{ show_payment_info(purchase) }} </td>
+      <td> {{ show_totals(record) }}</td>
+    </tr>
+  </table>
 {% endlanguage %}
 {% endblock %}
