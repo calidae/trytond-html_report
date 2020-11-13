@@ -1,4 +1,5 @@
 {% extends 'html_report/templates/base.html' %}
+
 {% set sale = record %}
 
 {% block title %}
@@ -12,19 +13,16 @@
 
   {{ show_sale_lines(sale) }}
 
-    <table class="condensed">
-        <tr>
-          <td> {{ show_payment_info(sale) }} </td>
-          <td> {{ show_totals(record) }}</td>
-        </tr>
-    </table>
+  {% if sale.raw.comment %}
+    <h4>{{ label('sale.sale', 'comment') }}</h4>
+    <p>{{ sale.render.comment }}</p>
+  {% endif %}
 
-{% if sale.raw.comment %}
-    <strong>{{label('sale.sale', 'comment')}}</strong>
-    <br>
-    {{sale.render.comment}}
-{% endif %}
-
-
+  <table id="totals" class="condensed">
+    <tr>
+      <td>{{ show_payment_info(sale) }}</td>
+      <td>{{ show_totals(record) }}</td>
+    </tr>
+  </table>
 {% endlanguage %}
 {% endblock %}

@@ -17,11 +17,9 @@
         {{show_carrier(record.carrier)}}
     {%endif%}
 
-    {%if record.raw.comment %}
-        </br></br>
-        <strong>{{label(record.raw.__name__, 'comment')}}</strong> </br>
-        {{record.render.comment}}
-    {%endif%}
-
+    {% if record.raw.comment %}
+      <h4>{{ label(record.raw.__name__, 'comment') }}</h4>
+      <p>{{ record.render.comment }}</p>
+    {% endif %}
   {% endlanguage %}
 {% endblock %}
