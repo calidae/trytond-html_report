@@ -22,7 +22,7 @@ class PdfGenerator:
     """
     OVERLAY_LAYOUT = '@page {size: A4 portrait; margin: 0;}'
 
-    def __init__(self, main_html, header_html=None, footer_html=None,
+    def __init__(self, main_html, header_html=None, footer_html=None, last_footer_html=None,
                  base_url=None, side_margin=2, extra_vertical_margin=30):
         """
         Parameters
@@ -47,6 +47,7 @@ class PdfGenerator:
         self.main_html = main_html
         self.header_html = header_html
         self.footer_html = footer_html
+        self.last_footer_html = last_footer_html
         self.base_url = base_url
         self.side_margin = side_margin
         self.extra_vertical_margin = extra_vertical_margin
@@ -66,23 +67,29 @@ class PdfGenerator:
             The height of this element, which will be then translated in a html height
         """
         html = HTML(
-            string=getattr(self, '{}_html'.format(element)),
+            string=getattr(self, '{}_html'.format(element)).replace('\n', ''),
             base_url=self.base_url,
         )
         element_doc = html.render(stylesheets=[CSS(string=self.OVERLAY_LAYOUT)])
         element_page = element_doc.pages[0]
-        element_body = PdfGenerator.get_element(element_page._page_box.all_children(), 'body')
+        element_body = PdfGenerator.get_element(
+                element_page._page_box.all_children(), 'body')
         element_body = element_body.copy_with_children(element_body.all_children())
-        element_html = PdfGenerator.get_element(element_page._page_box.all_children(), element)
+        element_html = PdfGenerator.get_element(
+                element_page._page_box.all_children(), element.replace('_', '-'))
 
         if element == 'header':
             element_height = element_html.height
         if element == 'footer':
             element_height = element_page.height - element_html.position_y
+        if element == 'last_footer':
+            element_height = (element_page.height - element_html.position_y
+                - element_html.margin_bottom)
 
         return element_body, element_height
 
-    def _apply_overlay_on_main(self, main_doc, header_body=None, footer_body=None):
+    def _apply_overlay_on_main(self, main_doc, header_body=None,
+            footer_body=None, last_footer_body=None):
         """
         Insert the header and the footer in the main document.
 
@@ -94,15 +101,22 @@ class PdfGenerator:
             A representation for an html element in Weasyprint.
         footer_body: BlockBox
             A representation for an html element in Weasyprint.
+        last_footer_body: BlockBox
+            A representation for an html element in Weasyprint.
         """
 
+        total_pages = len(main_doc.pages)
+        number_page = 1
         for page in main_doc.pages:
             page_body = PdfGenerator.get_element(page._page_box.all_children(), 'body')
 
             if header_body:
-                page_body.children += header_body.all_children() 
+                page_body.children += header_body.all_children()
+            if last_footer_body and number_page == total_pages:
+                page_body.children += last_footer_body.all_children()
             if footer_body:
                 page_body.children += footer_body.all_children()
+            number_page += 1
 
     def render_html(self):
         """
@@ -119,6 +133,11 @@ class PdfGenerator:
             footer_body, footer_height = self._compute_overlay_element('footer')
         else:
             footer_body, footer_height = None, 0
+        if self.last_footer_html:
+            last_footer_body, last_footer_height = self._compute_overlay_element('last_footer')
+        else:
+            last_footer_body, last_footer_height = None, 0
+        footer_height += last_footer_height
 
         margins = '{header_size}px {side_margin} {footer_size}px {side_margin}'.format(
             header_size=header_height + self.extra_vertical_margin,
@@ -133,8 +152,9 @@ class PdfGenerator:
         )
         main_doc = html.render(stylesheets=[CSS(string=content_print_layout)])
 
-        if self.header_html or self.footer_html:
-            self._apply_overlay_on_main(main_doc, header_body, footer_body)
+        if self.header_html or self.footer_html or self.last_footer_html:
+            self._apply_overlay_on_main(main_doc, header_body, footer_body,
+                last_footer_body)
 
         return main_doc
 
