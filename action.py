@@ -35,7 +35,14 @@ class ActionReport(metaclass=PoolMeta):
             'invisible': Eval('template_extension') != 'jinja',
             },
         depends=['template_extension'])
-
+    html_last_footer_template = fields.Many2One('html.template', 'Last Footer',
+        domain=[
+            ('type', '=', 'footer'),
+            ],
+        states={
+            'invisible': Eval('template_extension') != 'jinja',
+            },
+        depends=['template_extension'])
     html_templates = fields.One2Many('html.report.template', 'report', 'Templates',
         states={
             'invisible': Eval('template_extension') != 'jinja',
@@ -54,6 +61,8 @@ class ActionReport(metaclass=PoolMeta):
     html_header_content = fields.Function(fields.Binary('Header Content'),
         'get_content')
     html_footer_content = fields.Function(fields.Binary('Footer Content'),
+        'get_content')
+    html_last_footer_content = fields.Function(fields.Binary('Last Footer Content'),
         'get_content')
 
     @classmethod

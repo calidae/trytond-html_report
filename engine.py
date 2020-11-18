@@ -309,11 +309,13 @@ class HTMLReportMixin:
             and action.report_content.decode("utf-8") or action.html_content) #.decode('utf-8'))
         footer = (action.html_footer_content and
             action.html_footer_content) #.decode('utf-8'))
+        last_footer = (action.html_last_footer_content and
+            action.html_last_footer_content) #.decode('utf-8'))
         if not content:
             if not action.html_content:
                 raise Exception('Error', 'Missing jinja report file!')
             content = action.html_content
-        return header, content, footer
+        return header, content, footer, last_footer
 
     @classmethod
     def execute(cls, ids, data):
@@ -336,9 +338,8 @@ class HTMLReportMixin:
 
     @classmethod
     def _execute_html_report(cls, records, data, action):
-        header_template, main_template, footer_template = \
+        header_template, main_template, footer_template, last_footer_template = \
                 cls.get_templates_jinja(action)
-
         extension = data.get('output_format', action.extension or 'pdf')
         if action.single:
             # If document requires a page counter for each record we need to
@@ -353,9 +354,12 @@ class HTMLReportMixin:
                 footer = footer_template and cls.render_template_jinja(action,
                     footer_template, record=record, records=[record],
                     data=data)
+                last_footer = last_footer_template and cls.render_template_jinja(action,
+                    last_footer_template, record=record, records=[record],
+                    data=data)
                 if extension == 'pdf':
                     documents.append(PdfGenerator(content, header_html=header,
-                            footer_html=footer).render_html())
+                            footer_html=footer, last_footer_html=last_footer).render_html())
                 else:
                     documents.append(content)
             if extension == 'pdf':
@@ -371,9 +375,11 @@ class HTMLReportMixin:
                 header_template, records=records, data=data)
             footer = footer_template and cls.render_template_jinja(action,
                 footer_template, records=records, data=data)
+            last_footer = last_footer_template and cls.render_template_jinja(action,
+                last_footer_template, records=records, data=data)
             if extension == 'pdf':
                 document = PdfGenerator(content, header_html=header,
-                    footer_html=footer).render_html().write_pdf()
+                    footer_html=footer, last_footer_html=last_footer).render_html().write_pdf()
             else:
                 document = content
         return extension, document
