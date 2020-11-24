@@ -28,13 +28,13 @@
             {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
               <td class="text-right">
                   {% if line.raw.discount1 %}
-                    {{ '-{0:.2F}'.format(line.raw.discount1*100) }}% <br>
+                    {{ '-{0:.2F}'.format(line.raw.discount1*100) }}%<br/>
                   {%endif%}
                   {% if line.raw.discount2 %}
-                    {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br>
+                    {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br/>
                   {%endif%}
                   {% if line.raw.discount3 %}
-                    {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br>
+                    {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br/>
                   {%endif%}
               </td>
             {%elif line.raw.discount%}
