@@ -5,14 +5,7 @@
   <br>
 {% endif %}
 {% if address %}
-  {% if address.raw.party_name %}
-    {{ address.render.party_name }} <br>
-  {% endif %}
-  {{ address.render.street }} <br>
-  {{ address.render.zip }} {{ address.render.city }}<br>
-  {% if address.country %}
-    {{ address.country.render.name }} <br>
-  {%endif%}
+  {{ address.render.full_address | replace("\n", "<br/>") }}
 {% endif %}
 <br>
 {{ label('party.party', 'phone') }}: {{ party.render.phone }}
@@ -24,5 +17,5 @@
 {% if second_address and second_address.raw.id != address.raw.id %}
   <strong> {{ second_address_label }}</strong>
   <br/>
-  {{ second_address.render.full_address }}
+  {{ second_address.render.full_address | replace("\n", "<br/>") }}
 {%endif%}
