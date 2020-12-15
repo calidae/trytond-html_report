@@ -1,21 +1,29 @@
 <?xml version="1.0"?>
 <tryton>
   <data depends="account_invoice,account_payment_type,account_bank">
-    <!-- html.template and signatures -->
-    <record model='html.template' id="invoice_template_id">
-        <field name="name">Invoice</field>
-        <field name="type">base</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/invoice/templates/invoice.html</field>
-    </record>
-    <record model='html.template' id="invoice_header_template_id">
-        <field name="name">Invoice Header</field>
-        <field name="type">header</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/invoice/templates/header.html</field>
-    </record>
-    
+      <!-- html.template base, header and last-footer -->
+      <record model='html.template' id="invoice_template_id">
+          <field name="name">Invoice</field>
+          <field name="type">base</field>
+          <field name="sequence" eval="99"/>
+          <field name="filename">html_report/invoice/templates/invoice.html</field>
+      </record>
 
+      <record model='html.template' id="invoice_header_template_id">
+          <field name="name">Invoice Header</field>
+          <field name="type">header</field>
+          <field name="sequence" eval="99"/>
+          <field name="filename">html_report/invoice/templates/header.html</field>
+      </record>
+
+     <record model='html.template' id="invoice_last_footer_template">
+         <field name="name">Invoice Last Footer</field>
+         <field name="type">footer</field>
+         <field name="sequence" eval="99"/>
+         <field name="filename">html_report/invoice/templates/last_footer.html</field>
+     </record>
+
+    <!-- html.template and signatures -->
     <record model='html.template.signature' id="invoice_due_dates_macro_signature">
         <field name="name">show_due_dates(invoice)</field>
     </record>
@@ -86,6 +94,7 @@
         <field name="html_template" ref="invoice_template_id"/>
         <field name="html_header_template" ref="invoice_header_template_id"/>
         <field name="html_footer_template" ref="footer_template"/>
+        <field name="html_last_footer_template" ref="invoice_last_footer_template"/>
         <field name="extension">pdf</field>
     </record>
 
@@ -104,7 +113,7 @@
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="show_image_signature"/>
     </record>
-    
+
     <record model="html.report.template" id="report_invoice_due_dates_id">
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="invoice_due_dates_macro_signature"/>

@@ -96,13 +96,20 @@
 </data>
 
 <data depends="stock_valued">
-  <!-- Valued delivery_note -->
-  <record model='html.template' id="valued_delivery_note_template_id">
-      <field name="name">Valued Delivery Note</field>
-      <field name="type">base</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/stock/templates/valued_delivery_note.html</field>
-  </record>
+    <!-- Valued delivery_note -->
+    <record model='html.template' id="valued_delivery_note_template_id">
+        <field name="name">Valued Delivery Note</field>
+        <field name="type">base</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/stock/templates/valued_delivery_note.html</field>
+    </record>
+
+   <record model='html.template' id="valued_delivery_note_last_footer_template">
+       <field name="name">Valued Delivery Note Last Footer</field>
+       <field name="type">footer</field>
+       <field name="sequence" eval="99"/>
+       <field name="filename">html_report/stock/templates/valued_delivery_note_last_footer.html</field>
+   </record>
 
   <record model="ir.action.report" id="html_report_valued_delivery_note">
       <field name="name">Valued Delivery Note</field>
@@ -114,6 +121,7 @@
       <field name="html_template" ref="valued_delivery_note_template_id"/>
       <field name="html_header_template" ref="delivery_note_header_template_id"/>
       <field name="html_footer_template" ref="footer_template"/>
+      <field name="html_last_footer_template" ref="valued_delivery_note_last_footer_template"/>
       <field name="extension">pdf</field>
   </record>
 

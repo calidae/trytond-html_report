@@ -16,12 +16,5 @@
     <h4>{{ label('purchase.purchase', 'comment') }}</h4>
     <p>{{ purchase.render.comment }}</p>
   {% endif %}
-
-  <table id="totals" class="condensed">
-    <tr>
-      <td> {{ show_payment_info(purchase) }} </td>
-      <td> {{ show_totals(record) }}</td>
-    </tr>
-  </table>
 {% endlanguage %}
 {% endblock %}
