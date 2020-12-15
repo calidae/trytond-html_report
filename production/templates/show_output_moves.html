@@ -20,10 +20,10 @@
       </tr>
   </thead>
   <tbody class="border">
-    {% for move in record.outputs%}
+    {% for move in record.outputs %}
         <tr>
-          <td>{{move.from_location.render.code}} {{move.from_location.render.name}}</td>
-          <td>{{move.to_location.render.code}} {{move.to_location.render.name}}</td>
+          <td>{{ move.from_location.render.code }} {{ move.from_location.render.name }}</td>
+          <td>{{ move.to_location.render.code }} {{ move.to_location.render.name }}</td>
           <td>{{ move.product and move.product.render.code or '-' }}</td>
           <td>{{ move.product and move.product.render.name or '-' }}</td>
           {% if record.raw.show_lots %}

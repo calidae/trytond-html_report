@@ -19,10 +19,8 @@ class Invoice(metaclass=PoolMeta):
 
 class InvoiceLine(metaclass=PoolMeta):
     __name__ = 'account.invoice.line'
-
     sort_key = fields.Function(fields.Char('Sorted Key'),
         'get_sorted_key')
-
 
     def get_sorted_key(self, name):
         key = []
@@ -39,7 +37,7 @@ class InvoiceLine(metaclass=PoolMeta):
 
         if self.origin and 'purchase.line' in str(self.origin):
             purchase = self.origin.purchase
-            if purchase in key:
+            if purchase not in key:
                 key.append(purchase)
 
         return key

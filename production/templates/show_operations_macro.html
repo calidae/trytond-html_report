@@ -5,15 +5,15 @@
       <th nowrap>{{ label('production.operation', 'work_center') }}</th>
       <th nowrap>{{ label('production.operation', 'work_center_category') }}</th>
       <th nowrap>{{ label('production.route.operation', 'time') }}</th>
-      <th nowrap>{{ label('production', 'quantity')  }}</th>
+      <th nowrap>{{ label('production', 'quantity') }}</th>
     </tr>
   </thead>
   <tbody class="border">
     {% for operation in operations %}
         <tr>
-          <td>{{operation.operation_type.render.name }}</td>
-          <td>{{operation.raw.work_center and operation.work_center.render.name }}</td>
-          <td>{{operation.work_center_category.render.name}}</td>
+          <td>{{ operation.operation_type.render.name }}</td>
+          <td>{{ operation.raw.work_center and operation.work_center.render.name }}</td>
+          <td>{{ operation.work_center_category.render.name }}</td>
           <td></td>
           <td></td>
         </tr>

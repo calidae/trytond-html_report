@@ -9,6 +9,7 @@ from trytond.cache import Cache
 
 __all__ = ['ActionReport', 'HTMLTemplateTranslation']
 
+
 class ActionReport(metaclass=PoolMeta):
     __name__ = 'ir.action.report'
     html_template = fields.Many2One('html.template', 'Template',

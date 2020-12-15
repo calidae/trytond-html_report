@@ -7,13 +7,14 @@
   <tr>
     <td>{{ show_image("logo", company.render.logo) }}</td>
     <td>{{ show_document_info(record) }}</td>
-</tr>
-<tr>
-  <td>{{ show_company_info(company) }}</td>
-  <td>
-    {% set second_address_label = label(record.raw.__name__, 'shipment_address' ) %}
-    {{ show_party_info(party, party.tax_identifier, record.invoice_address, second_address_label, record.shipment_address) }}
-  </td>
-</tr>
+  </tr>
+  <tr>
+    <td>{{ show_company_info(company) }}</td>
+    <td>
+      {% set second_address_label = label(record.raw.__name__, 'shipment_address' ) %}
+      {{ show_party_info(party, party.tax_identifier, record.invoice_address, second_address_label, record.shipment_address) }}
+    </td>
+  </tr>
 </table>
+</header>
 {% endlanguage %}

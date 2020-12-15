@@ -8,15 +8,14 @@
   <tr>
     <td>{{show_image("logo", company.render.logo)}}</td>
     <td>{{show_document_info(record) }}</td>
-</tr>
-<tr>
-  <td>{{show_company_info(company)}}
-  </td>
-  <td>
-   {{show_party_info(party, party.tax_identifier, address, "delivery_address", record.delivery_address) }}
-  </td>
-</tr>
+  </tr>
+  <tr>
+    <td>{{show_company_info(company)}}
+    </td>
+    <td>
+     {{show_party_info(party, party.tax_identifier, address, "delivery_address", record.delivery_address) }}
+    </td>
+  </tr>
 </table>
-
- {% endlanguage %}
-
+</header>
+{% endlanguage %}
