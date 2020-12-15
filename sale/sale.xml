@@ -1,16 +1,7 @@
 <?xml version="1.0"?>
 <tryton>
   <data depends="sale">
-
-    <!-- html.template and signatures -->
-    <record model='html.template' id="sale_header_template_id">
-        <field name="name">Sale Header</field>
-        <field name="type">header</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/sale/templates/header.html</field>
-    </record>
-
-
+    <!-- html.template base, header and last-footer -->
     <record model='html.template' id="sale_template_id">
         <field name="name">Sale</field>
         <field name="type">base</field>
@@ -18,6 +9,21 @@
         <field name="filename">html_report/sale/templates/sale.html</field>
     </record>
 
+    <record model='html.template' id="sale_header_template_id">
+        <field name="name">Sale Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/sale/templates/header.html</field>
+    </record>
+
+   <record model='html.template' id="sale_last_footer_template">
+       <field name="name">Saler Last Footer</field>
+       <field name="type">footer</field>
+       <field name="sequence" eval="99"/>
+       <field name="filename">html_report/sale/templates/last_footer.html</field>
+   </record>
+
+    <!-- html.template and signatures -->
     <record model='html.template.signature' id="sale_lines_macro_signature">
         <field name="name">show_sale_lines(document)</field>
     </record>
@@ -61,13 +67,11 @@
        <field name="implements" ref="html_report.sale_document_info_macro_signature"/>
    </record>
 
-
     <!-- Sale Report -->
     <record model="ir.action.report" id="sale.report_sale">
         <field name="active" eval="False"/>
     </record>
 
-    
     <record model="ir.action.report" id="html_report_sale">
         <field name="name">Sale</field>
         <field name="model">sale.sale</field>
@@ -78,6 +82,7 @@
         <field name="html_template" ref="sale_template_id"/>
         <field name="html_header_template" ref="sale_header_template_id"/>
         <field name="html_footer_template" ref="footer_template"/>
+        <field name="html_last_footer_template" ref="sale_last_footer_template"/>
         <field name="extension">pdf</field>
     </record>
 
@@ -145,6 +150,7 @@
         <field name="html_template" ref="sale_template_id"/>
         <field name="html_header_template" ref="sale_header_template_id"/>
         <field name="html_footer_template" ref="footer_template"/>
+        <field name="html_last_footer_template" ref="sale_last_footer_template"/>
         <field name="extension">pdf</field>
     </record>
 
@@ -158,7 +164,7 @@
       <field name="report" ref="html_report_sale_proforma"/>
       <field name="signature" ref="show_image_signature"/>
     </record>
-    
+
     <record model="html.report.template" id="report_proforma_footer_id">
       <field name="report" ref="html_report_sale_proforma"/>
       <field name="signature" ref="show_footer_signature"/>
@@ -201,7 +207,7 @@
    </record>
 
   </data>
-  
+
   <data depends="sale_discount">
       <!-- Sale Report -->
     <record model="ir.action.report" id="sale_discount.report_sale">

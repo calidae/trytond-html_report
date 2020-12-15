@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <tryton>
   <data depends="purchase">
-
-    <!-- html.template and signatures -->
+    <!-- html.template base, header and last-footer -->
     <record model='html.template' id="purchase_template_id">
         <field name="name">Purchase</field>
         <field name="type">base</field>
@@ -10,6 +9,21 @@
         <field name="filename">html_report/purchase/templates/purchase.html</field>
     </record>
 
+    <record model='html.template' id="purchase_header_template_id">
+        <field name="name">Purchase Header</field>
+        <field name="type">header</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/purchase/templates/header.html</field>
+    </record>
+
+   <record model='html.template' id="purchase_last_footer_template">
+       <field name="name">Purchase Last Footer</field>
+       <field name="type">footer</field>
+       <field name="sequence" eval="99"/>
+       <field name="filename">html_report/purchase/templates/last_footer.html</field>
+   </record>
+
+    <!-- html.template and signatures -->
     <record model='html.template.signature' id="purchase_lines_macro_signature">
         <field name="name">show_purchase_lines(document)</field>
     </record>
@@ -32,13 +46,6 @@
         <field name="implements" ref="html_report.purchase_document_info_macro_signature"/>
     </record>
 
-    <record model='html.template' id="purchase_header_template_id">
-        <field name="name">Purchase Header</field>
-        <field name="type">header</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/purchase/templates/header.html</field>
-    </record>
-
     <!-- Purchase Report -->
     <record model="ir.action.report" id="purchase.report_purchase">
         <field name="active" eval="False"/>
@@ -54,6 +61,7 @@
         <field name="html_template" ref="purchase_template_id"/>
         <field name="html_header_template" ref="purchase_header_template_id"/>
         <field name="html_footer_template" ref="footer_template"/>
+        <field name="html_last_footer_template" ref="purchase_last_footer_template"/>
         <field name="extension">pdf</field>
     </record>
 
@@ -67,7 +75,7 @@
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="company_info_macro_signature"/>
     </record>
-    
+
     <record model="html.report.template" id="report_purchase_show_image_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="show_image_signature"/>
