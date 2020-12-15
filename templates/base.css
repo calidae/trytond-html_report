@@ -9,7 +9,7 @@
   @bottom-right {
     content: counter(page) " / " counter(pages);
     text-align: right;
-    font-family: 'Arial'
+    font-family: 'Arial';
     bottom:0;
     font-size: 9px;
     padding-bottom: 4cm;
@@ -146,6 +146,12 @@ footer {
   margin-left: 1cm;
 }
 
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
 .text-right {
   text-align: right;
 }
@@ -155,6 +161,10 @@ footer {
 
 .right {
   float:right;
+}
+
+.thick {
+  font-weight: bold;
 }
 
 .upper {

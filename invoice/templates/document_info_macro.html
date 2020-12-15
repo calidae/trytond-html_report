@@ -2,9 +2,6 @@
 {% set document_date = record.raw.invoice_date and record.render.invoice_date %}
 {% set label_date = label(record.raw.__name__, 'invoice_date') %}
 
-
-<h1 class="document">{{title}}: {{ record.raw.number and record.render.number }} <h1>
-<h2 class="document">{{label_date}}: {{ document_date }} </h2>
-{% if record.raw.reference %}
-  <h2 class="document">{{ label(record.raw.__name__, 'reference') }}: {{ record.raw.reference and record.render.reference }} </h2>
-{% endif %}
+<h1 class="document">{{ title }}: {{ record.raw.number and record.render.number or '' }} <h1>
+{% if document_date %}<h2 class="document">{{ label_date }}: {{ document_date }} </h2>{% endif %}
+{% if record.raw.reference %}<h2 class="document">{{ label(record.raw.__name__, 'reference') }}: {{ record.raw.reference and record.render.reference }} </h2>{% endif %}

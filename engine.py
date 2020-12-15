@@ -319,6 +319,9 @@ class HTMLReportMixin:
 
     @classmethod
     def execute(cls, ids, data):
+        if not ids:
+            return
+
         cls.check_access()
         action, model = cls.get_action(data)
         # in case is not jinja, call super()

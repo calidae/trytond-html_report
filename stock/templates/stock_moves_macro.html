@@ -22,7 +22,7 @@
         {% if key %}
           <th class="sub_header" colspan="9">
             {% for item in key %}
-              {{ label(item.__name__) }} : {{ item.number }} {{ label(item.__name__, 'sale_date') }} : {{item.sale_date}}
+              {{ label(item.__name__) }} : {{ item.number }} {{ label(item.__name__, 'sale_date') }} : {{ item.sale_date|dateformat('short') }}<br/>
             {% endfor %}
            </th>
         {% endif %}

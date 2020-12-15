@@ -1,7 +1,6 @@
 {% if invoice.move.lines %}
 {% set lang = invoice.party.lang and invoice.party.raw.lang or company.party.lang and company.party.raw.lang %}
-<table widht="200px">
-
+<table id="due-dates" widht="200px">
   <thead>
     <tr>
     <th colspan="2"><center>{{ label('account.move.line', 'maturity_date') }}</center></th>
@@ -10,7 +9,6 @@
     <th>{{label('account.move.line', 'maturity_date')}}</th>
     <th class="text-right">{{label('account.move.line', 'amount')}}</th>
     </tr>
-    
   </thead>
   <tbody class="border">
     {% for line in invoice.move.lines|rejectattr('raw.maturity_date', 'none')|sort(attribute='raw.maturity_date') %}

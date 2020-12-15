@@ -1,148 +1,129 @@
 <?xml version="1.0"?>
 <tryton>
-<data depends="production">
+  <data depends="production">
 
-  <!-- Delivery_note -->
-  <record model='html.template' id="production_template_id">
-      <field name="name">Production</field>
-      <field name="type">base</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/production.html</field>
-  </record>
-
-  <record model='html.template.signature' id="production_document_info_macro_signature">
-      <field name="name">show_document_info(record)</field>
-  </record>
-
-  <record model='html.template' id="production_document_info_macro_id">
-      <field name="name">Production Document info</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/production_document_info_macro.html</field>
-      <field name="implements" ref="html_report.production_document_info_macro_signature"/>
-  </record>
-
-   <record model='html.template' id="production_header_template_id">
-        <field name="name">Production Header</field>
-        <field name="type">header</field>
+    <!-- Production -->
+    <record model='html.template' id="production_template_id">
+        <field name="name">Production</field>
+        <field name="type">base</field>
         <field name="sequence" eval="99"/>
-        <field name="filename">html_report/production/templates/header.html</field>
-   </record>
+        <field name="filename">html_report/production/templates/production.html</field>
+    </record>
 
-  <record model='html.template.signature' id="production_operation_macro_signature">
-      <field name="name">show_operation(operations)</field>
-  </record>
-  <record model='html.template' id="production_operation_macro_id">
-      <field name="name">Production Operation info</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/show_operations_macro.html</field>
-      <field name="implements" ref="html_report.production_operation_macro_signature"/>
-  </record>
+    <record model='html.template.signature' id="production_document_info_macro_signature">
+        <field name="name">show_document_info(record)</field>
+    </record>
 
-  <record model='html.template.signature' id="production_input_move_macro_signature">
-      <field name="name">show_input_moves(record)</field>
-  </record>
-  <record model='html.template' id="production_input_move_macro_id">
-      <field name="name">Production Input Moves</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/show_input_moves.html</field>
-      <field name="implements" ref="html_report.production_input_move_macro_signature"/>
-  </record>
+    <record model='html.template' id="production_document_info_macro_id">
+        <field name="name">Production Document info</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/production/templates/production_document_info_macro.html</field>
+        <field name="implements" ref="html_report.production_document_info_macro_signature"/>
+    </record>
 
-  <record model='html.template.signature' id="production_output_move_macro_signature">
-      <field name="name">show_output_moves(record)</field>
-  </record>
-  <record model='html.template' id="production_output_move_macro_id">
-      <field name="name">Production Input Moves</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/show_output_moves.html</field>
-      <field name="implements" ref="html_report.production_output_move_macro_signature"/>
-  </record>
+     <record model='html.template' id="production_header_template_id">
+          <field name="name">Production Header</field>
+          <field name="type">header</field>
+          <field name="sequence" eval="99"/>
+          <field name="filename">html_report/production/templates/header.html</field>
+     </record>
 
+    <record model='html.template.signature' id="production_operation_macro_signature">
+        <field name="name">show_operation(operations)</field>
+    </record>
+    <record model='html.template' id="production_operation_macro_id">
+        <field name="name">Production Operation info</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/production/templates/show_operations_macro.html</field>
+        <field name="implements" ref="html_report.production_operation_macro_signature"/>
+    </record>
 
-  <record model="ir.action.report" id="html_report_production">
-      <field name="name">Production</field>
-      <field name="model">production</field>
-      <field name="report_name">production.production</field>
-      <field name="extension">pdf</field>
-      <field name="template_extension">jinja</field>
-      <field name="single" eval="True"/>
-      <field name="html_template" ref="production_template_id"/>
-      <field name="html_header_template" ref="production_header_template_id"/>
-      <field name="html_footer_template" ref="footer_template"/>
-      <field name="extension">pdf</field>
-  </record>
+    <record model='html.template.signature' id="production_input_move_macro_signature">
+        <field name="name">show_input_moves(record)</field>
+    </record>
+    <record model='html.template' id="production_input_move_macro_id">
+        <field name="name">Production Input Moves</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/production/templates/show_input_moves.html</field>
+        <field name="implements" ref="html_report.production_input_move_macro_signature"/>
+    </record>
 
-  <record model="ir.action.keyword" id="report_production_keyword">
-      <field name="keyword">form_print</field>
-      <field name="model">production,-1</field>
-      <field name="action" ref="html_report_production"/>
-  </record>
+    <record model='html.template.signature' id="production_output_move_macro_signature">
+        <field name="name">show_output_moves(record)</field>
+    </record>
+    <record model='html.template' id="production_output_move_macro_id">
+        <field name="name">Production Output Moves</field>
+        <field name="type">macro</field>
+        <field name="sequence" eval="99"/>
+        <field name="filename">html_report/production/templates/show_output_moves.html</field>
+        <field name="implements" ref="html_report.production_output_move_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_show_image_id">
-     <field name="report" ref="html_report_production"/>
-     <field name="signature" ref="show_image_signature"/>
-  </record>
+    <record model="ir.action.report" id="html_report_production">
+        <field name="name">Production</field>
+        <field name="model">production</field>
+        <field name="report_name">production.production</field>
+        <field name="extension">pdf</field>
+        <field name="template_extension">jinja</field>
+        <field name="single" eval="True"/>
+        <field name="html_template" ref="production_template_id"/>
+        <field name="html_header_template" ref="production_header_template_id"/>
+        <field name="html_footer_template" ref="footer_template"/>
+        <field name="extension">pdf</field>
+    </record>
 
-  <record model="html.report.template" id="report_production_company_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="production_operation_macro_signature"/>
-  </record>
+    <record model="ir.action.keyword" id="report_production_keyword">
+        <field name="keyword">form_print</field>
+        <field name="model">production,-1</field>
+        <field name="action" ref="html_report_production"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_input_moves_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="production_input_move_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_show_image_id">
+       <field name="report" ref="html_report_production"/>
+       <field name="signature" ref="show_image_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_output_company_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="production_output_move_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_company_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="production_operation_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_operation_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="company_info_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_input_moves_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="production_input_move_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_stock_moves_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="stock_picking_moves_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_output_company_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="production_output_move_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_production_party_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="party_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_operation_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="company_info_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_document_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="production_document_info_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_stock_moves_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="stock_picking_moves_macro_signature"/>
+    </record>
 
-  <record model='html.template.signature' id="production_party_info_macro_signature">
-      <field name="name">show_party_info(party, tax_identifier, address, second_address_label, second_address)</field>
-  </record>
-  <record model='html.template' id="production_party_info_macro_id">
-      <field name="name">production Party Info</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/production/templates/party_info_macro.html</field>
-      <field name="implements" ref="production_party_info_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_production_party_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="party_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_party_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="production_party_info_macro_signature"/>
-  </record>
+    <record model="html.report.template" id="report_production_document_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="production_document_info_macro_signature"/>
+    </record>
 
-  <record model="html.report.template" id="report_production_footer_id">
-    <field name="report" ref="html_report_production"/>
-    <field name="signature" ref="show_footer_signature"/>
-  </record>
-
-</data>
-
+    <record model="html.report.template" id="report_production_footer_id">
+      <field name="report" ref="html_report_production"/>
+      <field name="signature" ref="show_footer_signature"/>
+    </record>
+  </data>
 </tryton>
