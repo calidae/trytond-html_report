@@ -28,6 +28,7 @@
         {% endif %}
 
       {% for move in document.sorted_lines %}
+        {% if move.raw.sort_key == key %}
             <tr>
               <td>{{ move.product and move.product.render.code or '-' }}</td>
               <td>{{ move.product and move.product.render.name or '-' }}</td>
@@ -48,6 +49,7 @@
                 <td class="hide"/>
               {%endif%}
             </tr>
+       {% endif %}
       {% endfor %}
     {% endfor %}
   </tbody>
