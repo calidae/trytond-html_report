@@ -62,17 +62,6 @@
         <field name="implements" ref="html_report.production_output_move_macro_signature"/>
     </record>
 
-    <record model='html.template.signature' id="production_party_info_macro_signature">
-         <field name="name">show_party_info(party, tax_identifier, address, second_address_label, second_address)</field>
-     </record>
-     <record model='html.template' id="production_party_info_macro_id">
-         <field name="name">production Party Info</field>
-         <field name="type">macro</field>
-         <field name="sequence" eval="99"/>
-         <field name="filename">html_report/production/templates/party_info_macro.html</field>
-         <field name="implements" ref="production_party_info_macro_signature"/>
-     </record>
-
     <record model="ir.action.report" id="html_report_production">
         <field name="name">Production</field>
         <field name="model">production</field>
