@@ -52,8 +52,8 @@
                       {{ '-{0:.2F}'.format(line.raw.discount3*100).replace('.',',') }}%<br>
                     {%endif%}
                 </td>
-              {%elif line.raw.discount%}
-                <td class="text-right"> {{ line.render.discount}} %</td>
+              {%elif line.raw.discount and line.raw.discount > 0 %}
+                <td class="text-right">{{ '-{0:.2F}'.format(line.raw.discount*100) }} %</td>
               {%else%}
                 <td> </td>
               {%endif%}
