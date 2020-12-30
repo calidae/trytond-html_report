@@ -125,17 +125,6 @@
       <field name="action" ref="html_report_internal_picking_note"/>
   </record>
 
-  <record model='html.template.signature' id="internal_pickin_party_info_macro_signature">
-      <field name="name">show_party_info(document, address)</field>
-  </record>
-  <record model='html.template' id="internal_picking_party_info_macro_id">
-      <field name="name">Internal Picking Party Info</field>
-      <field name="type">macro</field>
-      <field name="sequence" eval="99"/>
-      <field name="filename">html_report/stock/templates/party_info_macro.html</field>
-      <field name="implements" ref="internal_pickin_party_info_macro_signature"/>
-  </record>
-
   <record model="html.report.template" id="report_internal_picking_note_company_id">
     <field name="report" ref="html_report_internal_picking_note"/>
     <field name="signature" ref="company_info_macro_signature"/>
@@ -148,7 +137,7 @@
 
   <record model="html.report.template" id="report_picking_note_internal_note_party_id">
     <field name="report" ref="html_report_internal_picking_note"/>
-    <field name="signature" ref="internal_pickin_party_info_macro_signature"/>
+    <field name="signature" ref="party_macro_signature"/>
   </record>
 
   <record model="html.report.template" id="report_internal_picking_note_stock_moves_id">
