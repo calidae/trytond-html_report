@@ -29,15 +29,12 @@
       <field name="implements" ref="html_report.return_stock_moves_macro_signature"/>
   </record>
 
-  <record model='html.template.signature' id="refund_note_document_info_macro_signature">
-      <field name="name">show_document_info(record)</field>
-  </record>
   <record model='html.template' id="refund_note_document_info_macro_id">
-      <field name="name">Redfund Note Document info</field>
+      <field name="name">Refund Note Document info</field>
       <field name="type">macro</field>
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/refund_note_document_info_macro.html</field>
-      <field name="implements" ref="html_report.refund_note_document_info_macro_signature"/>
+      <field name="implements" ref="html_report.document_info_macro_signature"/>
   </record>
 
   <record model="ir.action.report" id="html_report_refund_note">
@@ -81,7 +78,7 @@
 
   <record model="html.report.template" id="report_refund_note_document_id">
     <field name="report" ref="html_report_refund_note"/>
-    <field name="signature" ref="refund_note_document_info_macro_signature"/>
+    <field name="signature" ref="document_info_macro_signature"/>
   </record>
 
   <record model="html.report.template" id="report_refund_note_footer_id">

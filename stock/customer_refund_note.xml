@@ -17,15 +17,12 @@
         <field name="filename">html_report/stock/templates/customer_refund_note_header.html</field>
     </record>
 
-  <record model='html.template.signature' id="customer_refund_note_document_info_macro_signature">
-      <field name="name">show_document_info(record)</field>
-  </record>
   <record model='html.template' id="customer_refund_note_document_info_macro_id">
       <field name="name">Customer Refund Note Document info</field>
       <field name="type">macro</field>
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/customer_refund_note_document_info_macro.html</field>
-      <field name="implements" ref="html_report.customer_refund_note_document_info_macro_signature"/>
+      <field name="implements" ref="html_report.document_info_macro_signature"/>
   </record>
 
   <record model="ir.action.report" id="stock.report_shipment_out_return_restocking_list">
@@ -81,7 +78,7 @@
 
   <record model="html.report.template" id="customer_report_refund_note_document_id">
     <field name="report" ref="html_report_customer_refund_note"/>
-    <field name="signature" ref="customer_refund_note_document_info_macro_signature"/>
+    <field name="signature" ref="document_info_macro_signature"/>
   </record>
 
   <record model="html.report.template" id="report_customer_refund_note_footer_id">

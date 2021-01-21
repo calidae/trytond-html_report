@@ -47,16 +47,12 @@
         <field name="implements" ref="html_report.sale_show_conditions_signature"/>
     </record>
 
-
-   <record model='html.template.signature' id="sale_document_info_macro_signature">
-       <field name="name">show_document_info(record)</field>
-   </record>
    <record model='html.template' id="sale_document_info_macro_id">
        <field name="name">Sale Document info</field>
        <field name="type">macro</field>
        <field name="sequence" eval="99"/>
        <field name="filename">html_report/sale/templates/document_info_macro.html</field>
-       <field name="implements" ref="html_report.sale_document_info_macro_signature"/>
+       <field name="implements" ref="html_report.document_info_macro_signature"/>
    </record>
 
    <record model='html.template' id="proforma_document_info_macro_id">
@@ -64,7 +60,7 @@
        <field name="type">macro</field>
        <field name="sequence" eval="99"/>
        <field name="filename">html_report/sale/templates/document_info_proforma_macro.html</field>
-       <field name="implements" ref="html_report.sale_document_info_macro_signature"/>
+       <field name="implements" ref="html_report.document_info_macro_signature"/>
    </record>
 
     <!-- Sale Report -->
@@ -135,7 +131,7 @@
 
    <record model="html.report.template" id="report_sale_document_id">
      <field name="report" ref="html_report_sale"/>
-     <field name="signature" ref="sale_document_info_macro_signature"/>
+     <field name="signature" ref="document_info_macro_signature"/>
    </record>
 
 
@@ -202,7 +198,7 @@
 
    <record model="html.report.template" id="report_proforma_sale_document_id">
      <field name="report" ref="html_report_sale_proforma"/>
-     <field name="signature" ref="sale_document_info_macro_signature"/>
+     <field name="signature" ref="document_info_macro_signature"/>
      <field name="template" ref="proforma_document_info_macro_id" />
    </record>
 
