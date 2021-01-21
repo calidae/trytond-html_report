@@ -104,6 +104,10 @@
         <field name="filename">html_report/templates/macros/payment_info_macro.html</field>
         <field name="implements" ref="html_report.payment_info_macro_signature"/>
     </record>
+
+    <record model='html.template.signature' id="document_info_macro_signature">
+        <field name="name">show_document_info(record)</field>
+    </record>
   </data>
 
   <data depends="carrier">
