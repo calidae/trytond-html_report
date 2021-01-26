@@ -1,5 +1,5 @@
 <tree>
-    <field name="name" expand="2"/>
+    <field name="name"/>
     <field name="type"/>
     <field name="implements"/>
     <field name="parent"/>
