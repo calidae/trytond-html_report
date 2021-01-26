@@ -9,14 +9,18 @@
     <field name="sequence"/>
     <label name="implements"/>
     <field name="implements"/>
-    <field name="content" widget="html" colspan="2"/>
     <label name="parent"/>
     <field name="parent"/>
-    <separator id="content" colspan="6"/>
-    <field name="content" colspan="6" height="500"/>
-    <separator id="all_content" colspan="6"/>
-    <field name="all_content" colspan="6" height="500"/>
-
-    <separator id="uses" colspan="6"/>
-    <field name="uses" colspan="6" height="500"/>
+    <notebook colspan="6">
+      <page name="content">
+         <field name="content" widget="html" colspan="6"/>
+         <field name="content" height="500"/>
+       </page>
+	     <page name="all_content">
+          <field name="all_content" height="500"/>
+      </page>
+      <page name="uses">
+          <field name="uses" height="500"/>
+      </page>
+    </notebook>
 </form>

@@ -28,7 +28,7 @@
 
 
     <record model='html.template.signature' id="simplified_hr_macro_signature">
-        <field name="name">simplified_hr()</field>
+        <field name="name">show_simplified_hr()</field>
     </record>
 
     <record model='html.template' id="simplified_hr_macro_template">
