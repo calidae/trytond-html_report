@@ -1,5 +1,6 @@
+import re
 from trytond.model import ModelSQL, ModelView, fields, sequence_ordered
-from trytond.pyson import Eval
+from trytond.pyson import Eval, Bool
 from trytond.tools import file_open
 from trytond.pool import Pool
 
@@ -27,29 +28,37 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
             'required': Eval('type') == 'macro',
             'invisible': Eval('type') != 'macro',
             })
-    uses = fields.Many2Many('html.template.usage', 'template', 'signature',
-        'Uses')
+    uses = fields.Function(fields.Many2Many('html.template.usage', 'template',
+        'signature', 'Uses'), 'get_uses')
     parent = fields.Many2One('html.template', 'Parent', domain=[
             ('type', 'in', ['base', 'extension']),
             ], states={
             'required': Eval('type') == 'extension',
             'invisible': Eval('type') != 'extension',
             }, depends=['type'])
-    filename = fields.Char('Template path')
-    content = fields.Text('Content')
+    filename = fields.Char('Template path', states={
+            'readonly': Bool(Eval('filename')),
+            'invisible': ~Bool(Eval('filename')),
+            })
+    data = fields.Text('Content')
+    content = fields.Function(fields.Text('Content', states={
+            'readonly': Bool(Eval('filename')),
+            }, depends=['filename']), 'get_content',
+            setter='set_content')
     all_content = fields.Function(fields.Text('All Content'),
         'get_all_content')
 
-    def get_rec_name(self, name):
-        res = self.name
-        if self.implements:
-            res += ' / ' + self.implements.rec_name
-        return res
+    @classmethod
+    def __register__(cls, module_name):
+        table_h = cls.__table_handler__(module_name)
 
-    def get_base_content(self):
+        if table_h.column_exist('content'):
+            table_h.column_rename('content', 'data')
+        super().__register__(module_name)
+
+    def get_content(self, name):
         if not self.filename:
-            return self.content
-        value = self.content if self.content else None
+            return self.data
         try:
             with file_open(self.filename, subdir='modules', mode='r',
                     encoding='utf-8') as fp:
@@ -59,15 +68,34 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
             pass
         return value
 
+    @classmethod
+    def set_content(cls, views, name, value):
+        cls.write(views, {'data': value})
+
+    def get_uses(self, name):
+        Signature = Pool().get('html.template.signature')
+
+        res = []
+        match = re.findall("show_.*\(", self.content)
+        for name in match:
+            res += Signature.search([('name', 'like', name + '%')])
+        return [x.id for x in res]
+
+    def get_rec_name(self, name):
+        res = self.name
+        if self.implements:
+            res += ' / ' + self.implements.rec_name
+        return res
+
     def get_all_content(self, name):
         if self.type in ('base', 'header', 'footer'):
-            return self.get_base_content()
+            return self.content
         elif self.type == 'extension':
             return '{%% extends "%s" %%} {# %s #}\n\n%s' % (self.parent.id,
                 self.parent.name, self.content)
         elif self.type == 'macro':
             return '{%% macro %s %%}\n%s\n{%% endmacro %%}' % (
-                self.implements.name, self.get_base_content())
+                self.implements.name, self.content)
 
     @classmethod
     def copy(cls, templates, default=None):
@@ -81,7 +109,6 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
             default.setdefault('content', template.all_content)
             res += super(Template, cls).copy([template], default=default)
         return res
-
 
 
 class TemplateUsage(ModelSQL):
