@@ -57,6 +57,7 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
         super().__register__(module_name)
 
     def get_content(self, name):
+        value = None
         if not self.filename:
             return self.data
         try:
