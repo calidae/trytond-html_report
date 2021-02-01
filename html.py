@@ -57,17 +57,14 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
         super().__register__(module_name)
 
     def get_content(self, name):
-        value = None
         if not self.filename:
             return self.data
         try:
             with file_open(self.filename, subdir='modules', mode='r',
                     encoding='utf-8') as fp:
-                filename_value = fp.read()
-                value = value+"\n"+filename_value if value else filename_value
+                return fp.read()
         except IOError:
-            pass
-        return value
+            return
 
     @classmethod
     def set_content(cls, views, name, value):
