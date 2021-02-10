@@ -1,20 +1,24 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta
+from trytond.modules.html_report.html import HTMLPartyInfoMixin
 
 
-class Invoice(metaclass=PoolMeta):
+class Invoice(HTMLPartyInfoMixin, metaclass=PoolMeta):
     __name__ = 'account.invoice'
     sorted_keys = fields.Function(fields.Char('Sorted Key'),
         'get_sorted_keys')
 
     def get_sorted_keys(self, name):
-
         lines = []
         for x in self.lines:
             if x.sort_key in lines:
                 continue
             lines.append(x.sort_key)
         return lines
+
+    def get_html_address(self, name):
+        return (self.invoice_address and self.invoice_address.id
+            or super().get_html_address(name))
 
 
 class InvoiceLine(metaclass=PoolMeta):

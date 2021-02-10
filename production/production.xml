@@ -18,13 +18,6 @@
         <field name="implements" ref="html_report.document_info_macro_signature"/>
     </record>
 
-     <record model='html.template' id="production_header_template_id">
-          <field name="name">Production Header</field>
-          <field name="type">header</field>
-          <field name="sequence" eval="99"/>
-          <field name="filename">html_report/production/templates/header.html</field>
-     </record>
-
     <record model='html.template.signature' id="production_operation_macro_signature">
         <field name="name">show_operation(operations)</field>
     </record>
@@ -66,7 +59,7 @@
         <field name="template_extension">jinja</field>
         <field name="single" eval="True"/>
         <field name="html_template" ref="production_template_id"/>
-        <field name="html_header_template" ref="production_header_template_id"/>
+        <field name="html_header_template" ref="header_template"/>
         <field name="html_footer_template" ref="footer_template"/>
         <field name="extension">pdf</field>
     </record>

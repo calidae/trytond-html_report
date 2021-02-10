@@ -1,13 +1,24 @@
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
+{% set party = record.html_party %}
+{% set tax_identifier = record.html_tax_identifier %}
+{% set address = record.html_address %}
+{% set second_address_label = record.html_address %}
+{% set second_address = record.html_address %}
+
+
+{% language party and party.raw.lang and party.lang.raw.code or company.party.lang and company.party.raw.lang.code or 'en' %}
+
 <header id="header">
     <table>
       <tr>
           <td>
           {% block company_logo scoped %}
+            {{ show_image("logo", company.render.logo) }}
           {% endblock company_logo %}
           </td>
       <td>
           {% block document_info scoped %}
+            {{ show_document_info(record) }}
           {% endblock document_info %}
       </td>
 
@@ -15,12 +26,16 @@
       <tr>
         <td class="party_info">
             {% block company_info scoped %}
+              {{ show_company_info(company) }}
             {% endblock company_info %}
           </td>
           <td class="party_info">
               {% block party_info scoped %}
+                {{ show_party_info(party, tax_identifier, address, second_address_label, second_address) }}
               {% endblock party_info %}
           </td>
         </tr>
     </table>
 </header>
+
+{% endlanguage %}

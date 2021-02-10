@@ -8,10 +8,11 @@ from . import translation
 from . import html
 from . import engine
 from . import invoice
+from . import production
+from . import purchase
 from . import sale
 from . import sale_product_customer
 from . import stock
-from . import production
 
 def register():
     module = 'html_report'
@@ -30,7 +31,8 @@ def register():
         module=module)
 
     invoice.register(module)
+    production.register(module)
+    purchase.register(module)
     sale.register(module)
     sale_product_customer.register(module)
     stock.register(module)
-    production.register(module)

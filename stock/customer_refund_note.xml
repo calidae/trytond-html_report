@@ -10,13 +10,6 @@
       <field name="filename">html_report/stock/templates/customer_refund_note.html</field>
   </record>
 
-    <record model='html.template' id="customer_refund_note_header_template_id">
-        <field name="name">Customer Refund Note Header</field>
-        <field name="type">header</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/stock/templates/customer_refund_note_header.html</field>
-    </record>
-
   <record model='html.template' id="customer_refund_note_document_info_macro_id">
       <field name="name">Customer Refund Note Document info</field>
       <field name="type">macro</field>
@@ -50,7 +43,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="customer_refund_note_template_id"/>
-      <field name="html_header_template" ref="customer_refund_note_header_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
