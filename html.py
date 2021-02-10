@@ -74,7 +74,7 @@ class Template(sequence_ordered(), ModelSQL, ModelView):
         Signature = Pool().get('html.template.signature')
 
         res = []
-        match = re.findall("show_.*\(", self.content)
+        match = re.findall("show_.*\(", self.content or '')
         for name in match:
             res += Signature.search([('name', 'like', name + '%')])
         return [x.id for x in res]
