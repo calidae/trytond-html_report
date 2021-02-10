@@ -1,8 +1,9 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
+from trytond.modules.html_report.html import HTMLPartyInfoMixin
 
 
-class ShipmentOutReturn(metaclass=PoolMeta):
+class ShipmentOutReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.out.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -14,8 +15,17 @@ class ShipmentOutReturn(metaclass=PoolMeta):
                 return True
         return False
 
+    def get_html_party(self, name):
+        return self.customer and self.customer.id
 
-class ShipmentInReturn(metaclass=PoolMeta):
+    def get_html_second_address(self, name):
+        return self.delivery_address and self.delivery_address.id
+
+    def get_html_second_address_label(self, name):
+        return self.__name__, "delivery_address"
+
+
+class ShipmentInReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.in.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -27,8 +37,17 @@ class ShipmentInReturn(metaclass=PoolMeta):
                 return True
         return False
 
+    def get_html_party(self, name):
+        return self.supplier and self.supplier.id
 
-class ShipmentOut(metaclass=PoolMeta):
+    def get_html_second_address(self, name):
+        return self.delivery_address and self.delivery_address.id
+
+    def get_html_second_address_label(self, name):
+        return self.__name__, "delivery_address"
+
+
+class ShipmentOut(HTMLPartyInfoMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 
     sorted_lines = fields.Function(fields.One2Many('stock.move',
@@ -36,6 +55,15 @@ class ShipmentOut(metaclass=PoolMeta):
     sorted_keys = fields.Function(fields.Char('key'), 'get_sorted_keys')
     show_lots = fields.Function(fields.Boolean('Show Lots'),
         'get_show_lots')
+
+    def get_html_party(self, name):
+        return self.customer and self.customer.id
+
+    def get_html_second_address(self, name):
+        return self.delivery_address and self.delivery_address.id
+
+    def get_html_second_address_label(self, name):
+        return self.__name__, "delivery_address"
 
     def get_sorted_lines(self, name):
         lines = [x for x in self.inventory_moves or self.outgoing_moves]
@@ -87,3 +115,10 @@ class Move(metaclass=PoolMeta):
                 if purchase in key:
                     key.append(purchase)
         return key
+
+
+class ShipmentInternal(HTMLPartyInfoMixin, metaclass=PoolMeta):
+    __name__ = 'stock.shipment.internal'
+
+    def get_html_party(self, name):
+        return

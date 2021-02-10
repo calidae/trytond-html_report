@@ -1,21 +1,23 @@
-{{party.render.name}}
-<br>
-{% if tax_identifier %}
-  {{ tax_identifier.render.code }}
+{% if party %}
+  {{ party.render.name }}
   <br>
+  {% if tax_identifier %}
+    {{ tax_identifier.render.code }}
+    <br>
+  {% endif %}
+  {% if address %}
+    {{ address.render.full_address | replace("\n", "<br/>") }}
+  {% endif %}
+  <br>
+  {{ label('party.party', 'phone') }}: {{ party.render.phone }}
+  <br>
+  {% if party.raw.email %}
+  {{ label('party.party', 'email') }}: {{ party.render.email }}
+  <br>
+  {% endif %}
+  {% if second_address and second_address.raw.id != address.raw.id %}
+    <strong> {{ label(second_address_label[0], second_address_label[1]) }}</strong>
+    <br/>
+    {{ second_address.render.full_address | replace("\n", "<br/>") }}
+  {% endif %}
 {% endif %}
-{% if address %}
-  {{ address.render.full_address | replace("\n", "<br/>") }}
-{% endif %}
-<br>
-{{ label('party.party', 'phone') }}: {{ party.render.phone }}
-<br>
-{% if party.raw.email %}
-{{ label('party.party', 'email') }}: {{ party.render.email }}
-<br>
-{% endif %}
-{% if second_address and second_address.raw.id != address.raw.id %}
-  <strong> {{ second_address_label }}</strong>
-  <br/>
-  {{ second_address.render.full_address | replace("\n", "<br/>") }}
-{%endif%}

@@ -9,12 +9,6 @@
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/picking_note.html</field>
   </record>
-  <record model='html.template' id="picking_note_header_template_id">
-    <field name="name">Picking Note Header</field>
-    <field name="type">header</field>
-    <field name="sequence" eval="99"/>
-    <field name="filename">html_report/stock/templates/picking_note_header.html</field>
-  </record>
 
   <record model="ir.action.report" id="stock.report_shipment_out_picking_list">
       <field name="active" eval="False"/>
@@ -29,7 +23,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="picking_note_template_id"/>
-      <field name="html_header_template" ref="picking_note_header_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -93,18 +87,10 @@
       <field name="sequence" eval="99"/>
       <field name="filename">html_report/stock/templates/internal_picking_note.html</field>
   </record>
-  <record model='html.template' id="internal_note_header_template_id">
-    <field name="name">Internal Note Header</field>
-    <field name="type">header</field>
-    <field name="sequence" eval="99"/>
-    <field name="filename">html_report/stock/templates/internal_note_header.html</field>
-  </record>
 
     <record model="ir.action.report" id="stock.report_shipment_internal">
       <field name="active" eval="False"/>
   </record>
-
-
 
   <record model="ir.action.report" id="html_report_internal_picking_note">
       <field name="name">Internal Picking Note</field>
@@ -114,7 +100,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="internal_picking_note_template_id"/>
-      <field name="html_header_template" ref="internal_note_header_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>

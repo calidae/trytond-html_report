@@ -10,14 +10,6 @@
       <field name="filename">html_report/stock/templates/delivery_note.html</field>
   </record>
 
-    <record model='html.template' id="delivery_note_header_template_id">
-        <field name="name">Delivery Note Header</field>
-        <field name="type">header</field>
-        <field name="sequence" eval="99"/>
-        <field name="filename">html_report/stock/templates/delivery_note_header.html</field>
-    </record>
-
-
   <record model='html.template.signature' id="stock_moves_macro_signature">
       <field name="name">show_stock_moves(document, valued)</field>
   </record>
@@ -49,7 +41,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="delivery_note_template_id"/>
-      <field name="html_header_template" ref="delivery_note_header_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="extension">pdf</field>
   </record>
@@ -116,7 +108,7 @@
       <field name="template_extension">jinja</field>
       <field name="single" eval="True"/>
       <field name="html_template" ref="valued_delivery_note_template_id"/>
-      <field name="html_header_template" ref="delivery_note_header_template_id"/>
+      <field name="html_header_template" ref="header_template"/>
       <field name="html_footer_template" ref="footer_template"/>
       <field name="html_last_footer_template" ref="valued_delivery_note_last_footer_template"/>
       <field name="extension">pdf</field>

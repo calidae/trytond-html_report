@@ -9,13 +9,6 @@
           <field name="filename">html_report/invoice/templates/invoice.html</field>
       </record>
 
-      <record model='html.template' id="invoice_header_template_id">
-          <field name="name">Invoice Header</field>
-          <field name="type">header</field>
-          <field name="sequence" eval="99"/>
-          <field name="filename">html_report/invoice/templates/header.html</field>
-      </record>
-
      <record model='html.template' id="invoice_last_footer_template">
          <field name="name">Invoice Last Footer</field>
          <field name="type">footer</field>
@@ -89,7 +82,7 @@
         <field name="template_extension">jinja</field>
         <field name="single" eval="True"/>
         <field name="html_template" ref="invoice_template_id"/>
-        <field name="html_header_template" ref="invoice_header_template_id"/>
+        <field name="html_header_template" ref="header_template"/>
         <field name="html_footer_template" ref="footer_template"/>
         <field name="html_last_footer_template" ref="invoice_last_footer_template"/>
         <field name="extension">pdf</field>
