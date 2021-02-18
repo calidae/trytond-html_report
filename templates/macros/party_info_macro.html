@@ -16,8 +16,10 @@
   <br>
   {% endif %}
   {% if second_address and second_address.raw.id != address.raw.id %}
-    <strong> {{ label(second_address_label[0], second_address_label[1]) }}</strong>
+    {% if second_address_label %}
+    <strong> {{ second_address_label }}</strong>
     <br/>
+    {% endif %}
     {{ second_address.render.full_address | replace("\n", "<br/>") }}
   {% endif %}
 {% endif %}
