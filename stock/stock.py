@@ -1,9 +1,10 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta, Pool
 from trytond.modules.html_report.html import HTMLPartyInfoMixin
+from trytond.modules.html_report.engine import HTMLReportMixin
 
 
-class ShipmentOutReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
+class ShipmentOutReturn(HTMLPartyInfoMixin, HTMLReportMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.out.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -22,10 +23,12 @@ class ShipmentOutReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
         return self.delivery_address and self.delivery_address.id
 
     def get_html_second_address_label(self, name):
-        return self.__name__, "delivery_address"
+        pool = Pool()
+        Report = pool.get('stock.shipment.out.return')
+        return Report.label(self.__name__, "delivery_address")
 
 
-class ShipmentInReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
+class ShipmentInReturn(HTMLPartyInfoMixin, HTMLReportMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.in.return'
 
     show_lots = fields.Function(fields.Boolean('Show Lots'),
@@ -44,10 +47,12 @@ class ShipmentInReturn(HTMLPartyInfoMixin, metaclass=PoolMeta):
         return self.delivery_address and self.delivery_address.id
 
     def get_html_second_address_label(self, name):
-        return self.__name__, "delivery_address"
+        pool = Pool()
+        Report = pool.get('stock.shipment.in.return')
+        return Report.label(self.__name__, "delivery_address")
 
 
-class ShipmentOut(HTMLPartyInfoMixin, metaclass=PoolMeta):
+class ShipmentOut(HTMLPartyInfoMixin, HTMLReportMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 
     sorted_lines = fields.Function(fields.One2Many('stock.move',
@@ -63,7 +68,9 @@ class ShipmentOut(HTMLPartyInfoMixin, metaclass=PoolMeta):
         return self.delivery_address and self.delivery_address.id
 
     def get_html_second_address_label(self, name):
-        return self.__name__, "delivery_address"
+        pool = Pool()
+        Report = pool.get('stock.shipment.out')
+        return Report.label(self.__name__, "delivery_address")
 
     def get_sorted_lines(self, name):
         lines = [x for x in self.inventory_moves or self.outgoing_moves]

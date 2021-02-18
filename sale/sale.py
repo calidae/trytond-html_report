@@ -1,8 +1,9 @@
-from trytond.pool import PoolMeta
+from trytond.pool import PoolMeta, Pool
 from trytond.modules.html_report.html import HTMLPartyInfoMixin
+from trytond.modules.html_report.engine import HTMLReportMixin
 
 
-class Sale(HTMLPartyInfoMixin, metaclass=PoolMeta):
+class Sale(HTMLPartyInfoMixin, HTMLReportMixin, metaclass=PoolMeta):
     __name__ = 'sale.sale'
 
     def get_html_address(self, name):
@@ -14,4 +15,6 @@ class Sale(HTMLPartyInfoMixin, metaclass=PoolMeta):
             or super().get_html_second_address(name))
 
     def get_html_second_address_label(self, name):
-        return self.__name__, 'shipment_address'
+        pool = Pool()
+        Report = pool.get('sale.sale')
+        return Report.label(self.__name__, 'shipment_address')

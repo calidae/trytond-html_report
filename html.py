@@ -151,7 +151,7 @@ class HTMLPartyInfoMixin:
         'HTML Party Address'), 'get_html_address')
     html_second_address = fields.Function(fields.Many2One('party.address',
         'HTML Second Address'), 'get_html_second_address')
-    html_second_address_label = fields.Function(fields.Many2One('party.address',
+    html_second_address_label = fields.Function(fields.Char(
         'HTML Second Address Label'), 'get_html_second_address_label')
 
     def get_html_party(self, name):
