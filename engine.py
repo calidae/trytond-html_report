@@ -331,7 +331,8 @@ class HTMLReportMixin:
         # use DualRecord when template extension is jinja
         data['html_dual_record'] = True
         records = []
-        with Transaction().set_context(html_report=action.id):
+        with Transaction().set_context(html_report=action.id,
+            address_with_party=False):
             if model:
                 records = cls._get_dual_records(ids, model, data)
             oext, content = cls._execute_html_report(records, data, action)
