@@ -21,50 +21,51 @@
             <td>{{ line.product and line.product.render.name or '-' }}</td>
           {% endif %}
 
-          <td class="text-right">{{ line.render.quantity }} {% if line.unit %} {{line.unit.render.symbol}} {% endif %}</td>
+          <td class="text-right">{{ line.render.quantity }} {% if line.unit %} {{ line.unit.render.symbol }}{% endif %}</td>
 
           {% if line.raw.gross_unit_price %}
-            <td class="text-right">{{ line.render.gross_unit_price }} {{line.sale.currency.render.symbol}}</td>
+            <td class="text-right">{{ line.render.gross_unit_price }} {{ line.sale.currency.render.symbol }}</td>
             {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
               <td class="text-right">
                   {% if line.raw.discount1 %}
                     {{ '-{0:.2F}'.format(line.raw.discount1*100) }}%<br/>
-                  {%endif%}
+                  {% endif %}
                   {% if line.raw.discount2 %}
                     {{ '-{0:.2F}'.format(line.raw.discount2*100) }}%<br/>
-                  {%endif%}
+                  {% endif %}
                   {% if line.raw.discount3 %}
                     {{ '-{0:.2F}'.format(line.raw.discount3*100) }}%<br/>
                   {%endif%}
               </td>
-            {%elif line.raw.discount and line.raw.discount > 0 %}
+            {% elif line.raw.discount and line.raw.discount > 0 %}
               <td class="text-right">{{ '-{0:.2F}'.format(line.raw.discount*100) }} %</td>
-            {%else%}
+            {% else %}
               <td> </td>
-            {%endif%}
+            {% endif %}
           {% else %}
-            <td class="text-right">{{ line.render.unit_price }} {{line.sale.currency.render.symbol}}</td>
+            <td class="text-right">{{ line.render.unit_price }} {{ line.sale.currency.render.symbol }}</td>
             <td></td>
           {% endif %}
-          <td class="text-right">{{ line.render.amount }} {{line.sale.currency.render.symbol}}</td>
+          <td class="text-right">{{ line.render.amount }} {{ line.sale.currency.render.symbol }}</td>
         </tr>
-      {%endif%}
+      {% endif %}
       {% if line.raw.type == 'comment' %}
       <tr>
-        <td>{{line.render.type}}</td>
-        <td colspan="5">{{line.render.description}}</td>
+        <td>{{ line.render.type }}</td>
+        <td colspan="5">{{ line.render.description }}</td>
       </tr>
-      {%endif%}
+      {% endif %}
 
       {% if line.raw.type == 'title' %}
       <tr>
-        <td colspan="6"><strong>{{line.render.description}}<strong></td>
+        <td colspan="6"><strong>{{ line.render.description }}<strong></td>
       </tr>
-      {%endif%}
+      {% endif %}
+
       {% if line.raw.type == 'subtotal' %}
       <tr>
-        <td colspan="5"><strong>{{line.render.description}}<strong></td>
-        <td><strong>{{line.render.amount}} {{line.sale.currency.render.symbol}}<strong> </td>
+        <td colspan="5"><strong>{{ line.render.description }}<strong></td>
+        <td class="text-right"><strong>{{ line.render.amount }} {{ line.sale.currency.render.symbol }}<strong> </td>
       </tr>
       {%endif%}
 
