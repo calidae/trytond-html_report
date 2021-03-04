@@ -12,11 +12,13 @@
  }
  </style>
 
- <last-footer id="last-footer" align="center">
+{% language record.party.lang and record.party.raw.lang.code or record.company.party.lang and record.company.party.raw.lang.code or 'en' %}
+<last-footer id="last-footer" align="center">
    <table id="totals" class="condensed">
      <tr>
        <td>{{ show_payment_info(record) }}</td>
        <td>{{ show_totals(record) }}</td>
      </tr>
    </table>
- </last-footer>
+</last-footer>
+{% endlanguage %}

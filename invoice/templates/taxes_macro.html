@@ -14,22 +14,22 @@
            {{ tax.render.description }}
          </td>
          <td class="text-right">
-           {{ tax.render.base }} {{tax.invoice.currency.render.symbol}}
+           {{ tax.render.base }} {{ tax.invoice.currency.render.symbol }}
          </td>
          <td class="text-right">
-           {{ tax.render.amount }} {{tax.invoice.currency.render.symbol}}
+           {{ tax.render.amount }} {{ tax.invoice.currency.render.symbol }}
          </td>
        </tr>
-       {%if tax.raw.legal_notice %}
+       {% if tax.raw.legal_notice %}
           <tr>
             <td></td>
             <td>
-            <strong>{{label('account.tax', 'legal_notice')}}</strong>
-              {{tax.render.legal_notice}}
+            <strong>{{ label('account.tax', 'legal_notice') }}</strong>
+              {{ tax.render.legal_notice }}
             </td>
             <td></td>
           </tr>
-      {%endif%}
+      {% endif %}
      {% endfor %}
    </tbody>
  </table>

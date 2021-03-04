@@ -1,12 +1,12 @@
 <table style="width:100%;">
   <thead>
     <tr>
-    <th nowrap>{{ label('product.product', 'code') }}</th>
-    <th nowrap>{{ label('product.template', 'name') }}</th>
-    <th class="text-right" nowrap>{{label('account.invoice.line', 'quantity') }}</th>
-    <th class="text-right" nowrap>{{label('account.invoice.line', 'unit_price') }}</th>
-    <th></th>
-    <th class="text-right" nowrap>{{label('account.invoice.line', 'amount')}}</th>
+      <th nowrap>{{ label('product.product', 'code') }}</th>
+      <th nowrap>{{ label('product.template', 'name') }}</th>
+      <th class="text-right" nowrap>{{ label('account.invoice.line', 'quantity') }}</th>
+      <th class="text-right" nowrap>{{ label('account.invoice.line', 'unit_price') }}</th>
+      <th></th>
+      <th class="text-right" nowrap>{{ label('account.invoice.line', 'amount')}}</th>
     </tr>
   </thead>
   <tbody class="border">
@@ -27,6 +27,7 @@
         {% endif %}
 
         {% for line in document.lines  if line.raw.sort_key == key %}
+          {% if line.raw.type == 'line' %}
           <tr>
             {% if line.raw.description %}
               <td></td>
@@ -36,10 +37,10 @@
               <td>{{ line.product and line.product.render.name or '-' }}</td>
             {% endif %}
 
-            <td class="text-right">{{ line.render.quantity }} {% if line.unit %} {{line.unit.render.symbol}} {% endif %}</td>
+            <td class="text-right">{{ line.render.quantity }} {% if line.unit %} {{ line.unit.render.symbol }} {% endif %}</td>
 
             {% if line.raw.gross_unit_price %}
-              <td class="text-right">{{ line.render.gross_unit_price }} {{line.invoice.currency.render.symbol}}</td>
+              <td class="text-right">{{ line.render.gross_unit_price }} {{ line.invoice.currency.render.symbol }}</td>
               {% if line.raw.discount1 or line.raw.discount2 or line.raw.discount3 %}
                 <td class="text-right">
                     {% if line.raw.discount1 %}
@@ -52,17 +53,38 @@
                       {{ '-{0:.2F}'.format(line.raw.discount3*100).replace('.',',') }}%<br>
                     {%endif%}
                 </td>
-              {%elif line.raw.discount and line.raw.discount > 0 %}
+              {% elif line.raw.discount and line.raw.discount > 0 %}
                 <td class="text-right">{{ '-{0:.2F}'.format(line.raw.discount*100) }} %</td>
-              {%else%}
+              {% else %}
                 <td> </td>
-              {%endif%}
+              {% endif %}
             {% else %}
-              <td class="text-right">{{ line.render.unit_price }} {{line.invoice.currency.render.symbol}}</td>
+              <td class="text-right">{{ line.render.unit_price }} {{ line.invoice.currency.render.symbol }}</td>
               <td></td>
             {% endif %}
-            <td class="text-right">{{ line.render.amount }} {{line.invoice.currency.render.symbol}}</td>
+            <td class="text-right">{{ line.render.amount }} {{ line.invoice.currency.render.symbol }}</td>
           </tr>
+          {%endif%}
+
+          {% if line.raw.type == 'comment' %}
+          <tr>
+            <td>{{ line.render.type }}</td>
+            <td colspan="5">{{ line.render.description }}</td>
+          </tr>
+          {%endif%}
+
+          {% if line.raw.type == 'title' %}
+          <tr>
+            <td colspan="6"><strong>{{ line.render.description }}<strong></td>
+          </tr>
+          {%endif%}
+
+          {% if line.raw.type == 'subtotal' %}
+          <tr>
+            <td colspan="5"><strong>{{ line.render.description }}<strong></td>
+            <td class="text-right"><strong>{{ line.render.amount }} {{ line.invoice.currency.render.symbol }}<strong> </td>
+          </tr>
+          {%endif%}
         {% endfor %}
 
     {% endfor %}
