@@ -9,8 +9,10 @@
     {{ address.render.full_address | replace("\n", "<br/>") }}
   {% endif %}
   <br>
+  {% if party.raw.phone %}
   {{ label('party.party', 'phone') }}: {{ party.render.phone }}
   <br>
+  {% endif %}
   {% if party.raw.email %}
   {{ label('party.party', 'email') }}: {{ party.render.email }}
   <br>
