@@ -1,0 +1,327 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:html.report.template,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:html.report.template,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:html.report.template,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:html.report.template,rec_name:"
+msgid "Record Name"
+msgstr "Name"
+
+msgctxt "field:html.report.template,report:"
+msgid "Report"
+msgstr "Bericht"
+
+msgctxt "field:html.report.template,signature:"
+msgid "Signature"
+msgstr "Signatur"
+
+msgctxt "field:html.report.template,template:"
+msgid "Template"
+msgstr "Vorlage"
+
+msgctxt "field:html.report.template,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:html.report.template,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:html.template,all_content:"
+msgid "All Content"
+msgstr "Gesamter Inhalt"
+
+msgctxt "field:html.template,content:"
+msgid "Content"
+msgstr "Inhalt"
+
+msgctxt "field:html.template,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:html.template,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:html.template,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:html.template,implements:"
+msgid "Signature"
+msgstr "Signatur"
+
+msgctxt "field:html.template,name:"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "field:html.template,parent:"
+msgid "Parent"
+msgstr "Übergeordnet (Vorlage)"
+
+msgctxt "field:html.template,rec_name:"
+msgid "Record Name"
+msgstr "Name"
+
+msgctxt "field:html.template,type:"
+msgid "Type"
+msgstr "Typ"
+
+msgctxt "field:html.template,uses:"
+msgid "Uses"
+msgstr "Verwendung"
+
+msgctxt "field:html.template,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:html.template,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:html.template.signature,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:html.template.signature,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:html.template.signature,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:html.template.signature,name:"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "field:html.template.signature,rec_name:"
+msgid "Record Name"
+msgstr "Name"
+
+msgctxt "field:html.template.signature,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:html.template.signature,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:html.template.translation,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:html.template.translation,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:html.template.translation,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:html.template.translation,lang:"
+msgid "Language"
+msgstr "Sprache"
+
+msgctxt "field:html.template.translation,rec_name:"
+msgid "Record Name"
+msgstr "Name"
+
+msgctxt "field:html.template.translation,report:"
+msgid "Report"
+msgstr "Bericht"
+
+msgctxt "field:html.template.translation,src:"
+msgid "Source"
+msgstr "Quelle"
+
+msgctxt "field:html.template.translation,value:"
+msgid "Translation Value"
+msgstr "Übersetzung"
+
+msgctxt "field:html.template.translation,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:html.template.translation,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:html.template.usage,create_date:"
+msgid "Create Date"
+msgstr "Erstellungsdatum"
+
+msgctxt "field:html.template.usage,create_uid:"
+msgid "Create User"
+msgstr "Erstellt durch"
+
+msgctxt "field:html.template.usage,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:html.template.usage,rec_name:"
+msgid "Record Name"
+msgstr "Name"
+
+msgctxt "field:html.template.usage,signature:"
+msgid "Signature"
+msgstr "Signatur"
+
+msgctxt "field:html.template.usage,template:"
+msgid "Template"
+msgstr "Vorlage"
+
+msgctxt "field:html.template.usage,write_date:"
+msgid "Write Date"
+msgstr "Zuletzt geändert"
+
+msgctxt "field:html.template.usage,write_uid:"
+msgid "Write User"
+msgstr "Letzte Änderung durch"
+
+msgctxt "field:ir.action.report,html_content:"
+msgid "Content"
+msgstr "Inhalt"
+
+msgctxt "field:ir.action.report,html_footer_content:"
+msgid "Footer Content"
+msgstr "Berichtsfuß Inhalt"
+
+msgctxt "field:ir.action.report,html_footer_report:"
+msgid "Footer"
+msgstr "Berichtsfuß"
+
+msgctxt "field:ir.action.report,html_header_content:"
+msgid "Header Content"
+msgstr "Berichtskopf Inhalt"
+
+msgctxt "field:ir.action.report,html_header_report:"
+msgid "Header"
+msgstr "Berichtskopf"
+
+msgctxt "field:ir.action.report,html_template:"
+msgid "Template"
+msgstr "Vorlage"
+
+msgctxt "field:ir.action.report,html_templates:"
+msgid "Templates"
+msgstr "Vorlagen"
+
+msgctxt "field:ir.action.report,html_translations:"
+msgid "Translations"
+msgstr "Übersetzungen"
+
+msgctxt "model:html.report.template,name:"
+msgid "HTML Report - Template"
+msgstr "HTML Bericht - Vorlage"
+
+msgctxt "model:html.template,name:"
+msgid "HTML Template"
+msgstr "HTML Vorlage"
+
+msgctxt "model:html.template.signature,name:"
+msgid "HTML Template Signature"
+msgstr "HTML Vorlage Signatur"
+
+msgctxt "model:html.template.translation,name:"
+msgid "HTML Template Translation"
+msgstr "HTML Vorlage Übersetzung"
+
+msgctxt "model:html.template.usage,name:"
+msgid "HTML Template Usage"
+msgstr "HTML Vorlage Verwendung"
+
+msgctxt "model:ir.action,name:act_action_report_form"
+msgid "Reports"
+msgstr "Berichte"
+
+msgctxt "model:ir.action,name:act_report_html_translation_form2"
+msgid "HTML Translations"
+msgstr "HTML Übersetzungen"
+
+msgctxt "model:ir.action,name:act_report_template_form"
+msgid "Report - Templates"
+msgstr "Bericht - Vorlagen"
+
+msgctxt "model:ir.action,name:act_signature_form"
+msgid "Signatures"
+msgstr "Signaturen"
+
+msgctxt "model:ir.action,name:act_template_form"
+msgid "Templates"
+msgstr "Vorlagen"
+
+msgctxt "model:ir.action,name:act_template_translation_form"
+msgid "Template Translation"
+msgstr "Vorlagenübersetzung"
+
+msgctxt "model:ir.message,text:missing_signatures"
+msgid "\"%(template)s\" missing signatures: %(missing)s"
+msgstr "\"%(template)s\" fehlende Signaturen: %(missing)s"
+
+msgctxt "model:ir.message,text:msg_no"
+msgid "No"
+msgstr "Nr."
+
+msgctxt "model:ir.message,text:msg_yes"
+msgid "Yes"
+msgstr "Ja"
+
+msgctxt "model:ir.message,text:unused_signatures"
+msgid "\"%(template)s\" unused signatures: %(unused)s"
+msgstr "Nicht verwendete Signaturen in \"%(template)s\": %(unused)s"
+
+msgctxt "model:ir.ui.menu,name:menu_action_report_form"
+msgid "Reports"
+msgstr "Berichte"
+
+msgctxt "model:ir.ui.menu,name:menu_html"
+msgid "HTML Reports"
+msgstr "HTML Berichte"
+
+msgctxt "model:ir.ui.menu,name:menu_report_template_form"
+msgid "Report - Templates"
+msgstr "Bericht - Vorlagen"
+
+msgctxt "model:ir.ui.menu,name:menu_signature_form"
+msgid "Signatures"
+msgstr "Signaturen"
+
+msgctxt "model:ir.ui.menu,name:menu_template_form"
+msgid "Templates"
+msgstr "Vorlagen"
+
+msgctxt "model:ir.ui.menu,name:menu_template_translation_form"
+msgid "Template Translation"
+msgstr "Vorlagenübersetzung"
+
+msgctxt "selection:html.template,type:"
+msgid "Base"
+msgstr "Basis"
+
+msgctxt "selection:html.template,type:"
+msgid "Block"
+msgstr "Block"
+
+msgctxt "selection:html.template,type:"
+msgid "Extension"
+msgstr "Dokumententyp"
+
+msgctxt "selection:html.template,type:"
+msgid "Macro"
+msgstr "Makro"
+
+msgctxt "view:ir.action.report:"
+msgid "HTML Report"
+msgstr "HTML Bericht"
