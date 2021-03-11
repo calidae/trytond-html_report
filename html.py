@@ -162,7 +162,7 @@ class HTMLPartyInfoMixin:
             and self.html_party.tax_identifier.id)
 
     def get_html_address(self, name):
-        return (self.html_party and self.html_party.addresses[0]
+        return (self.html_party and self.html_party.addresses
             and self.html_party.addresses[0].id)
 
     def get_html_second_address(self, name):

@@ -64,6 +64,9 @@ class ShipmentOut(HTMLPartyInfoMixin, HTMLReportMixin, metaclass=PoolMeta):
     def get_html_party(self, name):
         return self.customer and self.customer.id
 
+    def get_html_address(self, name):
+        return self.delivery_address and self.delivery_address.id
+
     def get_html_second_address(self, name):
         return self.delivery_address and self.delivery_address.id
 
