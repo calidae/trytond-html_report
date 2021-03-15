@@ -292,6 +292,13 @@ class DualRecord:
             return DualRecord(value)
         return [DualRecord(x) for x in value]
 
+    @property
+    def _attachments(self):
+        pool = Pool()
+        Attachment = pool.get('ir.attachment')
+        return [DualRecord(x) for x in
+            Attachment.search([('resource', '=', str(self.raw))])]
+
 
 class HTMLReportMixin:
     babel_domain = 'messages'
