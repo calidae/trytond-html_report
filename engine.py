@@ -1,6 +1,12 @@
 import os
+import io
 import binascii
 import mimetypes
+import qrcode
+import qrcode.image.svg
+import barcode
+from barcode.writer import SVGWriter
+
 from functools import partial
 from decimal import Decimal
 from datetime import date, datetime
@@ -585,6 +591,24 @@ class HTMLReportMixin:
 
             return field
 
+    @classmethod
+    def qrcode(cls, value):
+        qr_code = qrcode.make(value, image_factory=qrcode.image.svg.SvgImage)
+        stream = io.BytesIO()
+        qr_code.save(stream=stream)
+        return cls.to_base64(stream.getvalue())
+
+    @classmethod
+    def barcode(cls, _type, value):
+        ean_class = barcode.get_barcode_class(_type)
+        ean_code = ean_class(value, writer=SVGWriter()).render()
+        return cls.to_base64(ean_code)
+
+    def to_base64(image):
+        value = binascii.b2a_base64(image)
+        value = value.decode('ascii')
+        mimetype = "image/svg+xml"
+        return ('data:%s;base64,%s' % (mimetype, value)).strip()
 
     @classmethod
     def render_template_jinja(cls, action, template_string, record=None,
@@ -613,6 +637,8 @@ class HTMLReportMixin:
             'user': DualRecord(User(Transaction().user)),
             'Decimal': Decimal,
             'label': cls.label,
+            'qrcode': cls.qrcode,
+            'barcode': cls.barcode,
             }
         if Company:
             context['company'] = DualRecord(Company(
