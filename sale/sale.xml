@@ -125,6 +125,7 @@
    <record model="html.report.template" id="report_sale_document_id">
      <field name="report" ref="html_report_sale"/>
      <field name="signature" ref="document_info_macro_signature"/>
+     <field name="template" ref="sale_document_info_macro_id"/>
    </record>
 
 

@@ -76,6 +76,7 @@
   <record model="html.report.template" id="report_delivery_note_document_id">
     <field name="report" ref="html_report_delivery_note"/>
     <field name="signature" ref="document_info_macro_signature"/>
+    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_delivery_note_footer_id">
@@ -143,6 +144,7 @@
   <record model="html.report.template" id="t">
     <field name="report" ref="html_report_valued_delivery_note"/>
     <field name="signature" ref="document_info_macro_signature"/>
+    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_valued_delivery_note_totals_id">

@@ -95,6 +95,7 @@
     <record model="html.report.template" id="report_purchase_document_id">
       <field name="report" ref="html_report_purchase"/>
       <field name="signature" ref="document_info_macro_signature"/>
+      <field name="template" ref="purchase_document_info_macro_id"/>
     </record>
 
     <record model="html.report.template" id="report_purchase_footer_id">
