@@ -627,7 +627,7 @@ class HTMLReportMixin:
             records = []
 
         context = {
-            'report': action,
+            'report': DualRecord(action),
             'record': record,
             'records': records,
             'data': data,
