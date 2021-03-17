@@ -68,6 +68,7 @@
   <record model="html.report.template" id="report_picking_note_document_id">
     <field name="report" ref="html_report_picking_note"/>
     <field name="signature" ref="document_info_macro_signature"/>
+    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_picking_note_totals_id">
@@ -134,6 +135,7 @@
   <record model="html.report.template" id="report_internal_picking_note_document_id">
     <field name="report" ref="html_report_internal_picking_note"/>
     <field name="signature" ref="document_info_macro_signature"/>
+    <field name="template" ref="delivery_note_document_info_macro_id"/>
   </record>
 
   <record model="html.report.template" id="report_internal_picking_note_footer_id">
