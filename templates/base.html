@@ -5,7 +5,7 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="">
     <meta name="author" content="Nantic">
-    {% if report.extension == 'html' %}
+    {% if report.raw.extension == 'html' %}
     <link href="{{ 'html_report/templates/base.css'|base64 }}" rel="stylesheet" type="text/css">
     {% else %}
     <link href="{{ 'html_report/templates/base.css'|modulepath }}" rel="stylesheet" type="text/css">
