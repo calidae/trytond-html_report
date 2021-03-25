@@ -7,3 +7,6 @@ def register(module):
         invoice.Invoice,
         invoice.InvoiceLine,
         module=module, type_='model', depends=['account_invoice'])
+    Pool.register(
+        invoice.InvoiceReport,
+        module=module, type_='report', depends=['account_invoice'])

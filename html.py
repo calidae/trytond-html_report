@@ -132,7 +132,6 @@ class ReportTemplate(ModelSQL, ModelView):
     template_used = fields.Function(
         fields.Many2One('html.template', 'Template Used'), 'get_template_used')
 
-
     def get_template_used(self, name):
         Template = Pool().get('html.template')
         if self.template:

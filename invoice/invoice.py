@@ -1,6 +1,8 @@
 from trytond.model import fields
-from trytond.pool import PoolMeta
+from trytond.pool import Pool, PoolMeta
+from trytond.rpc import RPC
 from trytond.modules.html_report.html import HTMLPartyInfoMixin
+from trytond.modules.html_report.html_report import HTMLReport
 
 
 class Invoice(HTMLPartyInfoMixin, metaclass=PoolMeta):
@@ -45,3 +47,37 @@ class InvoiceLine(metaclass=PoolMeta):
                 key.append(purchase)
 
         return key
+
+
+class InvoiceReport(HTMLReport):
+    __name__ = 'account.invoice'
+
+    @classmethod
+    def __setup__(cls):
+        super(InvoiceReport, cls).__setup__()
+        cls.__rpc__['execute'] = RPC(False)
+
+    @classmethod
+    def execute(cls, ids, data):
+        pool = Pool()
+        Invoice = pool.get('account.invoice')
+
+        if len(ids) == 1:
+            # Re-instantiate because records are TranslateModel
+            invoice, = Invoice.browse(ids)
+            if invoice.invoice_report_cache:
+                return (
+                    invoice.invoice_report_format,
+                    bytes(invoice.invoice_report_cache))
+
+        result = super(InvoiceReport, cls).execute(ids, data)
+
+        if (len(ids) == 1 and invoice.state in {'posted', 'paid'}
+                and invoice.type == 'out'):
+            format_, data = result[0], result[1]
+            invoice.invoice_report_format = format_
+            invoice.invoice_report_cache = \
+                Invoice.invoice_report_cache.cast(data)
+            invoice.save()
+
+        return result
