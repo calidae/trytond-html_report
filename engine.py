@@ -567,6 +567,9 @@ class HTMLReportMixin:
         if not lang:
             lang = Transaction().language
 
+        if not model:
+            return ''
+
         if field == None:
             Model = Pool().get('ir.model')
             model, = Model.search([('model', '=', model)])
