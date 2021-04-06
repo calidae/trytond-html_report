@@ -62,13 +62,17 @@ class InvoiceReport(HTMLReport):
         pool = Pool()
         Invoice = pool.get('account.invoice')
 
+        action, _ = cls.get_action(data)
+
         if len(ids) == 1:
             # Re-instantiate because records are TranslateModel
             invoice, = Invoice.browse(ids)
             if invoice.invoice_report_cache:
                 return (
                     invoice.invoice_report_format,
-                    bytes(invoice.invoice_report_cache))
+                    bytes(invoice.invoice_report_cache),
+                    cls.get_direct_print(action),
+                    cls.get_name(action))
 
         result = super(InvoiceReport, cls).execute(ids, data)
 
