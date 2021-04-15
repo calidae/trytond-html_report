@@ -96,7 +96,8 @@ class SwitchableLanguageExtension(Extension):
     def _switch_language(self, language_code, caller):
         if self.translations:
             self.translations.set_language(language_code)
-        output = caller()
+        with Transaction().set_context(language=language_code):
+            output = caller()
         return output
 
 
