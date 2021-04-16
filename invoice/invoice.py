@@ -68,7 +68,7 @@ class InvoiceReport(HTMLReport):
         if len(ids) == 1:
             # Re-instantiate because records are TranslateModel
             invoice, = Invoice.browse(ids)
-            if invoice.invoice_report_cache or invoice.invoice_report_cache_id:
+            if invoice.invoice_report_cache:
                 return (
                     invoice.invoice_report_format,
                     bytes(invoice.invoice_report_cache),
