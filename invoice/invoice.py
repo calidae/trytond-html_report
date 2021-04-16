@@ -1,6 +1,7 @@
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.rpc import RPC
+from trytond.transaction import Transaction
 from trytond.modules.html_report.html import HTMLPartyInfoMixin
 from trytond.modules.html_report.html_report import HTMLReport
 
@@ -67,7 +68,7 @@ class InvoiceReport(HTMLReport):
         if len(ids) == 1:
             # Re-instantiate because records are TranslateModel
             invoice, = Invoice.browse(ids)
-            if invoice.invoice_report_cache:
+            if invoice.invoice_report_cache or invoice.invoice_report_cache_id:
                 return (
                     invoice.invoice_report_format,
                     bytes(invoice.invoice_report_cache),
@@ -78,10 +79,12 @@ class InvoiceReport(HTMLReport):
 
         if (len(ids) == 1 and invoice.state in {'posted', 'paid'}
                 and invoice.type == 'out'):
-            format_, data = result[0], result[1]
-            invoice.invoice_report_format = format_
-            invoice.invoice_report_cache = \
-                Invoice.invoice_report_cache.cast(data)
-            invoice.save()
+            with Transaction().set_context(_check_access=False):
+                invoice, = Invoice.browse([invoice.id])
+                format_, data = result[0], result[1]
+                invoice.invoice_report_format = format_
+                invoice.invoice_report_cache = \
+                    Invoice.invoice_report_cache.cast(data)
+                invoice.save()
 
         return result
