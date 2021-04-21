@@ -11,8 +11,8 @@ from functools import partial
 from decimal import Decimal
 from datetime import date, datetime
 
-from jinja2 import Environment, FunctionLoader
-from jinja2.ext import Extension, nodes
+import jinja2
+import jinja2.ext
 from babel import dates, numbers, support
 
 import weasyprint
@@ -24,9 +24,11 @@ from trytond.transaction import Transaction
 from trytond.i18n import gettext
 from trytond.model.modelstorage import _record_eval_pyson
 from trytond.config import config
+from trytond.exceptions import UserError
 
-#MEDIA_TYPE = 'print'
 MEDIA_TYPE = config.get('html_report', 'type', default='screen')
+RAISE_USER_ERRORS = config.getboolean('html_report', 'raise_user_errors',
+    default=False)
 DEFAULT_MIME_TYPE = config.get('html_report', 'mime_type', default='image/png')
 
 
@@ -98,7 +100,7 @@ class SwitchableTranslations:
 # Based on
 # https://stackoverflow.com/questions/44882075/switch-language-in-jinja-template/45014393#45014393
 
-class SwitchableLanguageExtension(Extension):
+class SwitchableLanguageExtension(jinja2.ext.Extension):
     '''
     This Jinja2 Extension allows the user to use the folowing tag:
 
@@ -128,8 +130,8 @@ class SwitchableLanguageExtension(Extension):
         # Parse everything between the start and end tag:
         body = parser.parse_statements(['name:endlanguage'], drop_needle=True)
         # Call the _switch_language method with the given language code and body
-        return nodes.CallBlock(self.call_method('_switch_language', args), [],
-            [], body).set_lineno(lineno)
+        return jinja2.ext.nodes.CallBlock(self.call_method('_switch_language',
+                args), [], [], body).set_lineno(lineno)
 
     def _switch_language(self, language_code, caller):
         if self.translations:
@@ -544,8 +546,8 @@ class HTMLReportMixin:
         extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape',
             'jinja2.ext.with_', 'jinja2.ext.loopcontrols', 'jinja2.ext.do',
             SwitchableLanguageExtension]
-        env = Environment(extensions=extensions,
-            loader=FunctionLoader(cls.jinja_loader_func))
+        env = jinja2.Environment(extensions=extensions,
+            loader=jinja2.FunctionLoader(cls.jinja_loader_func))
         env.filters.update(cls.get_jinja_filters())
 
         context = Transaction().context
@@ -647,9 +649,14 @@ class HTMLReportMixin:
             context['company'] = DualRecord(Company(
                     Transaction().context.get('company')))
         context.update(cls.local_context())
-        report_template = env.from_string(template_string)
+        try:
+            report_template = env.from_string(template_string)
+        except jinja2.exceptions.TemplateSyntaxError as e:
+            if RAISE_USER_ERRORS:
+                raise UserError(gettext('html_report.template_error',
+                        report=action.rec_name, error=repr(e)))
+            raise
         res = report_template.render(**context)
-        # print('TEMPLATE:\n', res)
         return res
 
     @classmethod
