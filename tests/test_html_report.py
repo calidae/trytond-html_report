@@ -14,7 +14,6 @@ SCENARIOS = [
     'stock_dependency_scenario.rst',
     'account_invoice_dependency_scenario.rst',
     'sale_dependency_scenario.rst',
-    'sale_discount_dependency_scenario.rst',
     'stock_valued_dependency_scenario.rst',
     'production_dependency_scenario.rst',
     'account_payment_type_dependency_scenario.rst',

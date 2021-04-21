@@ -197,11 +197,4 @@
    </record>
 
   </data>
-
-  <data depends="sale_discount">
-      <!-- Sale Report -->
-    <record model="ir.action.report" id="sale_discount.report_sale">
-        <field name="active" eval="False"/>
-    </record>
-  </data>
 </tryton>
