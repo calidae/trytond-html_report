@@ -13,5 +13,8 @@
         <record model="ir.message" id="missing_signatures">
             <field name="text">"%(template)s" missing signatures: %(missing)s</field>
         </record>
+        <record model="ir.message" id="template_error">
+            <field name="text">The following template error was found when rendering report "%(report)s": %(error)s</field>
+        </record>
     </data>
 </tryton>
