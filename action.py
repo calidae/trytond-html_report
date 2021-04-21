@@ -54,7 +54,8 @@ class ActionReport(metaclass=PoolMeta):
                 'invisible': Eval('template_extension') != 'jinja',
         },
         depends=['template_extension']), 'get_content')
-
+    html_raise_user_error = fields.Boolean('Raise User Error',
+        help='Will raise a UserError in case of error in template parsing.')
     html_translations = fields.One2Many('html.template.translation', 'report',
         'Translations')
     _html_translation_cache = Cache('html.template.translation',
