@@ -10,7 +10,11 @@
   {% set purchase = record %}
   {% language purchase.party.lang and purchase.party.raw.lang.code or company.party.lang and company.party.raw.lang.code or 'en' %}
 
-  {{ show_purchase_lines(purchase) }}
+  {% if 'simplified' in report.raw.report_name %}
+      {{ show_purchase_simplified_lines(purchase) }}
+  {% else %}
+      {{ show_purchase_lines(purchase) }}
+  {% endif %}
 
   {% if purchase.raw.comment %}
     <h4>{{ label('purchase.purchase', 'comment') }}</h4>

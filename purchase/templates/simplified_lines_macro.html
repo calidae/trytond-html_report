@@ -1,0 +1,41 @@
+<table style="width:100%;">
+  <thead>
+    <tr>
+    <th nowrap>{{ label('product.product', 'code') }}</th>
+    <th nowrap>{{ label('product.template', 'name') }}</th>
+    <th class="text-right" nowrap>{{label('purchase.line', 'quantity') }}</th>
+    </tr>
+  </thead>
+  <tbody class="border">
+    {% for line in document.lines %}
+      {% if line.raw.type == 'line' %}
+        <tr>
+          {% if line.raw.description %}
+            <td colspan="2">{{ line.render.description }}</td>
+          {% elif line.raw.product_supplier and line.product_supplier.raw.name %}
+            <td>{{ line.product_supplier.render.code or '-' }}</td>
+            <td>{{ line.product_supplier.render.name or '-' }}</td>
+          {% elif line.raw.product %}
+            <td>{{ line.product and line.product.render.code or '-' }}</td>
+            <td>{{ line.product and line.product.render.name or '-' }}</td>
+          {% endif %}
+
+          <td class="text-right">{{ line.render.quantity }} {{ line.unit and line.unit.render.symbol or '' }}</td>
+        </tr>
+      {% endif %}
+
+      {% if line.raw.type == 'comment' %}
+      <tr>
+        <td>{{ line.render.type }}</td>
+        <td colspan="2">{{ line.render.description }}</td>
+      </tr>
+      {% endif %}
+
+      {% if line.raw.type == 'title' %}
+      <tr>
+        <td colspan="3"><strong>{{ line.render.description }}<strong></td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
