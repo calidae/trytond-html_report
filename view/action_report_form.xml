@@ -10,6 +10,8 @@
             <field name="html_footer_template"/>
             <label name="html_last_footer_template"/>
             <field name="html_last_footer_template"/>
+            <label name="html_raise_user_error"/>
+            <field name="html_raise_user_error"/>
             <separator name="html_templates" colspan="4"/>
             <field name="html_templates" colspan="4"/>
             <separator name="html_content" colspan="4"/>

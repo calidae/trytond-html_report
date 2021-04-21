@@ -650,14 +650,14 @@ class HTMLReportMixin:
         try:
             report_template = env.from_string(template_string)
         except jinja2.exceptions.TemplateSyntaxError as e:
-            if RAISE_USER_ERRORS:
+            if RAISE_USER_ERRORS or action.html_raise_user_error:
                 raise UserError(gettext('html_report.template_error',
                         report=action.rec_name, error=repr(e)))
             raise
         try:
             res = report_template.render(**context)
         except jinja2.exceptions.UndefinedError as e:
-            if RAISE_USER_ERRORS:
+            if RAISE_USER_ERRORS or action.html_raise_user_error:
                 raise UserError(gettext('html_report.render_error',
                         report=action.rec_name, error=repr(e)))
             raise
