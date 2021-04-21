@@ -2,13 +2,29 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:account.invoice,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:account.invoice,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:account.invoice,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:account.invoice,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:account.invoice,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
+
 msgctxt "field:account.invoice,sorted_keys:"
 msgid "Sorted Key"
 msgstr "Llave Orden"
-
-msgctxt "field:account.invoice,sorted_lines:"
-msgid "Sorted Lines"
-msgstr "Línias ordenadas"
 
 msgctxt "field:account.invoice.line,sort_key:"
 msgid "Sorted Key"
@@ -28,13 +44,17 @@ msgstr "Plantilla"
 
 msgctxt "field:html.report.template,template_used:"
 msgid "Template Used"
-msgstr "Template usado"
+msgstr "Plantilla usada"
 
 msgctxt "field:html.template,all_content:"
 msgid "All Content"
 msgstr "Todo el contenido"
 
 msgctxt "field:html.template,content:"
+msgid "Content"
+msgstr "Contenido"
+
+msgctxt "field:html.template,data:"
 msgid "Content"
 msgstr "Contenido"
 
@@ -98,10 +118,6 @@ msgctxt "field:ir.action.report,html_footer_content:"
 msgid "Footer Content"
 msgstr "Contenido pie"
 
-msgctxt "field:ir.action.report,html_footer_report:"
-msgid "Footer"
-msgstr "Pie de página"
-
 msgctxt "field:ir.action.report,html_footer_template:"
 msgid "Footer"
 msgstr "Pie de página"
@@ -110,13 +126,17 @@ msgctxt "field:ir.action.report,html_header_content:"
 msgid "Header Content"
 msgstr "Contenido encabezado"
 
-msgctxt "field:ir.action.report,html_header_report:"
-msgid "Header"
-msgstr "Encabezado"
-
 msgctxt "field:ir.action.report,html_header_template:"
 msgid "Header"
 msgstr "Encabezado"
+
+msgctxt "field:ir.action.report,html_last_footer_content:"
+msgid "Last Footer Content"
+msgstr ""
+
+msgctxt "field:ir.action.report,html_last_footer_template:"
+msgid "Last Footer"
+msgstr ""
 
 msgctxt "field:ir.action.report,html_template:"
 msgid "Template"
@@ -130,17 +150,141 @@ msgctxt "field:ir.action.report,html_translations:"
 msgid "Translations"
 msgstr "Traducciones"
 
+msgctxt "field:production,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:production,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:production,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:production,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:production,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
+
 msgctxt "field:production,show_lots:"
 msgid "Production"
 msgstr "Producciones"
+
+msgctxt "field:purchase.purchase,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:purchase.purchase,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:purchase.purchase,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:purchase.purchase,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:purchase.purchase,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
+
+msgctxt "field:sale.product_customer,notes:"
+msgid "Notes"
+msgstr "Notas"
+
+msgctxt "field:sale.sale,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:sale.sale,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:sale.sale,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:sale.sale,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:sale.sale,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
 
 msgctxt "field:stock.move,sort_key:"
 msgid "key"
 msgstr "Llave"
 
+msgctxt "field:stock.shipment.in.return,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.in.return,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:stock.shipment.in.return,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.in.return,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:stock.shipment.in.return,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
+
 msgctxt "field:stock.shipment.in.return,show_lots:"
 msgid "Show Lots"
 msgstr "Mostrar lotes"
+
+msgctxt "field:stock.shipment.internal,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.internal,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:stock.shipment.internal,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.internal,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:stock.shipment.internal,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
+
+msgctxt "field:stock.shipment.out,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.out,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:stock.shipment.out,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.out,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:stock.shipment.out,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
 
 msgctxt "field:stock.shipment.out,show_lots:"
 msgid "Show Lots"
@@ -153,6 +297,26 @@ msgstr "Llave"
 msgctxt "field:stock.shipment.out,sorted_lines:"
 msgid "Sorted Lines"
 msgstr "Línias ordenadas"
+
+msgctxt "field:stock.shipment.out.return,html_address:"
+msgid "HTML Party Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.out.return,html_party:"
+msgid "HTML Party"
+msgstr ""
+
+msgctxt "field:stock.shipment.out.return,html_second_address:"
+msgid "HTML Second Address"
+msgstr ""
+
+msgctxt "field:stock.shipment.out.return,html_second_address_label:"
+msgid "HTML Second Address Label"
+msgstr ""
+
+msgctxt "field:stock.shipment.out.return,html_tax_identifier:"
+msgid "HTML Party Tax Identifier"
+msgstr ""
 
 #, fuzzy
 msgctxt "field:stock.shipment.out.return,show_lots:"
@@ -230,6 +394,10 @@ msgstr "Producciones"
 msgctxt "model:ir.action,name:html_report_purchase"
 msgid "Purchase"
 msgstr "Compras"
+
+msgctxt "model:ir.action,name:html_report_purchase_simplified"
+msgid "Purchase Simplified"
+msgstr "Compras simplificada"
 
 msgctxt "model:ir.action,name:html_report_refund_note"
 msgid "Refund Note"

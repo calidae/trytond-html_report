@@ -50,7 +50,7 @@ class ReportTranslationSet(metaclass=PoolMeta):
         translations_dict = {}
         for x in translations:
             if x.id not in translations_dict:
-                translations_dict[x.id]  = []
+                translations_dict[x.id] = []
             translations_dict[x.id].append(x.source)
 
         messages = []
@@ -58,7 +58,6 @@ class ReportTranslationSet(metaclass=PoolMeta):
             messages += get_messages(report.html_content)
             messages += get_messages(report.html_header_content)
             messages += get_messages(report.html_footer_content)
-
 
         langs = Lang.search([('translatable', '=', True)])
         to_save = []
