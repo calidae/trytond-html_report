@@ -307,6 +307,13 @@ class DualRecord:
         return [DualRecord(x) for x in
             Attachment.search([('resource', '=', str(self.raw))])]
 
+    @property
+    def _notes(self):
+        pool = Pool()
+        Note = pool.get('ir.note')
+        return [DualRecord(x) for x in
+            Note.search([('resource', '=', str(self.raw))])]
+
 
 class HTMLReportMixin:
     babel_domain = 'messages'
