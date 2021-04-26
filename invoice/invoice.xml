@@ -149,11 +149,5 @@
       <field name="report" ref="html_report_invoice"/>
       <field name="signature" ref="show_footer_signature"/>
     </record>
-
   </data>
-    <data depends="account_invoice_discount">
-    <record model="ir.action.report" id="account_invoice_discount.report_invoice">
-        <field name="active" eval="False"/>
-    </record>
-    </data>
 </tryton>
