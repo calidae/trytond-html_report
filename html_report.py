@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-from jinja2 import Environment, FunctionLoader
-from jinja2.ext import Extension, nodes
+import jinja2
+import jinja2.ext
 from babel import support
 
 import weasyprint
@@ -21,46 +21,61 @@ class SwitchableTranslations:
 
     The class is used by SwitchableLanguageExtension
     '''
-    def __init__(self, dirname, domain, code=None):
+    def __init__(self, lang='en', dirname=None, domain=None):
         self.dirname = dirname
         self.domain = domain
         self.cache = {}
         self.env = None
-        self.set_language(code)
+        self.current = None
+        self.language = lang
+        self.report = None
+        self.set_language(lang)
 
-    def set_language(self, code):
-        if not code:
-            self.current = None
+    # TODO: We should implement a context manager
+
+    def set_language(self, lang='en'):
+        self.language = lang
+        if lang in self.cache:
+            self.current = self.cache[lang]
             return
-        if code in self.cache:
-            self.current = self.cache[code]
-            return
+
         context = Transaction().context
         if context.get('report_translations'):
             report_translations = context['report_translations']
             if os.path.isdir(report_translations):
                 self.current = support.Translations.load(
                     dirname=report_translations,
-                    locales=[code],
+                    locales=[lang],
                     domain=self.domain,
                     )
-                self.cache[code] = self.current
+                self.cache[lang] = self.current
+        else:
+            self.report = context.get('html_report', -1)
 
     def ugettext(self, message):
-        if not self.current:
-            return message
-        return self.current.ugettext(message)
+        Report = Pool().get('ir.action.report')
+
+        if self.current:
+            return self.current.ugettext(message)
+        elif self.report:
+            return Report.gettext(self.report, message, self.language)
+        return message
 
     def ngettext(self, singular, plural, n):
-        if not self.current:
-            return singular
-        return self.current.ugettext(singular, plural, n)
+        Report = Pool().get('ir.action.report')
+
+        if self.current:
+            return self.current.ugettext(singular, plural, n)
+        elif self.report:
+            return Report.gettext(self.report, singular, self.language)
+        return singular
+
 
 
 # Based on
 # https://stackoverflow.com/questions/44882075/switch-language-in-jinja-template/45014393#45014393
 
-class SwitchableLanguageExtension(Extension):
+class SwitchableLanguageExtension(jinja2.ext.Extension):
     '''
     This Jinja2 Extension allows the user to use the folowing tag:
 
@@ -90,8 +105,8 @@ class SwitchableLanguageExtension(Extension):
         # Parse everything between the start and end tag:
         body = parser.parse_statements(['name:endlanguage'], drop_needle=True)
         # Call the _switch_language method with the given language code and body
-        return nodes.CallBlock(self.call_method('_switch_language', args), [],
-            [], body).set_lineno(lineno)
+        return jinja2.ext.nodes.CallBlock(self.call_method('_switch_language',
+                args), [], [], body).set_lineno(lineno)
 
     def _switch_language(self, language_code, caller):
         if self.translations:
@@ -188,20 +203,20 @@ class HTMLReport(Report):
         extensions = ['jinja2.ext.i18n', 'jinja2.ext.autoescape',
             'jinja2.ext.with_', 'jinja2.ext.loopcontrols', 'jinja2.ext.do',
             SwitchableLanguageExtension]
-        env = Environment(extensions=extensions,
-            loader=FunctionLoader(cls.jinja_loader_func))
+        env = jinja2.Environment(extensions=extensions,
+            loader=jinja2.FunctionLoader(cls.jinja_loader_func))
         env.filters.update(cls.get_jinja_filters())
 
         context = Transaction().context
-        if context.get('report_translations'):
-            report_translations = context['report_translations']
-            if os.path.isdir(report_translations):
-                locale = context.get(
-                    'report_lang', Transaction().language).split('_')[0]
-
-                translations = SwitchableTranslations(report_translations,
-                    cls.babel_domain, locale)
-                env.install_switchable_translations(translations)
+        locale = context.get(
+            'report_lang', Transaction().language or 'en').split('_')[0]
+        report_translations = context.get('report_translations')
+        if report_translations and os.path.isdir(report_translations):
+            translations = SwitchableTranslations(
+                locale, report_translations, cls.babel_domain)
+        else:
+            translations = SwitchableTranslations(locale)
+        env.install_switchable_translations(translations)
         return env
 
     @classmethod
