@@ -12,7 +12,7 @@ __all__ = ['ActionReport', 'HTMLTemplateTranslation']
 
 class ActionReport(metaclass=PoolMeta):
     __name__ = 'ir.action.report'
-    html_template = fields.Many2One('html.template', 'Template',
+    html_template = fields.Many2One('html.template', 'Body',
         domain=[
             ('type', 'in', ['base', 'extension']),
             ],
@@ -36,8 +36,8 @@ class ActionReport(metaclass=PoolMeta):
             'invisible': Eval('template_extension') != 'jinja',
             },
         depends=['template_extension'])
-    html_last_footer_template = fields.Many2One('html.template', 'Last Footer',
-        domain=[
+    html_last_footer_template = fields.Many2One('html.template',
+        'Last Page Footer', domain=[
             ('type', '=', 'footer'),
             ],
         states={
@@ -64,8 +64,8 @@ class ActionReport(metaclass=PoolMeta):
         'get_content')
     html_footer_content = fields.Function(fields.Binary('Footer Content'),
         'get_content')
-    html_last_footer_content = fields.Function(fields.Binary('Last Footer Content'),
-        'get_content')
+    html_last_footer_content = fields.Function(fields.Binary(
+            'Last Page Footer Content'), 'get_content')
 
     @classmethod
     def __setup__(cls):
