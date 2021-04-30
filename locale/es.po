@@ -131,16 +131,16 @@ msgid "Header"
 msgstr "Encabezado"
 
 msgctxt "field:ir.action.report,html_last_footer_content:"
-msgid "Last Footer Content"
-msgstr ""
+msgid "Last Page Footer Content"
+msgstr "Contenido pie última página"
 
 msgctxt "field:ir.action.report,html_last_footer_template:"
-msgid "Last Footer"
-msgstr ""
+msgid "Last Page Footer"
+msgstr "Pie última página"
 
 msgctxt "field:ir.action.report,html_template:"
-msgid "Template"
-msgstr "Plantilla"
+msgid "Body"
+msgstr "Cuerpo"
 
 msgctxt "field:ir.action.report,html_templates:"
 msgid "Templates"

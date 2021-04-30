@@ -132,15 +132,15 @@ msgstr "Encapçalament"
 
 msgctxt "field:ir.action.report,html_last_footer_content:"
 msgid "Last Footer Content"
-msgstr ""
+msgstr "Contingut peu última pàgina"
 
 msgctxt "field:ir.action.report,html_last_footer_template:"
 msgid "Last Footer"
-msgstr ""
+msgstr "Peu última pàgina"
 
 msgctxt "field:ir.action.report,html_template:"
-msgid "Template"
-msgstr "Plantilla"
+msgid "Body"
+msgstr "Cos"
 
 msgctxt "field:ir.action.report,html_templates:"
 msgid "Templates"
