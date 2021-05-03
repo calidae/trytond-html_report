@@ -665,7 +665,7 @@ class HTMLReportMixin:
             raise
         try:
             res = report_template.render(**context)
-        except jinja2.exceptions.UndefinedError as e:
+        except Exception as e:
             if RAISE_USER_ERRORS or action.html_raise_user_error:
                 raise UserError(gettext('html_report.render_error',
                         report=action.rec_name, error=repr(e)))
