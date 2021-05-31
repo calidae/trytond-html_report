@@ -2,11 +2,12 @@ import os
 import io
 import binascii
 import mimetypes
+import zipfile
 import qrcode
 import qrcode.image.svg
 import barcode
 from barcode.writer import SVGWriter
-
+from io import BytesIO
 from functools import partial
 from decimal import Decimal
 from datetime import date, datetime
@@ -25,6 +26,7 @@ from trytond.i18n import gettext
 from trytond.model.modelstorage import _record_eval_pyson
 from trytond.config import config
 from trytond.exceptions import UserError
+from trytond.tools import slugify
 
 MEDIA_TYPE = config.get('html_report', 'type', default='screen')
 RAISE_USER_ERRORS = config.getboolean('html_report', 'raise_user_errors',
@@ -349,6 +351,7 @@ class HTMLReportMixin:
         # in case is not jinja, call super()
         if action.template_extension != 'jinja':
             return super().execute(ids, data)
+        action_name = slugify(cls.get_name(action))
 
         # use DualRecord when template extension is jinja
         data['html_dual_record'] = True
@@ -357,10 +360,26 @@ class HTMLReportMixin:
             address_with_party=False):
             if model:
                 records = cls._get_dual_records(ids, model, data)
+
+            # report single and len > 1, return zip file
+            if action.single and len(ids) > 1:
+                content = BytesIO()
+                with zipfile.ZipFile(content, 'w') as content_zip:
+                    for record in records:
+                        oext, rcontent = cls._execute_html_report([record],
+                            data, action)
+                        rfilename = '%s-%s.%s' % (
+                            action_name,
+                            slugify(record.render.rec_name),
+                            oext)
+                        content_zip.writestr(rfilename, rcontent)
+                content = content.getvalue()
+                return ('zip', content, False, action_name)
+
             oext, content = cls._execute_html_report(records, data, action)
             if not isinstance(content, str):
                 content = bytearray(content) if bytes == str else bytes(content)
-        return oext, content, cls.get_direct_print(action), cls.get_name(action)
+        return oext, content, cls.get_direct_print(action), action_name
 
     @classmethod
     def _execute_html_report(cls, records, data, action):
