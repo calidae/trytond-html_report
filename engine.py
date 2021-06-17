@@ -351,7 +351,7 @@ class HTMLReportMixin:
         # in case is not jinja, call super()
         if action.template_extension != 'jinja':
             return super().execute(ids, data)
-        action_name = slugify(cls.get_name(action))
+        action_name = cls.get_name(action)
 
         # use DualRecord when template extension is jinja
         data['html_dual_record'] = True
@@ -361,6 +361,11 @@ class HTMLReportMixin:
             if model:
                 records = cls._get_dual_records(ids, model, data)
 
+            suffix = '-'.join(r.render.rec_name for r in records[:5])
+            if len(records) > 5:
+                suffix += '__' + str(len(records[5:]))
+            filename = slugify('%s-%s' % (action_name, suffix))
+
             # report single and len > 1, return zip file
             if action.single and len(ids) > 1:
                 content = BytesIO()
@@ -368,18 +373,17 @@ class HTMLReportMixin:
                     for record in records:
                         oext, rcontent = cls._execute_html_report([record],
                             data, action)
-                        rfilename = '%s-%s.%s' % (
-                            action_name,
+                        rfilename = '%s.%s' % (
                             slugify(record.render.rec_name),
                             oext)
                         content_zip.writestr(rfilename, rcontent)
                 content = content.getvalue()
-                return ('zip', content, False, action_name)
+                return ('zip', content, False, filename)
 
             oext, content = cls._execute_html_report(records, data, action)
             if not isinstance(content, str):
                 content = bytearray(content) if bytes == str else bytes(content)
-        return oext, content, cls.get_direct_print(action), action_name
+        return oext, content, cls.get_direct_print(action), filename
 
     @classmethod
     def _execute_html_report(cls, records, data, action):
