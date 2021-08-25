@@ -3,7 +3,8 @@
 # the full copyright notices and license terms.
 import unittest
 import doctest
-from trytond.tests.test_tryton import ModuleTestCase, with_transaction
+from trytond.tests.test_tryton import (ModuleTestCase, with_transaction,
+    activate_module)
 from trytond.tests.test_tryton import suite as test_suite
 from trytond.pool import Pool
 from trytond.tools import file_open
@@ -27,6 +28,21 @@ SCENARIOS = [
 class HtmlReportTestCase(ModuleTestCase):
     'Test Html Report module'
     module = 'html_report'
+
+    @classmethod
+    def setUpClass(cls):
+        super(HtmlReportTestCase, cls).setUpClass()
+        activate_module('account_invoice')
+        activate_module('account_payment_type')
+        activate_module('account_invoice_discount')
+        activate_module('account_bank')
+        activate_module('carrier')
+        activate_module('sale')
+        activate_module('sale_product_customer')
+        activate_module('purchase')
+        activate_module('stock')
+        activate_module('stock_valued')
+        activate_module('production')
 
     @with_transaction()
     def test_html_report(self):
