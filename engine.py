@@ -222,18 +222,25 @@ class Formatter:
             return ''
         return str(value)
 
-    def _formatted_float(self, record, field, value):
+    def _formatted_float(self, record, field, value, grouping=True, monetary=None):
         if value is None:
             return ''
         digits = field.digits
-        if digits is None:
-            digits = 2
+        if isinstance(digits, str):
+            digits = getattr(record, digits).digits
         else:
+            # TODO remove from issue10677
             digits = digits[1]
         if not isinstance(digits, int):
             digits = _record_eval_pyson(record, digits,
                 encoded=False)
-        return self._get_lang().format('%.*f', (digits, value), grouping=True)
+        if digits is None:
+            d = value
+            if not isinstance(d, Decimal):
+                d = Decimal(repr(value))
+            digits = -int(d.as_tuple().exponent)
+        return self._get_lang().format('%.' + str(digits) + 'f', value,
+            grouping=grouping, monetary=monetary)
 
     def _formatted_numeric(self, record, field, value):
         return self._formatted_float(record, field, value)
