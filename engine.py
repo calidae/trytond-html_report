@@ -350,9 +350,6 @@ class HTMLReportMixin:
 
     @classmethod
     def execute(cls, ids, data):
-        if not ids:
-            return
-
         cls.check_access()
         action, model = cls.get_action(data)
         # in case is not jinja, call super()
@@ -365,16 +362,19 @@ class HTMLReportMixin:
         records = []
         with Transaction().set_context(html_report=action.id,
             address_with_party=False):
-            if model:
+            if model and ids:
                 records = cls._get_dual_records(ids, model, data)
 
-            suffix = '-'.join(r.render.rec_name for r in records[:5])
-            if len(records) > 5:
-                suffix += '__' + str(len(records[5:]))
-            filename = slugify('%s-%s' % (action_name, suffix))
+                suffix = '-'.join(r.render.rec_name for r in records[:5])
+                if len(records) > 5:
+                    suffix += '__' + str(len(records[5:]))
+                filename = slugify('%s-%s' % (action_name, suffix))
+            else:
+                records = []
+                filename = slugify(action_name)
 
             # report single and len > 1, return zip file
-            if action.single and len(ids) > 1:
+            if action.single and records:
                 content = BytesIO()
                 with zipfile.ZipFile(content, 'w') as content_zip:
                     for record in records:
