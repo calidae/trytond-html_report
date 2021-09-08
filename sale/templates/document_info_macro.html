@@ -11,6 +11,4 @@
 {% if document_date %}<h2 class="document">{{ label_date }}: {{ document_date }}</h2>{% endif %}
 {% if record.raw.reference %}<h2 class="document">{{ label(record.raw.__name__, 'reference') }}: {{ record.raw.reference and record.render.reference }}</h2>{% endif %}
 
-{% if record.raw.carrier %}
-  <p class="document"><strong>{{label(record.raw.__name__, 'carrier') }}</strong>{{ record.carrier.party.render.name }}</p>
-{%endif%}
+{% if record.raw.carrier %}<h3 class="document">{{ label(record.raw.__name__, 'carrier') }}: {{ record.carrier.party.render.name }}</h3>{%endif%}
