@@ -374,7 +374,7 @@ class HTMLReportMixin:
                 filename = slugify(action_name)
 
             # report single and len > 1, return zip file
-            if action.single and records:
+            if action.single and len(ids) > 1:
                 content = BytesIO()
                 with zipfile.ZipFile(content, 'w') as content_zip:
                     for record in records:
