@@ -300,7 +300,7 @@ class DualRecord:
                 'many2many'}:
             raise DualRecordError('You are trying to access field "%s" of type '
                 '"%s" in a DualRecord of model "%s". You must use "raw." or '
-                '"format." before the field name.' % (name, field._type,
+                '"render." before the field name.' % (name, field._type,
                     self.raw.__name__))
         value = getattr(self.raw, name)
         if not value:
