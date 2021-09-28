@@ -325,6 +325,7 @@ class DualRecord:
 
 
 class HTMLReportMixin:
+    __slots__ = ()
     babel_domain = 'messages'
 
     @classmethod

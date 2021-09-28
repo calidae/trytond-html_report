@@ -142,6 +142,7 @@ class ReportTemplate(ModelSQL, ModelView):
 
 
 class HTMLPartyInfoMixin:
+    __slots__ = ()
     html_party = fields.Function(fields.Many2One('party.party', 'HTML Party'),
         'get_html_party')
     html_tax_identifier = fields.Function(fields.Many2One('party.identifier',
