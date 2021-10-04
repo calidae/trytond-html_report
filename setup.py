@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 from setuptools import setup
+from setuptools import find_packages
 import re
 import os
 import io
@@ -96,8 +97,10 @@ setup(name='%s_%s' % (PREFIX, MODULE),
     download_url='https://github.com:trytonspain/trytond-html_report',
     package_dir={'trytond.modules.%s' % MODULE: '.'},
     packages=[
-        'trytond.modules.%s' % MODULE,
-        'trytond.modules.%s.tests' % MODULE,
+        'trytond.modules.{}'.format(MODULE)
+    ] + [
+        'trytond.modules.{}.{}'.format(MODULE, submodule)
+        for submodule in find_packages()
         ],
     package_data={
         'trytond.modules.%s' % MODULE: (info.get('xml', [])
