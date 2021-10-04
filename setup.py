@@ -64,7 +64,7 @@ major_version, minor_version, _ = version.split('.', 2)
 major_version = int(major_version)
 minor_version = int(minor_version)
 
-requires = ['Jinja2', 'Babel', 'WeasyPrint']
+requires = ['Jinja2', 'Babel', 'WeasyPrint', 'qrcode']
 
 series = '%s.%s' % (major_version, minor_version)
 if minor_version % 2:
